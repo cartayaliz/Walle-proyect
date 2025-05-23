@@ -9,43 +9,60 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
+using Logic;
+
 
 namespace walleproyect
 {
     public partial class Form1 : Form
     {
         Random rand = new Random();
-        Dictionary<char, Color> mappedChars = new Dictionary<char, Color>();
-        Color[,] colors;
-        int n = 50;
-        int x = 5; int y = 6;
+        Dictionary<char, Color> mappedChars;
+        int n = 10;
+        Context context;
         public Form1()
         {
-            colors = new Color[n, n];
 
-            for (int i = 0; i < n; i++)
-                for (int j = 0; j < n; j++)
-                    colors[i, j] = Color.White;
+            mappedChars = new Dictionary<char, Color>()
+            {
+                { '_', Color.White},
+                { 'W', Color.Gray },
+                { 'R', Color.Red },
+                { 'B', Color.Blue },
+                { 'V', Color.Green },
+                { 'N', Color.Black },
+                { 'A', Color.Yellow },
+            };
+
+            context = new Context(n);
 
             InitializeComponent();
             pictureBox1.Width = 500;
             pictureBox1.Height = 500;
-
-            //
+            Console.WriteLine(context.n);
+            
         }
+        private void _Refresh()
+        {
 
+            // Aquí toda la información dependiente del contexto se debe actualizar
+
+            //Actualizando en Board
+            pictureBox1.Refresh();
+        }
         private void button1_Click(object sender, EventArgs e)
         {
-          // Con cada click pinta de un color aleatorio una casilla aleatoria
-            Color color = Color.FromArgb(
-                rand.Next(256), // Rojo
-                rand.Next(256), // Verde
-                rand.Next(256)  // Azul
-            );
+            // Con cada click pinta de un color aleatorio una casilla aleatoria
+            //Color color = Color.FromArgb(
+            //    rand.Next(256), // Rojo
+            //    rand.Next(256), // Verde
+            //    rand.Next(256)  // Azul
+            //);
             int i = rand.Next(n);
             int j = rand.Next(n);
-            colors[i, j] = color;
-            pictureBox1.Refresh();
+            context.Set(i, j, 'R');
+
+            _Refresh();
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -74,7 +91,7 @@ namespace walleproyect
                 {
                     float xx = j * widthCell;
                     float yy = i * heightCell;
-                    if(i == x && j == y)
+                    if(i == context.x && j == context.y)
                     {
                         //Pintando ubicacion de Walle
                         g.FillRectangle(Brushes.Gray, xx, yy, widthCell, heightCell);
@@ -86,7 +103,7 @@ namespace walleproyect
                     }
                     else
                     {
-                        SolidBrush brush = new SolidBrush(colors[i, j]);
+                        SolidBrush brush = new SolidBrush(mappedChars[context.M[i, j]]);
                         g.FillRectangle(brush, xx, yy, widthCell, heightCell);
                     }
                 }
