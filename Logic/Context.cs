@@ -12,7 +12,6 @@ namespace Logic
         public char Color { get; set; }
         public int x { get; set; }
         public int y { get; set; }
-
         public int n { get; set; }
         public char[,] M { get; set; }
         
