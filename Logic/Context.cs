@@ -68,8 +68,15 @@ namespace Logic
         }
         public void SetSize(int size)
         {
-            
-            this.size = size;
+            if (size % 2 == 0)
+            {
+                this.size = size - 1;
+            }
+            else
+            {
+                this.size = size;
+            }
+           
         }
 
         public void DoAction((int, int, char, int, int) action)

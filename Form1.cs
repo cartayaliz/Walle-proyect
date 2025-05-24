@@ -71,7 +71,7 @@ namespace walleproyect
 
             context.Spawn(0, 0);
             context.CreateEmptyMatrix();
-            context.SetSize(5);
+            context.SetSize(2);
 
             context.SetColor('R');
             var path = context.DrawLine(0, 1, n);
