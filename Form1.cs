@@ -21,8 +21,9 @@ namespace walleproyect
         Random rand = new Random();
         Dictionary<char, Color> mappedChars;
         int n = 20;
-        int PAINTING_TIME = 500;
+        int PAINTING_TIME = 100;
         Context context;
+        private Image walleImage;
         public Form1()
         {
 
@@ -32,20 +33,23 @@ namespace walleproyect
                 { 'W', Color.Gray },
                 { 'R', Color.Red },
                 { 'B', Color.Blue },
-                { 'V', Color.Green },
+                { 'G', Color.Green },
                 { 'N', Color.Black },
-                { 'A', Color.Yellow },
+                { 'Y', Color.Yellow },
+                { 'O', Color.Orange },
+                { 'P', Color.Purple },
+                { ' ', Color.Transparent },
             };
 
             context = new Context(n);
 
             context.Spawn(0, 1);
-
+            walleImage = Image.FromFile(@"C:\Users\liz\Desktop\Nueva carpeta (2)\walleproyect\Image.jpg");
             InitializeComponent();
             pictureBox1.Width = 500;
             pictureBox1.Height = 500;
             Console.WriteLine(context.n);
-            
+
         }
         private void _Refresh()
         {
@@ -61,7 +65,7 @@ namespace walleproyect
             foreach (var item in path)
             {
                 context.DoAction(item);
-                if(PAINTING_TIME != 0) _Refresh();
+                if (PAINTING_TIME != 0) _Refresh();
                 await Task.Delay(PAINTING_TIME);
             }
             if (PAINTING_TIME == 0) _Refresh();
@@ -77,7 +81,7 @@ namespace walleproyect
             var path = context.DrawLine(0, 1, n);
             await PaintActions(path);
 
-            context.SetColor('V');
+            context.SetColor('G');
             var path2 = context.DrawLine(1, 0, n);
             await PaintActions(path2);
 
@@ -85,7 +89,7 @@ namespace walleproyect
             path2 = context.DrawLine(0, -1, n);
             await PaintActions(path2);
 
-            context.SetColor('A');
+            context.SetColor('Y');
             path2 = context.DrawLine(-1, 0, n - 2);
             await PaintActions(path2);
 
@@ -105,32 +109,38 @@ namespace walleproyect
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            
+
             int width = pictureBox1.Width;
             int height = pictureBox1.Height;
             Console.WriteLine(width);
             Console.WriteLine(height);
 
 
-            int widthCell = width / n;   
+            int widthCell = width / n;
             int heightCell = height / n;
 
             Pen p = new Pen(Color.Black);    // Para pintar bordes en negro
-           
+
+
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < n; j++)
                 {
                     float xx = j * widthCell;
                     float yy = i * heightCell;
-                    if(i == context.x && j == context.y)
+                    if (i == context.x && j == context.y)
                     {
                         //Pintando ubicacion de Walle
-                        g.FillRectangle(Brushes.Gray, xx, yy, widthCell, heightCell);
-                        g.DrawEllipse(new Pen(Brushes.Magenta, 2), xx, yy, widthCell, heightCell);
-                        Font fuente = new Font("Arial", 15, FontStyle.Bold);
-                        Brush pincel = Brushes.DarkViolet;
-                        g.DrawString("W", fuente, pincel, xx + widthCell/4, yy + heightCell / 4);
+         
+                        RectangleF destRect = new RectangleF(xx, yy, widthCell, heightCell);  // Crear un rectángulo del tamaño de la celda
+
+                        g.DrawImage(walleImage, destRect); // Dibujar la imagen escalada
+
+                        //g.FillRectangle(Brushes.Gray, xx, yy, widthCell, heightCell);
+                        //g.DrawEllipse(new Pen(Brushes.Magenta, 2), xx, yy, widthCell, heightCell);
+                        //Font fuente = new Font("Arial", 15, FontStyle.Bold);
+                        //Brush pincel = Brushes.DarkViolet;
+                        //g.DrawString("W", fuente, pincel, xx + widthCell/4, yy + heightCell / 4);
 
                     }
                     else
@@ -139,13 +149,18 @@ namespace walleproyect
                         g.FillRectangle(brush, xx, yy, widthCell, heightCell);
                     }
                 }
+
             }
-            
+
+
             for (int i = 0; i <= n; i++)
             {
                 g.DrawLine(p, i * widthCell, 0, i * widthCell, height); //Dibujando lineas verticales
                 g.DrawLine(p, 0, i * heightCell, width, i * heightCell);// Dibujando lineas horizontales
             }
+
+
         }
     }
 }
+
