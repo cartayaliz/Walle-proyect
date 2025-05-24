@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 using Logic;
+using System.IO;
+using System.Threading;
 
 
 namespace walleproyect
@@ -18,7 +20,8 @@ namespace walleproyect
     {
         Random rand = new Random();
         Dictionary<char, Color> mappedChars;
-        int n = 10;
+        int n = 20;
+        int PAINTING_TIME = 500;
         Context context;
         public Form1()
         {
@@ -36,6 +39,8 @@ namespace walleproyect
 
             context = new Context(n);
 
+            context.Spawn(0, 1);
+
             InitializeComponent();
             pictureBox1.Width = 500;
             pictureBox1.Height = 500;
@@ -50,19 +55,46 @@ namespace walleproyect
             //Actualizando en Board
             pictureBox1.Refresh();
         }
-        private void button1_Click(object sender, EventArgs e)
-        {
-            // Con cada click pinta de un color aleatorio una casilla aleatoria
-            //Color color = Color.FromArgb(
-            //    rand.Next(256), // Rojo
-            //    rand.Next(256), // Verde
-            //    rand.Next(256)  // Azul
-            //);
-            int i = rand.Next(n);
-            int j = rand.Next(n);
-            context.Set(i, j, 'R');
 
-            _Refresh();
+        private async Task PaintActions(List<(int, int, char, int, int)> path)
+        {
+            foreach (var item in path)
+            {
+                context.DoAction(item);
+                if(PAINTING_TIME != 0) _Refresh();
+                await Task.Delay(PAINTING_TIME);
+            }
+            if (PAINTING_TIME == 0) _Refresh();
+        }
+        private async void button1_Click(object sender, EventArgs e)
+        {
+
+            context.Spawn(0, 0);
+            context.CreateEmptyMatrix();
+            context.SetSize(5);
+
+            context.SetColor('R');
+            var path = context.DrawLine(0, 1, n);
+            await PaintActions(path);
+
+            context.SetColor('V');
+            var path2 = context.DrawLine(1, 0, n);
+            await PaintActions(path2);
+
+            context.SetColor('B');
+            path2 = context.DrawLine(0, -1, n);
+            await PaintActions(path2);
+
+            context.SetColor('A');
+            path2 = context.DrawLine(-1, 0, n - 2);
+            await PaintActions(path2);
+
+            path2 = context.DrawLine(0, 1, n - 2);
+            await PaintActions(path2);
+
+            path2 = context.DrawLine(1, 0, n - 3);
+            await PaintActions(path2);
+
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
