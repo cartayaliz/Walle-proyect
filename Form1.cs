@@ -20,7 +20,7 @@ namespace walleproyect
     {
         Random rand = new Random();
         Dictionary<char, Color> mappedChars;
-        int n = 20;
+        int n = 10;
         int PAINTING_TIME = 100;
         Context context;
         private Image walleImage;
@@ -43,7 +43,7 @@ namespace walleproyect
 
             context = new Context(n);
 
-            context.Spawn(0, 1);
+            context.Spawn(3, 4);
             walleImage = Image.FromFile(@"C:\Users\liz\Desktop\Nueva carpeta (2)\walleproyect\Image.jpg");
             InitializeComponent();
             pictureBox1.Width = 500;
@@ -60,7 +60,7 @@ namespace walleproyect
             pictureBox1.Refresh();
         }
 
-        private async Task PaintActions(List<(int, int, char, int, int)> path)
+        private async Task PaintActions(List<(int, int, int, int)> path)
         {
             foreach (var item in path)
             {
@@ -73,31 +73,31 @@ namespace walleproyect
         private async void button1_Click(object sender, EventArgs e)
         {
 
-            context.Spawn(0, 0);
-            context.CreateEmptyMatrix();
-            context.SetSize(2);
+            //context.Spawn(4, 3);
+            //context.CreateEmptyMatrix();
+            //context.SetSize(1);
 
-            context.SetColor('R');
-            var path = context.DrawLine(0, 1, n);
-            await PaintActions(path);
-
+            //context.SetColor('R');
+            //var path = context.DrawRectangle(1, 1, 2, 3, 4);
+            //await PaintActions(path);
+            context.SetSize(3);
             context.SetColor('G');
-            var path2 = context.DrawLine(1, 0, n);
+            var path2 = context.DrawLine(1, 1, 1);
             await PaintActions(path2);
 
-            context.SetColor('B');
-            path2 = context.DrawLine(0, -1, n);
-            await PaintActions(path2);
+            //context.SetColor('B');
+            //path2 = context.DrawLine(0, -1, n);
+            //await PaintActions(path2);
 
-            context.SetColor('Y');
-            path2 = context.DrawLine(-1, 0, n - 2);
-            await PaintActions(path2);
+            //context.SetColor('Y');
+            //path2 = context.DrawLine(-1, 0, n - 2);
+            //await PaintActions(path2);
 
-            path2 = context.DrawLine(0, 1, n - 2);
-            await PaintActions(path2);
+            //path2 = context.DrawLine(0, 1, n - 2);
+            //await PaintActions(path2);
 
-            path2 = context.DrawLine(1, 0, n - 3);
-            await PaintActions(path2);
+            //path2 = context.DrawLine(1, 0, n - 3);
+            //await PaintActions(path2);
 
         }
 

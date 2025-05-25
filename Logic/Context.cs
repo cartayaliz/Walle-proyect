@@ -43,15 +43,20 @@ namespace Logic
         {
             this.color = nbruch;
         }
-        public void SetAndMove(int i, int j, char color, int nx, int ny)
+        public void SetAndMove(int i, int j, int nx, int ny)
         {
+            if (color == ' ')
+            {
+                return;
+            }
             //pinta i, j del color elegido y mueve a Wally a nx,ny
             if (Inside(i,j))
             {
                 //this.M[i, j] = color;
-                for ( int ki = i;  ki < i + size;  ki++)
+                int m = (size - 1) / 2;
+                for ( int ki = i - m;  ki <= i + m;  ki++)
                 {
-                    for (int kj = j; kj < j + size; kj++)
+                    for (int kj = j - m; kj <= j + m; kj++)
                     {
                         if (Inside(ki, kj))
                         {
@@ -79,34 +84,51 @@ namespace Logic
            
         }
 
-        public void DoAction((int, int, char, int, int) action)
+        public void DoAction((int, int, int, int) action)
         {
-            SetAndMove(action.Item1, action.Item2, action.Item3, action.Item4, action.Item5);
+            SetAndMove(action.Item1, action.Item2, action.Item3, action.Item4);
         }
 
 
         // Métodos de pintar
 
-        public List<(int, int, char, int , int)> DrawLine(int dirx, int diry, int distance)
+        public List<(int, int, int , int)> DrawLine(int dirx, int diry, int distance)
         {
-            List<(int, int, char, int, int)> path = new List<(int, int, char, int, int)>();
+            List<(int, int, int, int)> path = new List<(int, int, int, int)>();
 
             int i = x, j = y;
+            int step = 0;
 
             while(distance > 0 && Inside(i, j))
             {
                 int ni = i + dirx, nj = j + diry;
 
-                path.Add((i, j, this.color, ni, nj));
+                //if(step > 0)
+                path.Add((i, j, ni, nj));
 
                 i = ni;
                 j = nj;
-
+                step++;
                 distance--;
             }
 
             if(Inside(i, j))
-                path.Add((i, j, this.color, i, j));
+                path.Add((i, j, i, j));
+            return path;
+        }
+        public List<(int, int, int, int)> DrawRectangle(int dirx, int diry, int distance, int width, int heigth)
+        {
+            List<(int, int, int, int)> path = new List<(int, int, int, int)>();
+            int i = x, j = y;
+            while (distance > 0 && Inside(i, j))
+            {
+                int ni = i + dirx, nj = j + diry;
+                i = ni;
+                j = nj;
+                distance--;
+            }
+
+
             return path;
         }
 
