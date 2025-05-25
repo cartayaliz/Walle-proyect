@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Logic
 {  
@@ -43,7 +44,7 @@ namespace Logic
         {
             this.color = nbruch;
         }
-        public void SetAndMove(int i, int j, int nx, int ny)
+        public void SetAndMove(int i, int j, int nx, int ny, char color)
         {
             if (color == ' ')
             {
@@ -84,19 +85,18 @@ namespace Logic
            
         }
 
-        public void DoAction((int, int, int, int) action)
+        public void DoAction((int, int, int, int, char ) action)
         {
-            SetAndMove(action.Item1, action.Item2, action.Item3, action.Item4);
+            SetAndMove(action.Item1, action.Item2, action.Item3, action.Item4, action.Item5);
         }
 
 
         // Métodos de pintar
 
-        public List<(int, int, int , int)> DrawLine(int dirx, int diry, int distance)
+        public List<(int, int, int , int, char)> DrawLineFromPosition(int i, int j, int dirx, int diry, int distance, bool moveWally, int xx, int yy)
         {
-            List<(int, int, int, int)> path = new List<(int, int, int, int)>();
+            List<(int, int, int, int, char)> path = new List<(int, int, int, int, char)>();
 
-            int i = x, j = y;
             int step = 0;
 
             while(distance > 0 && Inside(i, j))
@@ -104,7 +104,7 @@ namespace Logic
                 int ni = i + dirx, nj = j + diry;
 
                 //if(step > 0)
-                path.Add((i, j, ni, nj));
+                path.Add((i, j, (moveWally) ? ni : xx, (moveWally) ? nj : yy, this.color));
 
                 i = ni;
                 j = nj;
@@ -113,25 +113,50 @@ namespace Logic
             }
 
             if(Inside(i, j))
-                path.Add((i, j, i, j));
+                path.Add((i, j, (moveWally) ? i : xx, (moveWally) ? j : yy, this.color));
             return path;
         }
-        public List<(int, int, int, int)> DrawRectangle(int dirx, int diry, int distance, int width, int heigth)
+
+        public List<(int, int, int, int, char)> DrawLine(int dirx, int diry, int distance)
         {
-            List<(int, int, int, int)> path = new List<(int, int, int, int)>();
-            int i = x, j = y;
-            while (distance > 0 && Inside(i, j))
-            {
-                int ni = i + dirx, nj = j + diry;
-                i = ni;
-                j = nj;
-                distance--;
-            }
+            return DrawLineFromPosition(x, y, dirx, diry, distance, true, x, y);
+        }
+        public List<(int, int, int, int, char)> DrawRectangle(int dirx, int diry, int distance, int width, int heigth)
+        {
+            char oldcolor = this.color;
+            this.color = ' ';
 
+            List<(int, int, int, int, char)> path = DrawLine(dirx, diry, distance);
+            
+            var action = path[path.Count - 1];
+            var xi = action.Item3;
+            var xj = action.Item4;
+
+            int mw = width / 2 ;
+            int mh = heigth / 2 ;
+
+            this.color = oldcolor;
+
+            int starti = xi - mh;
+            int startj = xj - mw;
+            path.AddRange(DrawLineFromPosition(starti, startj, 0, 1, width - 1, false, xi, xj));
+
+            starti = path[path.Count - 1].Item1;
+            startj = path[path.Count - 1].Item2;
+            path.AddRange(DrawLineFromPosition(starti, startj, 1, 0, heigth - 1, false, xi, xj));
+
+            starti = path[path.Count - 1].Item1;
+            startj = path[path.Count - 1].Item2;
+            path.AddRange(DrawLineFromPosition(starti, startj, 0, -1, width - 1, false, xi, xj));
+
+            starti = path[path.Count - 1].Item1;
+            startj = path[path.Count - 1].Item2;
+            path.AddRange(DrawLineFromPosition(starti, startj, -1, 0, heigth - 1, false, xi, xj));
 
             return path;
         }
 
+        
 
 
         // Métodos de ayuda

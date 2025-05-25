@@ -60,7 +60,7 @@ namespace walleproyect
             pictureBox1.Refresh();
         }
 
-        private async Task PaintActions(List<(int, int, int, int)> path)
+        private async Task PaintActions(List<(int, int, int, int, char)> path)
         {
             foreach (var item in path)
             {
@@ -77,13 +77,14 @@ namespace walleproyect
             //context.CreateEmptyMatrix();
             //context.SetSize(1);
 
-            //context.SetColor('R');
-            //var path = context.DrawRectangle(1, 1, 2, 3, 4);
-            //await PaintActions(path);
-            context.SetSize(3);
-            context.SetColor('G');
-            var path2 = context.DrawLine(1, 1, 1);
-            await PaintActions(path2);
+            context.SetColor('R');
+            var path = context.DrawRectangle(1, 1, 2, 3, 5);
+            await PaintActions(path);
+
+            //context.SetSize(3);
+            //context.SetColor('G');
+            //var path2 = context.DrawLine(1, 1, 1);
+            //await PaintActions(path2);
 
             //context.SetColor('B');
             //path2 = context.DrawLine(0, -1, n);
