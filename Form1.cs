@@ -43,12 +43,20 @@ namespace walleproyect
 
             context = new Context(n);
 
-            context.Spawn(1, 1);
+            context.Spawn(2, 4);
             walleImage = Image.FromFile(@"C:\Users\liz\Desktop\Nueva carpeta (2)\walleproyect\Image.jpg");
             InitializeComponent();
-            pictureBox1.Width = 500;
-            pictureBox1.Height = 500;
+            EstablecerValoresPorDefecto();
+            pictureBox1.Width = 600;
+            pictureBox1.Height = 600;
             Console.WriteLine(context.n);
+
+        }
+        private void EstablecerValoresPorDefecto()
+        {
+            board.Text = "10";
+            size.Text = "1";
+            brush.Text =" ";
 
         }
         private void _Refresh()
@@ -70,15 +78,49 @@ namespace walleproyect
             }
             if (PAINTING_TIME == 0) _Refresh();
         }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Application.Restart();
+            
+        }
         private async void button1_Click(object sender, EventArgs e)
         {
+            // Examples
 
-            context.Spawn(2, 2);
+            if (string.IsNullOrWhiteSpace(board.Text))
+            {
+                MessageBox.Show("¡Debe ingresar un número!", "Error",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (!int.TryParse(board.Text, out int numero1) || numero1 <= 0)
+            {
+                error_board.SetError(board, "Ingrese un número entero mayor que cero");
+            }
+            this.n = numero1;
+            if (string.IsNullOrWhiteSpace(size.Text))
+            {
+                MessageBox.Show("¡Debe ingresar un número!", "Error",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (!int.TryParse(size.Text, out int numero2) || numero2 <= 0)
+            {
+                error_size.SetError(size, "Ingrese un número entero mayor que cero");
+            }
+            if (string.IsNullOrWhiteSpace(brush.Text))
+            {
+                MessageBox.Show("¡Debe ingresar un color. Escriba con letra inicial mayúscula!", "Error",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            context.Spawn(2, 4);
             context.CreateEmptyMatrix();
-            context.SetSize(1);
+            context.SetSize(numero2);
+            context.SetColor(brush.Text[1]);
 
 
-            context.SetColor('R');
             var path = context.DrawCircle(1, 1, 2);
             await PaintActions(path);
 
@@ -90,24 +132,6 @@ namespace walleproyect
             path = context.DrawRectangle(1, 1, 0, 7, 7);
             await PaintActions(path);
 
-            //context.SetSize(3);
-            //context.SetColor('G');
-            //var path2 = context.DrawLine(1, 1, 1);
-            //await PaintActions(path2);
-
-            //context.SetColor('B');
-            //path2 = context.DrawLine(0, -1, n);
-            //await PaintActions(path2);
-
-            //context.SetColor('Y');
-            //path2 = context.DrawLine(-1, 0, n - 2);
-            //await PaintActions(path2);
-
-            //path2 = context.DrawLine(0, 1, n - 2);
-            //await PaintActions(path2);
-
-            //path2 = context.DrawLine(1, 0, n - 3);
-            //await PaintActions(path2);
 
         }
 
@@ -146,11 +170,7 @@ namespace walleproyect
 
                         g.DrawImage(walleImage, destRect); // Dibujar la imagen escalada
 
-                        //g.FillRectangle(Brushes.Gray, xx, yy, widthCell, heightCell);
-                        //g.DrawEllipse(new Pen(Brushes.Magenta, 2), xx, yy, widthCell, heightCell);
-                        //Font fuente = new Font("Arial", 15, FontStyle.Bold);
-                        //Brush pincel = Brushes.DarkViolet;
-                        //g.DrawString("W", fuente, pincel, xx + widthCell/4, yy + heightCell / 4);
+                        
 
                     }
                     else
@@ -169,6 +189,40 @@ namespace walleproyect
                 g.DrawLine(p, 0, i * heightCell, width, i * heightCell);// Dibujando lineas horizontales
             }
 
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+           
+
+
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+           
+            
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void brush_TextChanged(object sender, EventArgs e)
+        {
 
         }
     }
