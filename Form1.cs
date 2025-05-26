@@ -43,7 +43,7 @@ namespace walleproyect
 
             context = new Context(n);
 
-            context.Spawn(3, 4);
+            context.Spawn(1, 1);
             walleImage = Image.FromFile(@"C:\Users\liz\Desktop\Nueva carpeta (2)\walleproyect\Image.jpg");
             InitializeComponent();
             pictureBox1.Width = 500;
@@ -73,12 +73,21 @@ namespace walleproyect
         private async void button1_Click(object sender, EventArgs e)
         {
 
-            //context.Spawn(4, 3);
-            //context.CreateEmptyMatrix();
-            //context.SetSize(1);
+            context.Spawn(2, 2);
+            context.CreateEmptyMatrix();
+            context.SetSize(1);
+
 
             context.SetColor('R');
-            var path = context.DrawRectangle(1, 1, 2, 3, 5);
+            var path = context.DrawCircle(1, 1, 2);
+            await PaintActions(path);
+
+            context.SetColor('B');
+            path = context.DrawCuadrado(1, 1, 0, 5);
+            await PaintActions(path);
+
+            context.SetColor('G');
+            path = context.DrawRectangle(1, 1, 0, 7, 7);
             await PaintActions(path);
 
             //context.SetSize(3);

@@ -45,14 +45,15 @@ namespace Logic
             this.color = nbruch;
         }
         public void SetAndMove(int i, int j, int nx, int ny, char color)
-        {
-            if (color == ' ')
-            {
-                return;
-            }
-            //pinta i, j del color elegido y mueve a Wally a nx,ny
+        {            //pinta i, j del color elegido y mueve a Wally a nx,ny
             if (Inside(i,j))
             {
+                x = nx;
+                y = ny;
+                if (color == ' ')
+                {
+                    return;
+                }
                 //this.M[i, j] = color;
                 int m = (size - 1) / 2;
                 for ( int ki = i - m;  ki <= i + m;  ki++)
@@ -66,11 +67,7 @@ namespace Logic
                     }
                 }
             }
-            if (Inside(nx, ny))
-            {
-                x = nx;
-                y = ny;
-            }
+           
         }
         public void SetSize(int size)
         {
@@ -156,7 +153,41 @@ namespace Logic
             return path;
         }
 
-        
+        public List<(int, int, int, int, char)> DrawCuadrado(int dirx, int diry, int distance, int m)
+        {
+            List<(int, int, int, int, char)> path = DrawRectangle(dirx, diry, distance, m, m);
+            return path;
+        }
+
+        public List<(int, int, int, int, char)> DrawCircle(int dirx, int diry, int radio)
+        {
+            char oldcolor = this.color;
+            this.color = ' ';
+
+            List<(int, int, int, int, char)> path = DrawLine(dirx, diry, radio);
+
+            var action = path[path.Count - 1];
+            var xi = action.Item3;
+            var xj = action.Item4;
+
+            this.color = oldcolor;
+
+            path.AddRange(DrawLineFromPosition(xi - radio, xj - radio, 0, 0, 0 , false, xi, xj));
+            path.AddRange(DrawLineFromPosition(xi - radio - 1, xj - radio + 1, 0, 1, radio, false, xi, xj));
+
+            path.AddRange(DrawLineFromPosition(xi - radio, xj + radio, 0, 0, 0, false, xi, xj));
+            path.AddRange(DrawLineFromPosition(xi - radio + 1, xj + radio + 1, 1, 0, radio, false, xi, xj));
+
+            path.AddRange(DrawLineFromPosition(xi + radio, xj + radio, 0, 0, 0, false, xi, xj));
+            path.AddRange(DrawLineFromPosition(xi + radio + 1, xj + radio - 1, 0, -1, radio, false, xi, xj));
+
+            path.AddRange(DrawLineFromPosition(xi + radio, xj - radio, 0, 0, 0, false, xi, xj));
+            path.AddRange(DrawLineFromPosition(xi + radio - 1, xj - radio - 1, -1, 0, radio, false, xi, xj));
+
+
+            return path;
+        }
+
 
 
         // Métodos de ayuda
