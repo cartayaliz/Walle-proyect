@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -15,6 +16,8 @@ namespace Logic
         public int y { get; set; }
         public int n { get; set; }
         public char[,] M { get; set; }
+
+       
 
         public Context(int n)
         {
@@ -35,9 +38,14 @@ namespace Logic
                     this.M[i, j] = '_';
         }
 
-        public void Spawn(int i , int j)
+        public List<(int, int, int, int, char)> Spawn(int i , int j)
         {
-            this.x = i; this.y = j;
+            SetColor(' ');
+            var path = DrawLineFromPosition(x, y, 1, 0, i, true, x, y);
+            var action = path[path.Count - 1];
+            path.AddRange(DrawLineFromPosition(action.Item3, action.Item4, 0, 1, j, true, action.Item3, action.Item4));
+            return path;
+
         }
 
         public void SetColor(char nbruch)
@@ -151,21 +159,77 @@ namespace Logic
             this.color = oldcolor;
 
             path.AddRange(DrawLineFromPosition(xi - radio, xj - radio, 0, 0, 0 , false, xi, xj));
-            path.AddRange(DrawLineFromPosition(xi - radio - 1, xj - radio + 1, 0, 1, radio, false, xi, xj));
+            path.AddRange(DrawLineFromPosition(xi - radio - 1, xj - radio + 1, 0, 1, radio + 1, false, xi, xj));
 
             path.AddRange(DrawLineFromPosition(xi - radio, xj + radio, 0, 0, 0, false, xi, xj));
-            path.AddRange(DrawLineFromPosition(xi - radio + 1, xj + radio + 1, 1, 0, radio, false, xi, xj));
+            path.AddRange(DrawLineFromPosition(xi - radio + 1, xj + radio + 1, 1, 0, radio +1, false, xi, xj));
 
             path.AddRange(DrawLineFromPosition(xi + radio, xj + radio, 0, 0, 0, false, xi, xj));
-            path.AddRange(DrawLineFromPosition(xi + radio + 1, xj + radio - 1, 0, -1, radio, false, xi, xj));
+            path.AddRange(DrawLineFromPosition(xi + radio + 1, xj + radio - 1, 0, -1, radio +1, false, xi, xj));
 
             path.AddRange(DrawLineFromPosition(xi + radio, xj - radio, 0, 0, 0, false, xi, xj));
-            path.AddRange(DrawLineFromPosition(xi + radio - 1, xj - radio - 1, -1, 0, radio, false, xi, xj));
+            path.AddRange(DrawLineFromPosition(xi + radio - 1, xj - radio - 1, -1, 0, radio + 1, false, xi, xj));
 
 
             return path;
         }
 
+        public List<(int, int, int, int, char)> DrawTriangle(int dirx, int diry, int distance, int tdirx, int tdiry,  int b)
+        {
+            char oldcolor = this.color;
+            this.color = ' ';
+
+
+            List<(int, int, int, int, char)> path = DrawLine(dirx, diry, distance);
+
+            var action = path[path.Count - 1];
+            var xi = action.Item3;
+            var xj = action.Item4;
+
+            this.color = oldcolor;
+
+            int[] dx = { tdirx, -tdirx, 0};
+            int[] dy = { 0, tdiry, -tdiry };
+
+
+            for (int k = 0; k < dx.Length; k++)
+            {
+                path.AddRange(DrawLineFromPosition(xi, xj, dx[k], dy[k], b, true, xi, xj));
+                xi = path[path.Count - 1].Item3;
+                xj = path[path.Count - 1].Item4;
+            }
+
+            return path;
+        }
+        public List<(int, int, int, int, char)> DrawAsterisco(int dirx, int diry, int distance)
+        {
+            char oldcolor = this.color;
+            this.color = ' ';
+
+            List<(int, int, int, int, char)> path = DrawLine(dirx, diry, distance/2 );
+
+            var action = path[path.Count - 1];
+            var xi = action.Item3;
+            var xj = action.Item4;
+
+            this.color = oldcolor;
+
+            int[] dx = { -1, -1, 0, 1, 1, 1, 0, -1 };
+            int[] dy = { 0, 1, 1, 1, 0, -1, -1, -1 };
+
+
+            for (int k = 0; k < dx.Length; k++)
+            {
+                path.AddRange(DrawLineFromPosition(xi , xj , dx[k], dy[k], distance / 2, true, xi, xj));
+                xi = path[path.Count - 1].Item3;
+                xj = path[path.Count - 1].Item4;
+                path.AddRange(DrawLineFromPosition(xi, xj, -1 * dx[k], -1*dy[k], distance / 2, true, xi, xj));
+                xi = path[path.Count - 1].Item3;
+                xj = path[path.Count - 1].Item4;
+            }
+
+            return path;
+        }
 
 
         // Métodos de ayuda
@@ -180,7 +244,7 @@ namespace Logic
 
             int step = 0;
 
-            while (distance > 0 && Inside(i, j))
+            while (distance > 0)
             {
                 int ni = i + dirx, nj = j + diry;
 
@@ -193,8 +257,7 @@ namespace Logic
                 distance--;
             }
 
-            if (Inside(i, j))
-                path.Add((i, j, (moveWally) ? i : xx, (moveWally) ? j : yy, this.color));
+            path.Add((i, j, (moveWally) ? i : xx, (moveWally) ? j : yy, this.color));
             return path;
         }
 

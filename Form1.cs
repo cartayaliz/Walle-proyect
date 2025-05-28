@@ -20,8 +20,11 @@ namespace walleproyect
     {
         Random rand = new Random();
         Dictionary<char, Color> mappedChars;
-        int n = 10;
-        int PAINTING_TIME = 100;
+        Dictionary<string, char> invertedChars;
+        Dictionary<char, string> directChars;
+
+
+
         Context context;
         private Image walleImage;
         public Form1()
@@ -41,9 +44,15 @@ namespace walleproyect
                 { ' ', Color.Transparent },
             };
 
-            context = new Context(n);
+            invertedChars = new Dictionary<string, char>();
+            directChars = new Dictionary<char, string>();
+            foreach (char c in mappedChars.Keys)
+            {
+                invertedChars.Add(mappedChars[c].Name, c);
+                directChars.Add(c, mappedChars[c].Name);
+            }
 
-            context.Spawn(2, 4);
+            context = new Context(20);
             walleImage = Image.FromFile(@"C:\Users\liz\Desktop\Nueva carpeta (2)\walleproyect\Image.jpg");
             InitializeComponent();
             EstablecerValoresPorDefecto();
@@ -54,16 +63,17 @@ namespace walleproyect
         }
         private void EstablecerValoresPorDefecto()
         {
-            board.Text = "10";
-            size.Text = "1";
-            brush.Text =" ";
-
+            board.Value = 20;
+            size.Value = 1;
+            time.Value = 100;
+            colors.Text = directChars[invertedChars[Color.Black.Name]];
         }
         private void _Refresh()
         {
 
             // Aquí toda la información dependiente del contexto se debe actualizar
-
+            size.Value = context.size;
+            colors.Text = directChars[context.color];
             //Actualizando en Board
             pictureBox1.Refresh();
         }
@@ -73,10 +83,11 @@ namespace walleproyect
             foreach (var item in path)
             {
                 context.DoAction(item);
-                if (PAINTING_TIME != 0) _Refresh();
-                await Task.Delay(PAINTING_TIME);
+                if (time.Value != 0) _Refresh();
+
+                await Task.Delay((int)time.Value);
             }
-            if (PAINTING_TIME == 0) _Refresh();
+            if (time.Value == 0) _Refresh();
         }
         private void button2_Click(object sender, EventArgs e)
         {
@@ -93,52 +104,57 @@ namespace walleproyect
                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            if (!int.TryParse(board.Text, out int numero1) || numero1 <= 0)
+            if (board.Value <= 0)
             {
                 error_board.SetError(board, "Ingrese un número entero mayor que cero");
             }
-            this.n = numero1;
-            if (string.IsNullOrWhiteSpace(size.Text))
-            {
-                MessageBox.Show("¡Debe ingresar un número!", "Error",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            if (!int.TryParse(size.Text, out int numero2) || numero2 <= 0)
+            int n = (int)board.Value;
+           
+            if (size.Value <= 0)
             {
                 error_size.SetError(size, "Ingrese un número entero mayor que cero");
             }
-            if (string.IsNullOrWhiteSpace(brush.Text))
+            if (string.IsNullOrWhiteSpace(colors.Text))
             {
-                MessageBox.Show("¡Debe ingresar un color. Escriba con letra inicial mayúscula!", "Error",
+                MessageBox.Show("¡Debe escoger un color !", "Error",
                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            context.Spawn(2, 4);
+            if (time.Value <= 0)
+            {
+                error_time.SetError(time, "Ingrese un número entero mayor que cero");
+            }
+
+            var color = colors.Text;
+            context = new Context(n);
             context.CreateEmptyMatrix();
-            context.SetSize(numero2);
-            context.SetColor(brush.Text[1]);
 
-
-            var path = context.DrawCircle(1, 1, 2);
+            var path = context.Spawn(5,5);
             await PaintActions(path);
 
-            context.SetColor('B');
-            path = context.DrawCuadrado(1, 1, 0, 5);
+            context.SetSize((int)size.Value);
+            context.SetColor(invertedChars[color]);
+            
+            
+
+            path = context.DrawTriangle(1, 1, 5 , -1, 1, 5);
             await PaintActions(path);
 
-            context.SetColor('G');
-            path = context.DrawRectangle(1, 1, 0, 7, 7);
+            path = context.DrawTriangle(1, 1, 0, 1, -1, 5);
+            await PaintActions(path);
+
+            path = context.DrawTriangle(1, 1, 0 , -1, -1, 5);
+            await PaintActions(path);
+
+            context.SetSize(3);
+
+            path = context.DrawTriangle(1, 1, 0, 1, 1, 5);
             await PaintActions(path);
 
 
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
@@ -150,15 +166,15 @@ namespace walleproyect
             Console.WriteLine(height);
 
 
-            int widthCell = width / n;
-            int heightCell = height / n;
+            int widthCell = width / context.n;
+            int heightCell = height / context.n;
 
             Pen p = new Pen(Color.Black);    // Para pintar bordes en negro
 
 
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < context.n; i++)
             {
-                for (int j = 0; j < n; j++)
+                for (int j = 0; j < context.n; j++)
                 {
                     float xx = j * widthCell;
                     float yy = i * heightCell;
@@ -170,7 +186,7 @@ namespace walleproyect
 
                         g.DrawImage(walleImage, destRect); // Dibujar la imagen escalada
 
-                        
+                      
 
                     }
                     else
@@ -183,7 +199,7 @@ namespace walleproyect
             }
 
 
-            for (int i = 0; i <= n; i++)
+            for (int i = 0; i <= context.n; i++)
             {
                 g.DrawLine(p, i * widthCell, 0, i * widthCell, height); //Dibujando lineas verticales
                 g.DrawLine(p, 0, i * heightCell, width, i * heightCell);// Dibujando lineas horizontales
@@ -192,24 +208,6 @@ namespace walleproyect
 
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-           
-
-
-        }
-
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-           
-            
-
-        }
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -218,10 +216,34 @@ namespace walleproyect
 
         private void button3_Click(object sender, EventArgs e)
         {
-            
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Archivos PW (*.pw)|*.pw";
+            saveFileDialog.FilterIndex = 1; // Por defecto se selecciona el primer filtro
+            saveFileDialog.RestoreDirectory = true; // Restaura el directorio actual al cerrar el diálogo
+            if (saveFileDialog.ShowDialog(Owner) == DialogResult.OK)
+            {
+                try
+                {
+
+                    File.WriteAllText(saveFileDialog.FileName, textBox1.Text);
+
+                    MessageBox.Show("Archivo guardado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex) 
+                {
+                    MessageBox.Show($"Error al guardar el archivo: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
         }
 
-        private void brush_TextChanged(object sender, EventArgs e)
+       
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void time_ValueChanged(object sender, EventArgs e)
         {
 
         }
