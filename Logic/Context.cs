@@ -16,6 +16,9 @@ namespace Logic
         public int y { get; set; }
         public int n { get; set; }
         public char[,] M { get; set; }
+        public string titulo { get; set; }
+
+       
 
        
 
@@ -28,6 +31,8 @@ namespace Logic
             y = 0;
             this.M = new char[n, n];
             CreateEmptyMatrix();
+            titulo = this.titulo;
+           
         }
 
         // Config methods
@@ -231,7 +236,27 @@ namespace Logic
             return path;
         }
 
+        public List<(int, int, int, int, char)> DrawRombo(int dirx, int diry, int r)
+        {
+           
 
+            List<(int, int, int, int, char)> path = new List<(int, int, int, int, char)>();
+
+           
+            path.AddRange(DrawTriangle(1, 1, r, -1, 1, r));
+          
+
+            path.AddRange(DrawTriangle(1, 1, 0, 1, -1, r));
+
+
+            path.AddRange(DrawTriangle(1, 1, 0, -1, -1, r));
+
+
+            path.AddRange(DrawTriangle(1, 1, 0, 1, 1, r));
+
+            return path;
+
+        }
         // Métodos de ayuda
 
         public bool Inside(int i, int j)

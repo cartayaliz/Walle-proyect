@@ -16,6 +16,7 @@ using System.Threading;
 
 namespace walleproyect
 {
+
     public partial class Form1 : Form
     {
         Random rand = new Random();
@@ -65,8 +66,10 @@ namespace walleproyect
         {
             board.Value = 20;
             size.Value = 1;
-            time.Value = 100;
+            time.Value = 50;
             colors.Text = directChars[invertedChars[Color.Black.Name]];
+            title.Text = "Probando";
+            actual.Text = " ";
         }
         private void _Refresh()
         {
@@ -125,8 +128,12 @@ namespace walleproyect
             {
                 error_time.SetError(time, "Ingrese un número entero mayor que cero");
             }
+            Interprete inteprete = new Interprete(lector.Text);
 
+           
             var color = colors.Text;
+            actual.Text = $"[{inteprete.actualline + 1}]: {inteprete.lines[inteprete.actualline]}";
+
             context = new Context(n);
             context.CreateEmptyMatrix();
 
@@ -135,23 +142,9 @@ namespace walleproyect
 
             context.SetSize((int)size.Value);
             context.SetColor(invertedChars[color]);
-            
-            
 
-            path = context.DrawTriangle(1, 1, 5 , -1, 1, 5);
+            path = context.DrawCircle(1, 1, 3);
             await PaintActions(path);
-
-            path = context.DrawTriangle(1, 1, 0, 1, -1, 5);
-            await PaintActions(path);
-
-            path = context.DrawTriangle(1, 1, 0 , -1, -1, 5);
-            await PaintActions(path);
-
-            context.SetSize(3);
-
-            path = context.DrawTriangle(1, 1, 0, 1, 1, 5);
-            await PaintActions(path);
-
 
         }
 
@@ -225,7 +218,7 @@ namespace walleproyect
                 try
                 {
 
-                    File.WriteAllText(saveFileDialog.FileName, textBox1.Text);
+                    File.WriteAllText(saveFileDialog.FileName, title.Text);
 
                     MessageBox.Show("Archivo guardado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -244,6 +237,16 @@ namespace walleproyect
         }
 
         private void time_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        public void lector_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        public void textBox1_TextChanged(object sender, EventArgs e)
         {
 
         }

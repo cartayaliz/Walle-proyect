@@ -34,7 +34,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.title = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.error_board = new System.Windows.Forms.ErrorProvider(this.components);
@@ -42,11 +42,11 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.lector = new System.Windows.Forms.RichTextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.error_time = new System.Windows.Forms.ErrorProvider(this.components);
             this.time = new System.Windows.Forms.NumericUpDown();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.actual = new System.Windows.Forms.TextBox();
             this.size = new System.Windows.Forms.NumericUpDown();
             this.board = new System.Windows.Forms.NumericUpDown();
             this.colors = new System.Windows.Forms.ComboBox();
@@ -106,12 +106,14 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Title:";
             // 
-            // textBox1
+            // title
             // 
-            this.textBox1.Location = new System.Drawing.Point(68, 28);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(146, 22);
-            this.textBox1.TabIndex = 4;
+            this.title.AccessibleName = "title";
+            this.title.Location = new System.Drawing.Point(68, 28);
+            this.title.Name = "title";
+            this.title.Size = new System.Drawing.Size(146, 22);
+            this.title.TabIndex = 4;
+            this.title.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label3
             // 
@@ -185,13 +187,15 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // richTextBox1
+            // lector
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(850, 119);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(389, 331);
-            this.richTextBox1.TabIndex = 13;
-            this.richTextBox1.Text = "";
+            this.lector.AcceptsTab = true;
+            this.lector.Location = new System.Drawing.Point(850, 119);
+            this.lector.Name = "lector";
+            this.lector.Size = new System.Drawing.Size(389, 331);
+            this.lector.TabIndex = 13;
+            this.lector.Text = "";
+            this.lector.TextChanged += new System.EventHandler(this.lector_TextChanged);
             // 
             // label5
             // 
@@ -220,12 +224,12 @@
             this.time.TabIndex = 16;
             this.time.ValueChanged += new System.EventHandler(this.time_ValueChanged);
             // 
-            // textBox2
+            // actual
             // 
-            this.textBox2.Location = new System.Drawing.Point(850, 460);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(389, 22);
-            this.textBox2.TabIndex = 17;
+            this.actual.Location = new System.Drawing.Point(850, 460);
+            this.actual.Name = "actual";
+            this.actual.Size = new System.Drawing.Size(389, 22);
+            this.actual.TabIndex = 17;
             // 
             // size
             // 
@@ -271,16 +275,16 @@
             this.Controls.Add(this.colors);
             this.Controls.Add(this.board);
             this.Controls.Add(this.size);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.actual);
             this.Controls.Add(this.time);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.lector);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.title);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox1);
@@ -307,7 +311,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox title;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ErrorProvider error_board;
@@ -315,11 +319,11 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox lector;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ErrorProvider error_time;
         private System.Windows.Forms.NumericUpDown time;
-        protected System.Windows.Forms.TextBox textBox2;
+        protected System.Windows.Forms.TextBox actual;
         private System.Windows.Forms.NumericUpDown size;
         private System.Windows.Forms.NumericUpDown board;
         private System.Windows.Forms.ComboBox colors;

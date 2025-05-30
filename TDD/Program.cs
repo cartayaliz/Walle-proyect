@@ -10,6 +10,21 @@ Console.WriteLine("Hello, World!");
 Console.WriteLine(context.n);
 
 
+//path = context.DrawTriangle(1, 1, 5 , -1, 1, 5);
+//await PaintActions(path);
+
+//path = context.DrawTriangle(1, 1, 0, 1, -1, 5);
+//await PaintActions(path);
+
+//path = context.DrawTriangle(1, 1, 0 , -1, -1, 5);
+//await PaintActions(path);
+
+//context.SetSize(3);
+
+//path = context.DrawTriangle(1, 1, 0, 1, 1, 5);
+//await PaintActions(path);
+
+
 //context.Spawn(2, 4);
 //context.CreateEmptyMatrix();
 //context.SetSize(numero2);
