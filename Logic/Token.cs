@@ -9,27 +9,30 @@ namespace Logic
     public enum TokenType
     {
         // Single-character tokens.
-        LEFT_PAREN,
-        RIGHT_PAREN,
+        Left_paren,
+        Rigth_paren,
         Comma,
         Dot,
         Minus,
         Plus,
+        Semicolon,
+        Star,
 
 
 
         // One or two character tokens.
-
         Equal,
         Equal_equal,
         Greater,
         Greater_equal,
         Less,
         Less_equal,
+
         // Literals.
         Identifier,
         String,
         Number,
+
         // Methods Actions
         Fill,
         DrawLine,
@@ -51,10 +54,12 @@ namespace Logic
         //IsBrushColor,
 
 
+        // Internal
+        EOF,
 
-
-
+      
     }
+   
     public class Tokens
     {
         public int line { get; set; }
@@ -73,6 +78,8 @@ namespace Logic
         {
             return type + " " + lexeme + " " + literal;
         }
+
+        
     }
 
 }
