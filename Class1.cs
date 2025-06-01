@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.ComponentModel;
+using static System.Net.Mime.MediaTypeNames;
 using Logic;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Net;
@@ -16,20 +17,21 @@ namespace Logic
         public string[] lines {  get; set; }
         public string text { get; set; }
         public int actualline { get; set; }
+        
+        public Scanner scannner;
         public Interprete(string text)
         {
             this.text = text;
+            scannner = new Scanner(text);
 
             lines = text.Split('\n');
 
-            Console.WriteLine(">>> lines");
-            for (int i = 0; i < lines.Length; i++)
+            var tokens = scannner.scanTokens();
+
+            foreach (var item in tokens)
             {
-
-                Console.WriteLine("[{0}]: {1}", i, lines[i]);
+                Console.WriteLine(item);
             }
-
-            this.actualline = 0;
 
         }
 

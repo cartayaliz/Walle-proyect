@@ -17,6 +17,8 @@ namespace Logic
         Plus,
         Semicolon,
         Star,
+        Module,
+        Split,
 
 
 
@@ -27,6 +29,7 @@ namespace Logic
         Greater_equal,
         Less,
         Less_equal,
+        TwoStar,
 
         // Literals.
         Identifier,
@@ -34,14 +37,15 @@ namespace Logic
         Number,
 
         // Methods Actions
-        Fill,
+        //Fill,
         DrawLine,
         DrawRectangle,
         DrawCruadado,
         DrawTriangle,
         DrawCircle,
-        //DrawRombo,
+        DrawRombo,
         Spawn,
+        DrawAsterisco,
 
         // Methods Information
 
@@ -54,11 +58,19 @@ namespace Logic
         //IsBrushColor,
 
 
+        //  keywords
+
+        True,
+        False,
+       
+
         // Internal
         EOF,
 
       
     }
+   
+  
    
     public class Tokens
     {
@@ -74,9 +86,9 @@ namespace Logic
             this.literal = literal;
             this.line = line;
         }
-        public String toString()
+        public override string ToString()
         {
-            return type + " " + lexeme + " " + literal;
+            return "<" + type + " " + lexeme + " " + literal + ">";
         }
 
         

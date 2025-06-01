@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace Logic
 {
@@ -17,13 +20,14 @@ namespace Logic
 
     public class Scanner
     {
-        private String source { get; set; }
-        private List<Tokens> tokens { get; set; }
+        public String source { get; set; }
+        public List<Tokens> tokens { get; set; }
 
-        private int start {  get; set; }
-        private int current {  get; set; }
-        private int line {  get; set; }
-        Scanner(String source)
+        public int start {  get; set; }
+        public int current {  get; set; }
+        public int line {  get; set; }
+       
+        public Scanner(String source)
         {
             this.source = source;
             this.start = 0;
@@ -31,16 +35,32 @@ namespace Logic
             this.line = 1;
             this.tokens = new List<Tokens>();
         }
-        private bool isAtEnd()
+        public Dictionary<String, TokenType> keywords = new Dictionary<String, TokenType>()
+        {
+            { "true", TokenType.True },
+            { "false", TokenType.False },
+            { "DrawLine", TokenType.DrawLine },
+            { "DrawCircle", TokenType.DrawCircle},
+            { "DrawRectangle", TokenType.DrawRectangle },
+            { "DrawTriangle", TokenType.DrawTriangle },
+            { "DrawCuadrado", TokenType.DrawCruadado },
+            { "DrawRombo", TokenType.DrawRombo },
+            { "DrawAsterisco", TokenType.DrawAsterisco },
+            { "Spawn", TokenType.Spawn },
+
+        };
+
+        public bool isAtEnd()
         {
             return (current >= source.Length);
         }
+
         
-        List<Tokens> scanTokens()
+        public List<Tokens> scanTokens()
         {
             while (!isAtEnd())
             {
-                // We are at the beginning of the next lexeme.
+                // Start of the next lexeme
 
                 start = current;
                 scanToken();
@@ -48,12 +68,79 @@ namespace Logic
             tokens.Add(new Tokens(TokenType.EOF, "", null, line));
             return tokens;
         }
-        private char advance()
+        public char advance()
         {
             current++;
             return source[current - 1];
         }
-        private void scanToken()
+        public bool match(char expected)
+        {
+            if (isAtEnd()) return false;
+            if (source[current] != expected) return false;
+            current++;
+            return true;
+        }
+       public void String()
+        {
+            while (peek() != '"' && !isAtEnd())
+            {
+                if (peek() == '\n') line++;
+                advance();
+            }
+            if (isAtEnd())
+            {
+                //Lox.error(line, "Unterminated string.");
+                // return;
+            }
+            // The closing ".
+            advance();
+
+            // Removing quotation marks
+
+            String value = source.Substring(start + 1, current - 1 - start);
+            tokens.Add(new Tokens(TokenType.String, value, null, line));
+        }
+        public bool isDigit(char c)  
+        {
+            return (c >= '0' && c <= '9');
+        }
+
+        public char peek()
+        {
+            if (isAtEnd()) return ' ';
+            return source[current];
+
+        }
+        public char peekNext()
+        {
+            if (current + 1 >= source.Length) return ' ';
+            return source[current + 1];
+        }
+       public void number()
+        { 
+            while (isDigit(peek())) advance();
+            // Look for a fractional part.
+            if (peek() == '.' && isDigit(peekNext()))
+            {
+                // Consume the "."
+                advance();
+                while (isDigit(peek())) advance();
+            }
+            tokens.Add(new Tokens(TokenType.Number, source.Substring(start, current - start), null, line));
+        }
+
+        public void Identificador()                                                   
+        {
+            while (isAlpha(peek()) || isDigit(peek())) { advance(); }
+            tokens.Add(new Tokens(TokenType.Identifier, "identificador", null, line));
+
+        }
+        public bool isAlpha(char c)
+        {
+            return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_');
+        }
+
+        public void scanToken()
         {
             char c = advance();
             switch (c)
@@ -65,12 +152,58 @@ namespace Logic
                 case '-': tokens.Add(new Tokens(TokenType.Minus, "-", null, line)); break;
                 case '+': tokens.Add(new Tokens(TokenType.Plus, "+", null, line)); break;
                 case ';': tokens.Add(new Tokens(TokenType.Semicolon, ";", null, line)); break;
-                case '*': tokens.Add(new Tokens(TokenType.Star, "*", null, line)); break;
-                    //default:
-                    //    .error(line, "Unexpected character.");
-                    //break;
+                case '*':
+                    { 
+                        bool m = match('*');
+                        tokens.Add(new Tokens(m ? TokenType.TwoStar : TokenType.Star, m?"**":"*", null, line)); break;
+
+                    }
+                case '=':
+                    {
+                       
+                        bool m = match('=');
+                        tokens.Add(new Tokens(m ? TokenType.Equal_equal : TokenType.Equal, m?  "==" : "=", null, line)); break; }
+                case '>':
+                    {
+                        bool m = match('=');
+                        tokens.Add(new Tokens(m ? TokenType.Greater_equal : TokenType.Greater, m ?  "<=" : "<", null, line)); break; }
+                case '<':
+                    {
+                        bool m = match('=');
+                        tokens.Add(new Tokens(m? TokenType.Less_equal : TokenType.Less, m? ">=" : ">", null, line)); break;
+                    }
+                case '%': tokens.Add(new Tokens(TokenType.Module, "%", null, line)); break;
+                case '/': tokens.Add(new Tokens(TokenType.Split, "/", null, line)); break;
+                case '\n':line++; break;
+                case ' ' : break; 
+                case '"': String(); break;
+
+                default:
+                    if (isDigit(c))
+                    {
+                        number();
+                    }
+                    else if (isAlpha(c))
+                    {
+                        //Identificador();
+                        string Text = source.Substring(start, current);
+                        TokenType type;
+                        if (!keywords.TryGetValue(Text, out type))
+                        {
+                            type = TokenType.Identifier;
+                        }
+                        tokens.Add(new Tokens(TokenType.Identifier, Text, null, line));
+                    }
+                    //    else
+                    //    {
+                    //        Lox.error(line, "Unexpected character.");
+                    //    }
+                    break;
+
             }
+
         }
+
     }
 }
 

@@ -68,7 +68,7 @@ namespace walleproyect
             size.Value = 1;
             time.Value = 50;
             colors.Text = directChars[invertedChars[Color.Black.Name]];
-            title.Text = "Probando";
+            title.Text = " ";
             actual.Text = " ";
         }
         private void _Refresh()
@@ -155,9 +155,6 @@ namespace walleproyect
 
             int width = pictureBox1.Width;
             int height = pictureBox1.Height;
-            Console.WriteLine(width);
-            Console.WriteLine(height);
-
 
             int widthCell = width / context.n;
             int heightCell = height / context.n;
@@ -206,6 +203,9 @@ namespace walleproyect
         {
             Application.Exit();
         }
+        
+       
+        
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -218,7 +218,8 @@ namespace walleproyect
                 try
                 {
 
-                    File.WriteAllText(saveFileDialog.FileName, title.Text);
+                    
+                    File.WriteAllText(saveFileDialog.FileName, lector.Text);
 
                     MessageBox.Show("Archivo guardado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -250,6 +251,38 @@ namespace walleproyect
         {
 
         }
+        //private void button5_Click(object sender, EventArgs e)
+        //{
+        //    OpenFileDialog openFileDialog = new OpenFileDialog();
+
+        //    // Configurar el filtro para mostrar solo archivos .pw
+        //    openFileDialog.Filter = "Archivos PW (*.pw)|*.pw";
+        //    openFileDialog.FilterIndex = 1; // Selecciona el primer filtro por defecto
+        //    openFileDialog.RestoreDirectory = true; // Restaura el directorio al cerrar
+
+        //    // Mostrar el diálogo y verificar si se hizo clic en "Abrir"
+        //    if (openFileDialog.ShowDialog() == DialogResult.OK)
+        //    {
+        //        try
+        //        {
+        //            // Leer todo el contenido del archivo
+        //            string contenido = File.ReadAllText(openFileDialog.FileName);
+
+        //            // Cargar el contenido en el TextBox
+        //            //Form1.title.Text = contenido;
+
+
+        //            MessageBox.Show("Archivo cargado correctamente", "Éxito",
+        //                           MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // Manejar errores (archivo corrupto, sin permisos, etc.)
+        //            MessageBox.Show($"Error al cargar el archivo:\n{ex.Message}", "Error",
+        //                           MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //        }
+        //    }
+        //}
     }
 }
 
