@@ -46,6 +46,7 @@
     <Compile Include="..\Class1.cs">
       <Link>Class1.cs</Link>
     </Compile>
+    <Compile Include="ILogger.cs" />
     <Compile Include="Token.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Lexer.cs" />

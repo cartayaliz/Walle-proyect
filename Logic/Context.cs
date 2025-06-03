@@ -18,11 +18,12 @@ namespace Logic
         public char[,] M { get; set; }
         public string titulo { get; set; }
 
-       
+        public Ilogger logger;
 
-        public Context(int n)
+        public Context(int n, Ilogger logger)
         {
             this.n = n;
+            this.logger = logger;
             size = 1;
             color = '_';
             x = 0;

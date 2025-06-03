@@ -19,10 +19,13 @@ namespace Logic
         public int actualline { get; set; }
         
         public Scanner scannner;
-        public Interprete(string text)
+
+        public Ilogger logger;
+        public Interprete(string text, Ilogger logger)
         {
             this.text = text;
-            scannner = new Scanner(text);
+            this.logger = logger;
+            scannner = new Scanner(text, logger);
 
             lines = text.Split('\n');
 

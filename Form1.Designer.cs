@@ -51,6 +51,7 @@
             this.board = new System.Windows.Forms.NumericUpDown();
             this.colors = new System.Windows.Forms.ComboBox();
             this.button5 = new System.Windows.Forms.Button();
+            this.logText = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.error_board)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.error_size)).BeginInit();
@@ -283,6 +284,14 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // logText
+            // 
+            this.logText.Location = new System.Drawing.Point(851, 531);
+            this.logText.Multiline = true;
+            this.logText.Name = "logText";
+            this.logText.Size = new System.Drawing.Size(388, 108);
+            this.logText.TabIndex = 22;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -291,6 +300,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.Silver;
             this.ClientSize = new System.Drawing.Size(1366, 662);
+            this.Controls.Add(this.logText);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.colors);
             this.Controls.Add(this.board);
@@ -349,6 +359,7 @@
         private System.Windows.Forms.NumericUpDown board;
         private System.Windows.Forms.ComboBox colors;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.TextBox logText;
     }
 }
 

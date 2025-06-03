@@ -26,6 +26,38 @@ namespace walleproyect
 
 
 
+        class VisualLogguer : Ilogger
+        {
+            public bool HasError { get; set; }
+            Form1 form;
+            public VisualLogguer(Form1 form) {
+                this.form = form;
+            }
+
+            public void Log(string prefix, string messagge, int line)
+            {
+                this.form.logText.AppendText($"INFO: [{prefix}] (line: {line}): {messagge}\r\n");
+
+            }
+
+            public void LogError(string prefix, string messagge, int line)
+            {
+
+                this.form.logText.AppendText($"ERROR: [{prefix}] (line: {line}): {messagge}\r\n");
+            }
+
+            public void LogWarning(string prefix, string messagge, int line) 
+            {
+                this.form.logText.AppendText($"WARNING: [{prefix}] (line: {line}): {messagge}\r\n");
+
+            }
+
+            public void Clean()
+            {
+                this.form.logText.Text = "";
+            }
+        }
+
         Context context;
         private Image walleImage;
         public Form1()
@@ -52,13 +84,17 @@ namespace walleproyect
                 invertedChars.Add(mappedChars[c].Name, c);
                 directChars.Add(c, mappedChars[c].Name);
             }
+            context = new Context(20, new VisualLogguer(this));
 
-            context = new Context(20);
             walleImage = Image.FromFile(@"C:\Users\liz\Desktop\Nueva carpeta (2)\walleproyect\Image.jpg");
             InitializeComponent();
             EstablecerValoresPorDefecto();
             pictureBox1.Width = 600;
             pictureBox1.Height = 600;
+            context.logger.Log("LX", "Running...", 0);
+            context.logger.LogError("WALLY", "on board...", 1);
+            context.logger.LogWarning("BOARD", "bad x, y...", 2);
+
             Console.WriteLine(context.n);
 
         }
@@ -174,13 +210,14 @@ namespace walleproyect
             {
                 error_time.SetError(time, "Ingrese un número entero mayor que cero");
             }
-            Interprete inteprete = new Interprete(lector.Text);
+            
+            Interprete inteprete = new Interprete(lector.Text, context.logger);
 
            
             var color = colors.Text;
             actual.Text = $"[{inteprete.actualline + 1}]: {inteprete.lines[inteprete.actualline]}";
 
-            context = new Context(n);
+            context = new Context(n, new VisualLogguer(this));
             context.CreateEmptyMatrix();
 
             var path = context.Spawn(5, 5);

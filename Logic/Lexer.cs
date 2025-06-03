@@ -18,24 +18,29 @@ namespace Logic
         }
     }
 
+   
+
     public class Scanner
     {
-        public String source { get; set; }
+        public string source { get; set; }
         public List<Tokens> tokens { get; set; }
 
         public int start {  get; set; }
         public int current {  get; set; }
         public int line {  get; set; }
        
-        public Scanner(String source)
+        Ilogger logger;
+        public Scanner(string source, Ilogger logger)
         {
+            this.logger = logger;
             this.source = source;
             this.start = 0;
             this.current = 0;
             this.line = 1;
             this.tokens = new List<Tokens>();
+
         }
-        public Dictionary<String, TokenType> keywords = new Dictionary<String, TokenType>()
+        public Dictionary<string, TokenType> keywords = new Dictionary<String, TokenType>()
         {
             { "true", TokenType.True },
             { "false", TokenType.False },
@@ -89,8 +94,8 @@ namespace Logic
             }
             if (isAtEnd())
             {
-                //Lox.error(line, "Unterminated string.");
-                // return;
+                logger.LogError(null, "Unterminated string.", line);
+                return;
             }
             // The closing ".
             advance();
@@ -195,10 +200,10 @@ namespace Logic
                         //bool m = match('Identifier');
                         tokens.Add(new Tokens(TokenType.Identifier, Text, null, line));
                     }
-                    //    else
-                    //    {
-                    //        Lox.error(line, "Unexpected character.");
-                    //    }
+                    else
+                    {
+                        logger.LogError(null, "Unexpected character.", line);
+                    }
                     break;
 
             }
