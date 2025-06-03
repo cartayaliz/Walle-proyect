@@ -92,10 +92,6 @@ namespace walleproyect
             EstablecerValoresPorDefecto();
             pictureBox1.Width = 600;
             pictureBox1.Height = 600;
-            context.logger.Log("LX", "Running...", 0);
-            context.logger.LogError("WALLY", "on board...", 1);
-            context.logger.LogWarning("BOARD", "bad x, y...", 2);
-
             Console.WriteLine(context.n);
 
         }
@@ -212,13 +208,16 @@ namespace walleproyect
                 error_time.SetError(time, "Ingrese un número entero mayor que cero");
             }
             
+            context = new Context(n, new VisualLogguer(this));
+            context.logger.Clean();
             Interprete inteprete = new Interprete(lector.Text, context.logger);
 
            
             var color = colors.Text;
             actual.Text = $"[{inteprete.actualline + 1}]: {inteprete.lines[inteprete.actualline]}";
 
-            context = new Context(n, new VisualLogguer(this));
+
+
             context.CreateEmptyMatrix();
 
             var path = context.Spawn(5, 5);

@@ -60,8 +60,11 @@ namespace Logic
         {            //pinta i, j del color elegido y mueve a Wally a nx,ny
             if (Inside(i,j))
             {
-                x = nx;
-                y = ny;
+                if(Inside(nx, ny))
+                {
+                    x = nx;
+                    y = ny;
+                }
                 if (color == ' ')
                 {
                     return;
@@ -79,7 +82,8 @@ namespace Logic
                     }
                 }
             }
-            logger.LogWarning("", "Tratando de dibujar", 0);
+            else
+                logger.LogWarning("", $"Tratando de dibujar {i} {j}", 0);
            
         }
         public void SetSize(int size)

@@ -286,10 +286,11 @@
             // 
             // logText
             // 
-            this.logText.Location = new System.Drawing.Point(851, 531);
+            this.logText.Location = new System.Drawing.Point(851, 488);
             this.logText.Multiline = true;
             this.logText.Name = "logText";
-            this.logText.Size = new System.Drawing.Size(388, 108);
+            this.logText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.logText.Size = new System.Drawing.Size(388, 151);
             this.logText.TabIndex = 22;
             // 
             // Form1

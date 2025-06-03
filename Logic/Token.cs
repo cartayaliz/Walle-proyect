@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Logic
 {
@@ -69,9 +70,8 @@ namespace Logic
 
       
     }
-   
-  
-   
+
+
     public class Tokens
     {
         public int line { get; set; }
@@ -88,7 +88,10 @@ namespace Logic
         }
         public override string ToString()
         {
-            return "<" + type + " " + lexeme + " " + literal + ">";
+            return "<" + type + " " + lexeme + " " + literal + ">" + line;
+            
+
+
         }
 
         

@@ -30,12 +30,14 @@ namespace Logic
             lines = text.Split('\n');
 
             var tokens = scannner.scanTokens();
-
+            var message = "BEGIN TOKENS:\r\n";
             foreach (var item in tokens)
             {
-                Console.WriteLine(item);
-            }
+                message += item.ToString() + "\r\n";
 
+            }
+            message += "END\r\n";
+            logger.Log("Lexer", message, 0);
         }
 
     }

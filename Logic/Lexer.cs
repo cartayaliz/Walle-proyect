@@ -102,7 +102,7 @@ namespace Logic
 
             // Removing quotation marks
 
-            string value = source.Substring(start + 1, current - 1 - start);
+            string value = source.Substring(start + 1, current - 2 - start);
             tokens.Add(new Tokens(TokenType.String, value, null, line));
         }
         public bool isDigit(char c)  
@@ -203,8 +203,11 @@ namespace Logic
                         {
                             tokens.Add(new Tokens(type, Text, null, line));
                         }
-
-                        tokens.Add(new Tokens(TokenType.Identifier, Text, null, line));
+                        else
+                        {
+                            tokens.Add(new Tokens(TokenType.Identifier, Text, null, line));
+                        }
+                        
                     }
                     else
                     {
