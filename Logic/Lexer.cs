@@ -186,12 +186,13 @@ namespace Logic
                     else if (isAlpha(c))
                     {
                         //Identificador();
-                        string Text = source.Substring(start, current);
+                        string Text = source.Substring(start, current - start);
                         TokenType type;
                         if (!keywords.TryGetValue(Text, out type))
                         {
                             type = TokenType.Identifier;
                         }
+                        //bool m = match('Identifier');
                         tokens.Add(new Tokens(TokenType.Identifier, Text, null, line));
                     }
                     //    else

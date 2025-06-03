@@ -20,8 +20,6 @@ namespace Logic
 
        
 
-       
-
         public Context(int n)
         {
             this.n = n;
@@ -236,33 +234,100 @@ namespace Logic
             return path;
         }
 
-        public List<(int, int, int, int, char)> DrawRombo(int dirx, int diry, int r)
-        {
+        //public List<(int, int, int, int, char)> DrawRombo(int dirx, int diry, int r)
+        //{
            
 
-            List<(int, int, int, int, char)> path = new List<(int, int, int, int, char)>();
+        //    List<(int, int, int, int, char)> path = new List<(int, int, int, int, char)>();
 
            
-            path.AddRange(DrawTriangle(1, 1, r, -1, 1, r));
+        //    path.AddRange(DrawTriangle(1, 1, r, -1, 1, r));
           
 
-            path.AddRange(DrawTriangle(1, 1, 0, 1, -1, r));
+        //    path.AddRange(DrawTriangle(1, 1, 0, 1, -1, r));
 
 
-            path.AddRange(DrawTriangle(1, 1, 0, -1, -1, r));
+        //    path.AddRange(DrawTriangle(1, 1, 0, -1, -1, r));
 
 
-            path.AddRange(DrawTriangle(1, 1, 0, 1, 1, r));
+        //    path.AddRange(DrawTriangle(1, 1, 0, 1, 1, r));
 
-            return path;
+        //    return path;
 
+        //}
+
+
+        // Métodos de informacion
+
+        public int IsBrushSize(int size)
+        {
+            if (size == this.size) return 1;
+            return 0;
+           
         }
+
+        public int IsBrushColor(string color)
+        {
+            if (color == this.color.ToString()) return 1; return 0;
+        }
+  
+        public int GetActualX()
+        {
+            return this.x;
+        }
+      
+        public int GetActualY()
+        {
+            return this.y;
+        }
+
+        public int GetCanvasSize()
+        {
+            return this.n;
+        }
+
+        public int IsCellColor(int i, int j, string color)
+        {
+            if (!Inside(i, j) || string.IsNullOrEmpty(color))
+                return 0;
+            return (M[i, j] == color[0]) ? 1 : 0;
+        }
+      
+        public int IsCanvasColor(string color, int vertical, int horizontal)
+        {
+            int xi = this.x + horizontal;
+            int yi = this.y + vertical;
+            return IsCellColor(xi, yi, color);
+        }
+
+        public int GetColorCount(string color, int x1, int y1, int x2, int y2)
+        {
+            if (!Inside(x1, y1) || !Inside(x2, y2))
+            {
+                return 0;
+            }
+            int c  = 0;
+            for (int i = x1; i <= x2; i++)
+            {
+                for (int j = y1; j <= y2; j++)
+                {
+                    if (IsCellColor(i, j, color) == 1)
+                    {
+                        c++;
+                    }
+                }
+            }
+            return c;
+        }
+
+
         // Métodos de ayuda
 
         public bool Inside(int i, int j)
         {
             return (i >= 0 && j >= 0 && i < n && j < n);
         }
+      
         public List<(int, int, int, int, char)> DrawLineFromPosition(int i, int j, int dirx, int diry, int distance, bool moveWally, int xx, int yy)
         {
             List<(int, int, int, int, char)> path = new List<(int, int, int, int, char)>();

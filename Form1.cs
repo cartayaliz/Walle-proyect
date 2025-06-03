@@ -71,6 +71,7 @@ namespace walleproyect
             title.Text = " ";
             actual.Text = " ";
         }
+    
         private void _Refresh()
         {
 
@@ -92,62 +93,6 @@ namespace walleproyect
             }
             if (time.Value == 0) _Refresh();
         }
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Application.Restart();
-            
-        }
-        private async void button1_Click(object sender, EventArgs e)
-        {
-            // Examples
-
-            if (string.IsNullOrWhiteSpace(board.Text))
-            {
-                MessageBox.Show("¡Debe ingresar un número!", "Error",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            if (board.Value <= 0)
-            {
-                error_board.SetError(board, "Ingrese un número entero mayor que cero");
-            }
-            int n = (int)board.Value;
-           
-            if (size.Value <= 0)
-            {
-                error_size.SetError(size, "Ingrese un número entero mayor que cero");
-            }
-            if (string.IsNullOrWhiteSpace(colors.Text))
-            {
-                MessageBox.Show("¡Debe escoger un color !", "Error",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (time.Value <= 0)
-            {
-                error_time.SetError(time, "Ingrese un número entero mayor que cero");
-            }
-            Interprete inteprete = new Interprete(lector.Text);
-
-           
-            var color = colors.Text;
-            actual.Text = $"[{inteprete.actualline + 1}]: {inteprete.lines[inteprete.actualline]}";
-
-            context = new Context(n);
-            context.CreateEmptyMatrix();
-
-            var path = context.Spawn(5,5);
-            await PaintActions(path);
-
-            context.SetSize((int)size.Value);
-            context.SetColor(invertedChars[color]);
-
-            path = context.DrawCircle(1, 1, 3);
-            await PaintActions(path);
-
-        }
-
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
@@ -197,15 +142,67 @@ namespace walleproyect
 
 
         }
-
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-        
        
-        
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            // Examples
+
+            if (string.IsNullOrWhiteSpace(board.Text))
+            {
+                MessageBox.Show("¡Debe ingresar un número!", "Error",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (board.Value <= 0)
+            {
+                error_board.SetError(board, "Ingrese un número entero mayor que cero");
+            }
+            int n = (int)board.Value;
+           
+            if (size.Value <= 0)
+            {
+                error_size.SetError(size, "Ingrese un número entero mayor que cero");
+            }
+            if (string.IsNullOrWhiteSpace(colors.Text))
+            {
+                MessageBox.Show("¡Debe escoger un color !", "Error",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (time.Value <= 0)
+            {
+                error_time.SetError(time, "Ingrese un número entero mayor que cero");
+            }
+            Interprete inteprete = new Interprete(lector.Text);
+
+           
+            var color = colors.Text;
+            actual.Text = $"[{inteprete.actualline + 1}]: {inteprete.lines[inteprete.actualline]}";
+
+            context = new Context(n);
+            context.CreateEmptyMatrix();
+
+            var path = context.Spawn(5, 5);
+            await PaintActions(path);
+
+            context.SetSize((int)size.Value);
+            context.SetColor(invertedChars[color]);
+
+             path = context.DrawCircle(1, 1, 3);
+            await PaintActions(path);
+            Console.WriteLine(context.GetActualX());
+            Console.WriteLine(context.GetActualY());
+            Console.WriteLine(context.IsCanvasColor("Negro", 4, 0));
+            Console.WriteLine(context.GetColorCount("Negro", 0, 0, 15, 15));
+
+        }
+      
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Application.Restart();
+            
+        }
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -231,6 +228,43 @@ namespace walleproyect
             }
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }   
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            // Configurar el filtro para mostrar solo archivos .pw
+            openFileDialog.Filter = "Archivos PW (*.pw)|*.pw";
+            openFileDialog.FilterIndex = 1; // Selecciona el primer filtro por defecto
+            openFileDialog.RestoreDirectory = true; // Restaura el directorio al cerrar
+
+            // Mostrar el diálogo y verificar si se hizo clic en "Abrir"
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    // Leer todo el contenido del archivo
+                    string contenido = File.ReadAllText(openFileDialog.FileName);
+
+                    //Cargar el contenido en el TextBox
+                    lector.Text = contenido;
+
+
+                    MessageBox.Show("Archivo cargado correctamente", "Éxito",
+                                   MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    // Manejar errores (archivo corrupto, sin permisos, etc.)
+                    MessageBox.Show($"Error al cargar el archivo:\n{ex.Message}", "Error",
+                                   MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
        
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -251,38 +285,8 @@ namespace walleproyect
         {
 
         }
-        //private void button5_Click(object sender, EventArgs e)
-        //{
-        //    OpenFileDialog openFileDialog = new OpenFileDialog();
 
-        //    // Configurar el filtro para mostrar solo archivos .pw
-        //    openFileDialog.Filter = "Archivos PW (*.pw)|*.pw";
-        //    openFileDialog.FilterIndex = 1; // Selecciona el primer filtro por defecto
-        //    openFileDialog.RestoreDirectory = true; // Restaura el directorio al cerrar
-
-        //    // Mostrar el diálogo y verificar si se hizo clic en "Abrir"
-        //    if (openFileDialog.ShowDialog() == DialogResult.OK)
-        //    {
-        //        try
-        //        {
-        //            // Leer todo el contenido del archivo
-        //            string contenido = File.ReadAllText(openFileDialog.FileName);
-
-        //            // Cargar el contenido en el TextBox
-        //            //Form1.title.Text = contenido;
-
-
-        //            MessageBox.Show("Archivo cargado correctamente", "Éxito",
-        //                           MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            // Manejar errores (archivo corrupto, sin permisos, etc.)
-        //            MessageBox.Show($"Error al cargar el archivo:\n{ex.Message}", "Error",
-        //                           MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        }
-        //    }
-        //}
+       
     }
 }
 

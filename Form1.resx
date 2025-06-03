@@ -125,12 +125,16 @@
         AAAAAAAAAAAAAAAAAPxtv55VCnesyQOr0wU1q8kGyAAAAABJRU5ErkJggg==
 </value>
   </data>
-  <metadata name="pictureBox1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <metadata name="error_board.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="button5.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAMAAABC4vDmAAAABGdBTUEAALGPC/xhBQAAAAxQTFRF88Ch
+        +evf8Lyc8cGk2MJDvgAAAEJJREFUeF7t3EERADAMw7Bm4895n4LI3SQERuBJoTmFptIttGkAAAAAAAAA
+        AAAAAAAAAAAAAAAAAPxtv55VCnesyQOr0wU1q8kGyAAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="button4.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAMAAABC4vDmAAAABGdBTUEAALGPC/xhBQAAAAxQTFRF88Ch

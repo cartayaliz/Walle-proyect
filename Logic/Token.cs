@@ -49,13 +49,13 @@ namespace Logic
 
         // Methods Information
 
-        //GetActualX,
-        //GetActualY,
-        //GetCanvasSize,
+        GetActualX,
+        GetActualY,
+        GetCanvasSize,
         //GetColorCount,
         //IsCanvasColor,
-        //IsBrushSize,
-        //IsBrushColor,
+        IsBrushSize,
+        IsBrushColor,
 
 
         //  keywords
