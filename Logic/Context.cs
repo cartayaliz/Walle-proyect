@@ -79,6 +79,7 @@ namespace Logic
                     }
                 }
             }
+            logger.LogWarning("", "Tratando de dibujar", 0);
            
         }
         public void SetSize(int size)
@@ -287,21 +288,21 @@ namespace Logic
             return this.n;
         }
 
-        public int IsCellColor(int i, int j, string color)
+        public int IsCellColor(int i, int j, char color)
         {
-            if (!Inside(i, j) || string.IsNullOrEmpty(color))
+            if (!Inside(i, j) )
                 return 0;
-            return (M[i, j] == color[0]) ? 1 : 0;
+            return (M[i, j] == color) ? 1 : 0;
         }
       
-        public int IsCanvasColor(string color, int vertical, int horizontal)
+        public int IsCanvasColor(char color, int vertical, int horizontal)
         {
             int xi = this.x + horizontal;
             int yi = this.y + vertical;
             return IsCellColor(xi, yi, color);
         }
 
-        public int GetColorCount(string color, int x1, int y1, int x2, int y2)
+        public int GetColorCount(char color, int x1, int y1, int x2, int y2)
         {
             if (!Inside(x1, y1) || !Inside(x2, y2))
             {

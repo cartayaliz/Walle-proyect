@@ -94,7 +94,7 @@ namespace Logic
             }
             if (isAtEnd())
             {
-                logger.LogError(null, "Unterminated string.", line);
+                logger.LogError("Lexer", "Unterminated string.", line);
                 return;
             }
             // The closing ".
@@ -102,7 +102,7 @@ namespace Logic
 
             // Removing quotation marks
 
-            String value = source.Substring(start + 1, current - 1 - start);
+            string value = source.Substring(start + 1, current - 1 - start);
             tokens.Add(new Tokens(TokenType.String, value, null, line));
         }
         public bool isDigit(char c)  
@@ -184,25 +184,31 @@ namespace Logic
                 case '"': String(); break;
 
                 default:
+
+
                     if (isDigit(c))
                     {
                         number();
                     }
                     else if (isAlpha(c))
                     {
-                        //Identificador();
+                        while (isAlpha(peek()) || isDigit(peek()))
+                        {
+                            advance();
+                        }
+                 
                         string Text = source.Substring(start, current - start);
                         TokenType type;
-                        if (!keywords.TryGetValue(Text, out type))
+                        if (keywords.TryGetValue(Text, out type))
                         {
-                            type = TokenType.Identifier;
+                            tokens.Add(new Tokens(type, Text, null, line));
                         }
-                        //bool m = match('Identifier');
+
                         tokens.Add(new Tokens(TokenType.Identifier, Text, null, line));
                     }
                     else
                     {
-                        logger.LogError(null, "Unexpected character.", line);
+                        logger.LogError("Lexer", "Unexpected character.", line);
                     }
                     break;
 

@@ -52,8 +52,8 @@ namespace Logic
         GetActualX,
         GetActualY,
         GetCanvasSize,
-        //GetColorCount,
-        //IsCanvasColor,
+        GetColorCount,
+        IsCanvasColor,
         IsBrushSize,
         IsBrushColor,
 

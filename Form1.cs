@@ -12,6 +12,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 using Logic;
 using System.IO;
 using System.Threading;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
 namespace walleproyect
@@ -230,8 +231,8 @@ namespace walleproyect
             await PaintActions(path);
             Console.WriteLine(context.GetActualX());
             Console.WriteLine(context.GetActualY());
-            Console.WriteLine(context.IsCanvasColor("Negro", 4, 0));
-            Console.WriteLine(context.GetColorCount("Negro", 0, 0, 15, 15));
+            Console.WriteLine(context.IsCanvasColor('N', 4, 0));
+            Console.WriteLine(context.GetColorCount('N', 0, 0, 15, 15));
 
         }
       
@@ -251,9 +252,9 @@ namespace walleproyect
             {
                 try
                 {
+                    string contenido = title.Text +Environment.NewLine + lector.Text;
 
-                    
-                    File.WriteAllText(saveFileDialog.FileName, lector.Text);
+                    File.WriteAllText(saveFileDialog.FileName, contenido);
 
                     MessageBox.Show("Archivo guardado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -286,10 +287,12 @@ namespace walleproyect
                 {
                     // Leer todo el contenido del archivo
                     string contenido = File.ReadAllText(openFileDialog.FileName);
+                    string[] lineas = File.ReadAllLines(openFileDialog.FileName);
+
+                    title.Text = lineas[0];
 
                     //Cargar el contenido en el TextBox
-                    lector.Text = contenido;
-
+                    for (int i = 1; i < lineas.Length; i++) { lector.Text = lineas[i]; }
 
                     MessageBox.Show("Archivo cargado correctamente", "Éxito",
                                    MessageBoxButtons.OK, MessageBoxIcon.Information);

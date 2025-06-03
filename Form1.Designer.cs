@@ -215,7 +215,7 @@
             // 
             // time
             // 
-            this.time.Location = new System.Drawing.Point(699, 32);
+            this.time.Location = new System.Drawing.Point(703, 29);
             this.time.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -235,14 +235,14 @@
             // 
             // size
             // 
-            this.size.Location = new System.Drawing.Point(568, 29);
+            this.size.Location = new System.Drawing.Point(581, 27);
             this.size.Name = "size";
             this.size.Size = new System.Drawing.Size(41, 22);
             this.size.TabIndex = 18;
             // 
             // board
             // 
-            this.board.Location = new System.Drawing.Point(299, 29);
+            this.board.Location = new System.Drawing.Point(304, 28);
             this.board.Maximum = new decimal(new int[] {
             500,
             0,
@@ -266,7 +266,7 @@
             "Orange",
             "Purple",
             "Transparent"});
-            this.colors.Location = new System.Drawing.Point(422, 29);
+            this.colors.Location = new System.Drawing.Point(433, 26);
             this.colors.Name = "colors";
             this.colors.Size = new System.Drawing.Size(70, 24);
             this.colors.TabIndex = 20;
