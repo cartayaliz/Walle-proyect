@@ -179,8 +179,9 @@ namespace Logic
                     }
                 case '%': tokens.Add(new Tokens(TokenType.Module, "%", null, line)); break;
                 case '/': tokens.Add(new Tokens(TokenType.Split, "/", null, line)); break;
-                case '\n':line++; break;
+                case '\n': tokens.Add(new Tokens(TokenType.BackSlach_n, "\n", null, line)); break;
                 case ' ' : break; 
+                case '\r': break;
                 case '"': String(); break;
 
                 default:

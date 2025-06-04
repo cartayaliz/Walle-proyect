@@ -226,7 +226,7 @@ namespace walleproyect
             context.SetSize((int)size.Value);
             context.SetColor(invertedChars[color]);
 
-             path = context.DrawCircle(1, 1, 3);
+             path = context.DrawCircle(1, 1, 10);
             await PaintActions(path);
             Console.WriteLine(context.GetActualX());
             Console.WriteLine(context.GetActualY());

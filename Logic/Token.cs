@@ -31,6 +31,7 @@ namespace Logic
         Less,
         Less_equal,
         TwoStar,
+        BackSlach_n,
 
         // Literals.
         Identifier,
