@@ -46,7 +46,12 @@
     <Compile Include="..\Class1.cs">
       <Link>Class1.cs</Link>
     </Compile>
+    <Compile Include="AST.cs" />
+    <Compile Include="Executer.cs" />
     <Compile Include="ILogger.cs" />
+    <Compile Include="Instruction.cs" />
+    <Compile Include="IVisitor.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="Token.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Lexer.cs" />

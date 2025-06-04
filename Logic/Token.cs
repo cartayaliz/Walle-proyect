@@ -40,25 +40,10 @@ namespace Logic
 
         // Methods Actions
         //Fill,
-        DrawLine,
-        DrawRectangle,
-        DrawCruadado,
-        DrawTriangle,
-        DrawCircle,
-        DrawRombo,
-        Spawn,
-        DrawAsterisco,
+          Draw,
 
         // Methods Information
-
-        GetActualX,
-        GetActualY,
-        GetCanvasSize,
-        GetColorCount,
-        IsCanvasColor,
-        IsBrushSize,
-        IsBrushColor,
-
+        Request,
 
         //  keywords
 
@@ -80,12 +65,19 @@ namespace Logic
         public TokenType type { get; set; }
         public Object literal { get; set; }
 
+        public Tokens back { get; set; }
+        public Tokens next { get; set; }
+
+
         public Tokens(TokenType type, String lexeme, Object literal, int line)
         {
             this.type = type;
             this.lexeme = lexeme;
             this.literal = literal;
             this.line = line;
+       
+
+
         }
         public override string ToString()
         {

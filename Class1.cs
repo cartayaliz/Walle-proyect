@@ -12,49 +12,19 @@ using System.Net;
 
 namespace Logic
 {
-    public class ASTNode
-    {
-        public Tokens b { get; set; }
-        public Tokens e { get; set; }
-        public List<ASTNode> Childrens { get; set; }
-
-        public ASTNode(Tokens b, Tokens e, List<Tokens> Childrens) 
-        {
-            this.b = b;
-            this.e = e;
-            this.Childrens = new List<ASTNode>();
-
-        }
-
-    }
-
-    public class ASTCall : ASTNode
-    {
-        public ASTCall(Tokens b, Tokens e, List<Tokens> Childrens) : base(b, e, Childrens) { }
-    }
-
-    public class ASTCte : ASTNode
-    {
-        public ASTCte(Tokens b, List<Tokens> Childrens) : base(b, b, Childrens) { }
-
-    }
-
-    public class ASTRoot : ASTNode 
-    {
-        public ASTRoot(Tokens b, Tokens e, List<Tokens> Childrens) : base(b, e, Childrens) { }
-    }
-
-
-   
-
+    
 
     public class Interprete 
     {
         public string[] lines {  get; set; }
         public string text { get; set; }
         public int actualline { get; set; }
+
+        public int pc {  get; set; }
         
         public Scanner scannner;
+
+        public Parser parser;
 
         public Ilogger logger;
         public Interprete(string text, Ilogger logger)
@@ -66,15 +36,59 @@ namespace Logic
             lines = text.Split('\n');
 
             var tokens = scannner.scanTokens();
-            var message = "BEGIN TOKENS:\r\n";
-            foreach (var item in tokens)
-            {
-                message += item.ToString() + "\r\n";
 
+
+            for (int i = 0; i < tokens.Count; i++)
+            {
+                if (i > 0)
+                {
+                    tokens[i].back = tokens[i - 1];
+                }
+                if (i < tokens.Count - 1)
+                {
+                    tokens[i].next = tokens[i + 1];
+                }
+         
+            }
+
+            var message = "BEGIN TOKENS:\r\n";
+          
+            var node = tokens[0];
+            while (node != null)
+            {
+                message += node.ToString() + "\r\n";
+                node = node.next;
             }
             message += "END\r\n";
             logger.Log("Lexer", message, 0);
+
+            this.parser = new Parser(logger, tokens[0], tokens[tokens.Count - 1]);
+
+            message = "\r\nBEGIN PARSER:\r\n";
+
+            message += this.parser.root.ToString();
+
+            message += "\r\nEND\r\n";
+
+            logger.Log("Lexer", message, 0);
+
         }
 
+        public IEnumerable<Instruction> Run()
+        {
+            pc = 0;
+            var n = (parser.root.Childrens != null) ? parser.root.Childrens.Count: 0;
+            var InstVisitor = new InstructionVisitor(this.logger);
+
+            while(pc < n)
+            {
+
+                var inst = parser.root.Childrens[pc].Visit(InstVisitor);
+                yield return inst;
+                pc++;
+            }
+
+
+        }
     }
 }

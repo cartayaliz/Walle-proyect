@@ -12,6 +12,7 @@ namespace Logic
  
     public class Lexer
     {
+       
         public Lexer() 
         { 
           
@@ -44,14 +45,21 @@ namespace Logic
         {
             { "true", TokenType.True },
             { "false", TokenType.False },
-            { "DrawLine", TokenType.DrawLine },
-            { "DrawCircle", TokenType.DrawCircle},
-            { "DrawRectangle", TokenType.DrawRectangle },
-            { "DrawTriangle", TokenType.DrawTriangle },
-            { "DrawCuadrado", TokenType.DrawCruadado },
-            { "DrawRombo", TokenType.DrawRombo },
-            { "DrawAsterisco", TokenType.DrawAsterisco },
-            { "Spawn", TokenType.Spawn },
+            { "DrawLine", TokenType.Draw },
+            { "DrawCircle", TokenType.Draw},
+            { "DrawRectangle", TokenType.Draw },
+            { "DrawTriangle", TokenType.Draw },
+            { "DrawCuadrado", TokenType.Draw },
+            { "DrawRombo", TokenType.Draw },
+            { "DrawAsterisco", TokenType.Draw },
+            { "Spawn", TokenType.Draw },
+            { " GetActualX ", TokenType.Request },
+            { " GetActualy ", TokenType.Request },
+            { " GetCanvasSize ", TokenType.Request },
+            { " IsCanvasColor", TokenType.Request },
+            { " IsBrushSize", TokenType.Request },
+            { " IsBrushColor", TokenType.Request },
+
 
         };
 

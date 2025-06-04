@@ -240,27 +240,27 @@ namespace Logic
             return path;
         }
 
-        //public List<(int, int, int, int, char)> DrawRombo(int dirx, int diry, int r)
-        //{
-           
-
-        //    List<(int, int, int, int, char)> path = new List<(int, int, int, int, char)>();
-
-           
-        //    path.AddRange(DrawTriangle(1, 1, r, -1, 1, r));
-          
-
-        //    path.AddRange(DrawTriangle(1, 1, 0, 1, -1, r));
+        public List<(int, int, int, int, char)> DrawRombo(int dirx, int diry, int r)
+        {
 
 
-        //    path.AddRange(DrawTriangle(1, 1, 0, -1, -1, r));
+            List<(int, int, int, int, char)> path = new List<(int, int, int, int, char)>();
 
 
-        //    path.AddRange(DrawTriangle(1, 1, 0, 1, 1, r));
+            path.AddRange(DrawTriangle(dirx, diry-r, r, -1, 1, r));
 
-        //    return path;
 
-        //}
+            path.AddRange(DrawTriangle(dirx + r, diry, 0, 1, -1, r));
+
+
+            path.AddRange(DrawTriangle(dirx, diry +r, 0, -1, -1, r));
+
+
+            path.AddRange(DrawTriangle(dirx - r, diry , 0, 1, 1, r));
+
+            return path;
+
+        }
 
 
         // Métodos de informacion

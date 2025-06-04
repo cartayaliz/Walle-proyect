@@ -127,6 +127,23 @@ namespace walleproyect
             if (time.Value == 0) _Refresh();
         }
 
+        private async Task ÌnstruccionActions(Instruction inst)
+        {
+            int waitinstr = 500;
+            foreach (var item in inst.pasos)
+            {
+                if (waitinstr > 0)
+                {
+                    await Task.Delay((int)waitinstr / 2);
+                }
+                actual.Text = item;
+                if (waitinstr > 0)
+                {
+                    await Task.Delay((int)waitinstr / 2);
+                }
+            }
+        }
+
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -220,18 +237,34 @@ namespace walleproyect
 
             context.CreateEmptyMatrix();
 
-            var path = context.Spawn(5, 5);
-            await PaintActions(path);
+            Executer exec = new Executer(context);
 
-            context.SetSize((int)size.Value);
-            context.SetColor(invertedChars[color]);
+            foreach (var inst in inteprete.Run())
+            {
+                await ÌnstruccionActions(inst);
+                if(inst.type == InstructionType.Draw)
+                {
+                    await PaintActions(exec.Run(inst));
+                }
+            }
 
-             path = context.DrawCircle(1, 1, 10);
-            await PaintActions(path);
-            Console.WriteLine(context.GetActualX());
-            Console.WriteLine(context.GetActualY());
-            Console.WriteLine(context.IsCanvasColor('N', 4, 0));
-            Console.WriteLine(context.GetColorCount('N', 0, 0, 15, 15));
+
+
+
+            //var path = context.Spawn(5, 5);
+            //await PaintActions(path);
+
+            //context.SetSize((int)size.Value);
+            //context.SetColor(invertedChars[color]);
+
+            //// path = context.DrawCircle(1, 1, 10);
+            //path = context.DrawRombo(1, 1, 4);
+            //await PaintActions(path);
+            //await PaintActions(path);
+            //Console.WriteLine(context.GetActualX());
+            //Console.WriteLine(context.GetActualY());
+            //Console.WriteLine(context.IsCanvasColor('N', 4, 0));
+            //Console.WriteLine(context.GetColorCount('N', 0, 0, 15, 15));
 
         }
       
