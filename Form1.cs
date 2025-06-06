@@ -80,10 +80,15 @@ namespace walleproyect
 
             invertedChars = new Dictionary<string, char>();
             directChars = new Dictionary<char, string>();
-            foreach (char c in mappedChars.Keys)
+            //foreach (char c in mappedChars.Keys)
+            //{
+            //    invertedChars.Add(mappedChars[c].Name, c);
+            //    directChars.Add(c, mappedChars[c].Name);
+            //}
+            foreach (var c in mappedChars)
             {
-                invertedChars.Add(mappedChars[c].Name, c);
-                directChars.Add(c, mappedChars[c].Name);
+                invertedChars.Add(c.Value.Name, c.Key);
+                directChars.Add(c.Key, c.Value.Name);
             }
             context = new Context(20, new VisualLogguer(this));
 
@@ -92,6 +97,7 @@ namespace walleproyect
             EstablecerValoresPorDefecto();
             pictureBox1.Width = 600;
             pictureBox1.Height = 600;
+            colors.Items.AddRange((mappedChars.Values.Select(c => c.Name).ToArray()));
             Console.WriteLine(context.n);
 
         }
@@ -111,6 +117,8 @@ namespace walleproyect
             // Aquí toda la información dependiente del contexto se debe actualizar
             size.Value = context.size;
             colors.Text = directChars[context.color];
+
+            
             //Actualizando en Board
             pictureBox1.Refresh();
         }
@@ -129,7 +137,7 @@ namespace walleproyect
 
         private async Task ÌnstruccionActions(Instruction inst)
         {
-            int waitinstr = 500;
+            int waitinstr = 1500;
             foreach (var item in inst.pasos)
             {
                 if (waitinstr > 0)
@@ -230,7 +238,9 @@ namespace walleproyect
             Interprete inteprete = new Interprete(lector.Text, context.logger);
 
            
-            var color = colors.Text;
+            //var color = colors.Text;
+            var color = colors.SelectedItem?.ToString() ?? "Black";
+
             actual.Text = $"[{inteprete.actualline + 1}]: {inteprete.lines[inteprete.actualline]}";
 
 
@@ -242,29 +252,18 @@ namespace walleproyect
             foreach (var inst in inteprete.Run())
             {
                 await ÌnstruccionActions(inst);
-                if(inst.type == InstructionType.Draw)
+                if (inst.type == InstructionType.Draw)
                 {
                     await PaintActions(exec.Run(inst));
                 }
+               
+                if (inst.type == InstructionType.Request)
+                {
+                    
+                   actual.Text = exec.GetRequestContext(inst).Item2;
+                }
+
             }
-
-
-
-
-            //var path = context.Spawn(5, 5);
-            //await PaintActions(path);
-
-            //context.SetSize((int)size.Value);
-            //context.SetColor(invertedChars[color]);
-
-            //// path = context.DrawCircle(1, 1, 10);
-            //path = context.DrawRombo(1, 1, 4);
-            //await PaintActions(path);
-            //await PaintActions(path);
-            //Console.WriteLine(context.GetActualX());
-            //Console.WriteLine(context.GetActualY());
-            //Console.WriteLine(context.IsCanvasColor('N', 4, 0));
-            //Console.WriteLine(context.GetColorCount('N', 0, 0, 15, 15));
 
         }
       

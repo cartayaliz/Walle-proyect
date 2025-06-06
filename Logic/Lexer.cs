@@ -53,13 +53,14 @@ namespace Logic
             { "DrawRombo", TokenType.Draw },
             { "DrawAsterisco", TokenType.Draw },
             { "Spawn", TokenType.Draw },
-            { " GetActualX ", TokenType.Request },
-            { " GetActualy ", TokenType.Request },
-            { " GetCanvasSize ", TokenType.Request },
-            { " IsCanvasColor", TokenType.Request },
-            { " IsBrushSize", TokenType.Request },
-            { " IsBrushColor", TokenType.Request },
-
+            { "SetColor", TokenType.Draw },
+            { "GetActualX ", TokenType.Request },
+            { "GetActualy ", TokenType.Request },
+            { "GetCanvasSize ", TokenType.Request },
+            { "IsCanvasColor", TokenType.Request },
+            { "IsBrushSize", TokenType.Request },
+            { "IsBrushColor", TokenType.Request },
+            { "GetCountColor", TokenType.Request },
 
         };
 

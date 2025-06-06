@@ -26,11 +26,15 @@ namespace Logic
 
         public Parser parser;
 
+        public ExeMemory exememory;
+
         public Ilogger logger;
         public Interprete(string text, Ilogger logger)
         {
             this.text = text;
             this.logger = logger;
+
+            exememory = new ExeMemory();
             scannner = new Scanner(text, logger);
 
             lines = text.Split('\n');
@@ -78,7 +82,7 @@ namespace Logic
         {
             pc = 0;
             var n = (parser.root.Childrens != null) ? parser.root.Childrens.Count: 0;
-            var InstVisitor = new InstructionVisitor(this.logger);
+            var InstVisitor = new InstructionVisitor(this.logger, exememory);
 
             while(pc < n)
             {
@@ -90,5 +94,24 @@ namespace Logic
 
 
         }
+    }
+    public class ExeMemory
+    {
+        public Dictionary<string, (string,string) > D { get; set; }
+        public ExeMemory() { D = new Dictionary<string, (string, string)>(); }
+    
+        public bool hasKey(string key) {
+            return D.ContainsKey(key);
+        }
+
+        public (string, string) getValue( string key) {
+            return D[key];
+        }
+
+        public (string, string) setValue( string key, (string, string) value) {
+            D.Add(key, value);
+            return D[key];
+        }
+    
     }
 }

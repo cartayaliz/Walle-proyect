@@ -65,6 +65,7 @@ namespace Logic
         }
     }
 
+
     public class ASTCte : ASTNode
     {
         public ASTCte(Tokens b) : base(b, b, null, "AST Cte") { }
@@ -81,7 +82,7 @@ namespace Logic
     public class ASTRoot : ASTNode
     {
         public ASTRoot(Tokens b, Tokens e, List<ASTNode> Childrens) : base(b, e, Childrens, "AST Root") { }
-        public override T Visit <T>(IVisitor<T> visitor)
+        public override T Visit<T>(IVisitor<T> visitor)
 
         {
 
@@ -90,4 +91,40 @@ namespace Logic
         }
     }
 
+
+    public class ASTId : ASTNode
+    {
+        public ASTId(Tokens b) : base(b, b, null, "AST Id") { }
+        public override T Visit<T>(IVisitor<T> visitor)
+
+        {
+
+            return visitor.Visit(this);
+
+        }
+
+    }
+
+
+    public class ASTAsignation : ASTNode
+    {
+        public ASTId id {  get; set; }
+        public ASTNode expression { get; set; }
+
+        public ASTAsignation(ASTId id, ASTNode expression) : base(id.b, expression.e, new List<ASTNode>(), "AST Asignation") 
+        {
+            this.id = id;
+            this.expression = expression;
+            this.Childrens.Add(id);
+            this.Childrens.Add(expression);
+            
+        }
+
+        public override T Visit<T>(IVisitor<T> visitor)
+        {
+            return visitor.Visit(this);
+
+        }
+
+    }
 }

@@ -17,6 +17,11 @@ namespace Logic
 
         T Visit(ASTCte node);
 
+        T Visit(ASTId node);
+
+        T Visit(ASTAsignation node);
+
+
 
     }
 }

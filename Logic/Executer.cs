@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Logic
 {
     public class Executer
     {
         Context context;
-        public Executer(Context context) {
+        
+        public Executer(Context context) 
+        {
             this.context = context;
         }
 
@@ -30,10 +34,134 @@ namespace Logic
                 int z = int.Parse(ins.argument[2].Item2);
                 return context.DrawLine(x, y, z);
             }
+            if (id == "DrawCircle")
+            {
+                int x = int.Parse(ins.argument[0].Item2);
+                int y = int.Parse(ins.argument[1].Item2);
+                int radio = int.Parse(ins.argument[2].Item2);
+                return context.DrawCircle(x, y, radio);
+            }
+            if (id == "DrawCuadrado")
+            {
+                int x = int.Parse(ins.argument[0].Item2);
+                int y = int.Parse(ins.argument[1].Item2);
+                int z = int.Parse(ins.argument[2].Item2);
+                int h = int.Parse(ins.argument[3].Item2);
+                return context.DrawCuadrado(x, y,z, h );
+            }
+            if (id == "DrawRectangle")
+            {
+                int x = int.Parse(ins.argument[0].Item2);
+                int y = int.Parse(ins.argument[1].Item2);
+                int z = int.Parse(ins.argument[2].Item2);
+                int h = int.Parse(ins.argument[3].Item2);
+                int i = int.Parse(ins.argument[4].Item2);
+                return context.DrawRectangle(x, y, z, h, i);
+            }
+            if (id == "DrawCuadrado")
+            {
+                int x = int.Parse(ins.argument[0].Item2);
+                int y = int.Parse(ins.argument[1].Item2);
+                int z = int.Parse(ins.argument[2].Item2);
+                int h = int.Parse(ins.argument[3].Item2);
+                int i = int.Parse(ins.argument[4].Item2);
+                int j = int.Parse(ins.argument[5].Item2);
 
-            context.logger.LogError("Exe", $"Missing method: {id}", ins.origin.b.line);
+                return context.DrawTriangle(x, y, z, h, i, j);
+            }
+            if (id == "DrawAsterisco")
+            {
+                int x = int.Parse(ins.argument[0].Item2);
+                int y = int.Parse(ins.argument[1].Item2);
+                int z = int.Parse(ins.argument[2].Item2);
+              
+                return context.DrawAsterisco(x,y,z);
+            }
+            if (id == "DrawRombo")
+            {
+                int x = int.Parse(ins.argument[0].Item2);
+                int y = int.Parse(ins.argument[1].Item2);
+                int z = int.Parse(ins.argument[2].Item2);
+
+                return context.DrawRombo(x, y, z);
+            }
+            if (id == "SetColor")
+            {
+               
+                if (ins.argument[0].Item2.Length != 1)
+                {
+                    string colorName = ins.argument[0].Item2;
+
+                    //if (!invertedChars.TryGetValue(colorName, out char colorChar))
+                    //{
+                    //    context.logger.LogError("Exe", $"Invalid color: {colorName}", ins.origin.b.line);
+                    //    return new List<(int, int, int, int, char)>();
+                    //}
+
+                    var colorChar = colorName[0];
+
+                    List<(int, int, int, int, char)> H = new List<(int, int, int, int, char)>();
+                    context.SetColor(colorChar);
+                    H.Add((context.x, context.y, context.x, context.y, colorChar));
+                    return H;
+
+        //    
+                }
+                
+            }
+
+            context.logger.LogError("Exe", $"Missing method draw: {id}", ins.origin.b.line);
 
             return new List<(int, int, int, int, char)>();
         }
+        public (string, string) GetRequestContext(Instruction ins)
+        {
+            var id = ins.origin.b.lexeme;
+            if (id == "GetActualX")
+            {
+                return ("int",context.GetActualX().ToString());
+            }
+            if (id == "GetActualY")
+            {
+                return ("int", context.GetActualY().ToString());
+            }
+            if (id == "GetCanvasSize")
+            {
+                return ("int", context.GetCanvasSize().ToString());
+            }
+            if (id == "IsCanvasColor")
+            {
+                string colorName = ins.argument[0].Item2;
+                int x = int.Parse(ins.argument[1].Item2);
+                int y = int.Parse(ins.argument[2].Item1);
+
+                var colorChar = colorName[0];
+                return ("int", context.IsCanvasColor(colorChar, x, y).ToString());
+            }
+            if (id == "IsBrushSize")
+            {
+                int x = int.Parse(ins.argument[0].Item2);
+                return ("int", context.IsBrushSize(x).ToString());
+            }
+            if (id == "IsBrushColor")
+            {
+                string colorName = ins.argument[0].Item2;
+                return ("int", context.IsBrushColor(colorName).ToString());
+            }
+            if (id == "GetColorCount")
+            {
+                string name = ins.argument[0].Item2;
+                char color = name[0];
+                int x = int.Parse(ins.argument[1].Item2);
+                int y = int.Parse(ins.argument[2].Item2);
+                int z = int.Parse(ins.argument[3].Item2);
+                int v = int.Parse(ins.argument[4].Item2);
+                return ("int", context.GetColorCount(color, x, y, z, v).ToString());
+            }
+            context.logger.LogError("Exe", $"Missing method Request: [{id}]", ins.origin.b.line);
+            return ("", "");
+        }
+
+
     }
 }

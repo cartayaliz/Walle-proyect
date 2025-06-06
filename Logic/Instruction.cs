@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Logic
 {
@@ -36,10 +37,12 @@ namespace Logic
     {
 
         Ilogger logger;
+        ExeMemory exememory;
         Instruction instruction;
-        public GetValueVisitor(Ilogger logger, Instruction instruction)
+        public GetValueVisitor(Ilogger logger, Instruction instruction, ExeMemory exememory)
         {
             this.logger = logger;
+            this.exememory = exememory;
             this.instruction = instruction;
         }
         public (string, string) Visit(ASTNode node)
@@ -85,15 +88,27 @@ namespace Logic
             return result;
 
         }
+
+        public (string, string) Visit(ASTId node)
+        {
+            return exememory.getValue(node.b.lexeme);
+        }
+
+        public (string, string) Visit(ASTAsignation node)
+        {
+            return node.expression.Visit(this);
+        }
     }
 
     public class InstructionVisitor : IVisitor<Instruction>
     {
 
         Ilogger logger;
-        public InstructionVisitor(Ilogger logger)
+        ExeMemory exememory;
+        public InstructionVisitor(Ilogger logger, ExeMemory exememory)
         {
             this.logger = logger;
+            this.exememory = exememory;
 
         }
         public Instruction Visit(ASTNode node)
@@ -108,33 +123,91 @@ namespace Logic
 
         public Instruction Visit(ASTCall node)
         {
-            var inst =  new Instruction(InstructionType.Draw, node);
 
-            inst.pasos.Add($"Getting args for {node.b.lexeme}");
 
-            var args = "";
+            var type = node.b;
+            if(type.type == TokenType.Draw )
+            {
+                var inst = new Instruction(InstructionType.Draw, node);
 
-            var valueVisitor = new GetValueVisitor(logger, inst);
+                inst.pasos.Add($"Getting args for {node.b.lexeme}");
 
-            if(node.Childrens != null)
-            { 
-                foreach(var child in node.Childrens)
+                var args = "";
+
+                var valueVisitor = new GetValueVisitor(logger, inst, this.exememory);
+
+                if (node.Childrens != null)
                 {
-                    var value = child.Visit(valueVisitor);
-                    args += $"{value},";
-                    inst.argument.Add(value);
+                    foreach (var child in node.Childrens)
+                    {
+                        var value = child.Visit(valueVisitor);
+                        args += $"{value},";
+                        inst.argument.Add(value);
+                    }
                 }
+
+                inst.pasos.Add($"Call {node.b.lexeme}({args})");
+
+                return inst;
+
+            }
+            else
+            {
+                var inst = new Instruction(InstructionType.Request, node);
+
+                var args = "";
+
+                var valueVisitor = new GetValueVisitor(logger, inst, this.exememory);
+
+                if (node.Childrens != null)
+                {
+                    foreach (var child in node.Childrens)
+                    {
+                        var value = child.Visit(valueVisitor);
+                        args += $"{value},";
+                        inst.argument.Add(value);
+                    }
+                }
+                return inst;
+
             }
 
 
-            inst.pasos.Add($"Call {node.b.lexeme}({args})");
-
-            return inst;
         }
+
+
+
+
 
         public Instruction Visit(ASTCte node)
         {
             return new Instruction(InstructionType.Empty, node);
+        }
+
+        public Instruction Visit(ASTId node)
+        {
+            var inst =  new Instruction(InstructionType.Empty, node);
+
+            inst.pasos.Add($"{node.b.lexeme} = {exememory.getValue(node.b.lexeme)}");
+
+            return inst;
+
+        }
+
+        public Instruction Visit(ASTAsignation node)
+        {
+            var inst =  new Instruction(InstructionType.Empty, node);
+
+            var valueVisitor = new GetValueVisitor(logger, inst, this.exememory);
+
+            var value = node.expression.Visit(valueVisitor);
+
+            inst.pasos.Add($"{node.id.b.lexeme} = {value.ToString()}");
+
+            exememory.setValue(node.id.b.lexeme, value);
+
+            return inst;
+
         }
     }
 }

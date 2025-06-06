@@ -192,7 +192,7 @@
             // lector
             // 
             this.lector.AcceptsTab = true;
-            this.lector.Location = new System.Drawing.Point(850, 119);
+            this.lector.Location = new System.Drawing.Point(999, 123);
             this.lector.Name = "lector";
             this.lector.Size = new System.Drawing.Size(389, 331);
             this.lector.TabIndex = 13;
@@ -228,7 +228,7 @@
             // 
             // actual
             // 
-            this.actual.Location = new System.Drawing.Point(850, 460);
+            this.actual.Location = new System.Drawing.Point(999, 460);
             this.actual.Name = "actual";
             this.actual.Size = new System.Drawing.Size(389, 22);
             this.actual.TabIndex = 17;
@@ -286,7 +286,7 @@
             // 
             // logText
             // 
-            this.logText.Location = new System.Drawing.Point(851, 488);
+            this.logText.Location = new System.Drawing.Point(1000, 499);
             this.logText.Multiline = true;
             this.logText.Name = "logText";
             this.logText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
@@ -300,6 +300,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.Silver;
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(1366, 662);
             this.Controls.Add(this.logText);
             this.Controls.Add(this.button5);

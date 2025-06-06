@@ -3,11 +3,29 @@
 using System.IO;
 using Logic;
 
-Context context = new Context(5);
+//Context context = new Context(5);
 
 
-Console.WriteLine("Hello, World!");
-Console.WriteLine(context.n);
+//Console.WriteLine("Hello, World!");
+//Console.WriteLine(context.n);
+
+
+
+
+//var path = context.Spawn(5, 5);
+//await PaintActions(path);
+
+//context.SetSize((int)size.Value);
+//context.SetColor(invertedChars[color]);
+
+//// path = context.DrawCircle(1, 1, 10);
+//path = context.DrawRombo(1, 1, 4);
+//await PaintActions(path);
+//await PaintActions(path);
+//Console.WriteLine(context.GetActualX());
+//Console.WriteLine(context.GetActualY());
+//Console.WriteLine(context.IsCanvasColor('N', 4, 0));
+//Console.WriteLine(context.GetColorCount('N', 0, 0, 15, 15));
 
 
 //path = context.DrawTriangle(1, 1, 5 , -1, 1, 5);

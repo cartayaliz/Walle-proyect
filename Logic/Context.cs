@@ -18,6 +18,7 @@ namespace Logic
         public char[,] M { get; set; }
         public string titulo { get; set; }
 
+
         public Ilogger logger;
 
         public Context(int n, Ilogger logger)
@@ -31,7 +32,8 @@ namespace Logic
             this.M = new char[n, n];
             CreateEmptyMatrix();
             titulo = this.titulo;
-           
+            
+
         }
 
         // Config methods
@@ -77,7 +79,7 @@ namespace Logic
                     {
                         if (Inside(ki, kj))
                         {
-                            this.M[ki, kj] = color;  
+                            this.M[ki, kj] = this.color;  
                         }
                     }
                 }
@@ -326,6 +328,10 @@ namespace Logic
             return c;
         }
 
+
+        // Método 
+
+     
 
         // Métodos de ayuda
 
