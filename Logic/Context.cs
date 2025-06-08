@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,8 @@ namespace Logic
         public char[,] M { get; set; }
         public string titulo { get; set; }
 
+        public int line { get; set; }
+
 
         public Ilogger logger;
 
@@ -32,7 +35,7 @@ namespace Logic
             this.M = new char[n, n];
             CreateEmptyMatrix();
             titulo = this.titulo;
-            
+            line = this.line;
 
         }
 
@@ -276,7 +279,10 @@ namespace Logic
 
         public int IsBrushColor(string color)
         {
-            if (color == this.color.ToString()) return 1; return 0;
+            char c = color[0];
+            if (string.IsNullOrEmpty(color))
+                return 0;
+            if (c  == this.color ) return 1; return 0;
         }
   
         public int GetActualX()
@@ -305,7 +311,9 @@ namespace Logic
         {
             int xi = this.x + horizontal;
             int yi = this.y + vertical;
-            return IsCellColor(xi, yi, color);
+           
+            return IsCellColor(xi, yi, color); 
+                
         }
 
         public int GetColorCount(char color, int x1, int y1, int x2, int y2)

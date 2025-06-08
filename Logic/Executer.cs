@@ -133,7 +133,7 @@ namespace Logic
             {
                 string colorName = ins.argument[0].Item2;
                 int x = int.Parse(ins.argument[1].Item2);
-                int y = int.Parse(ins.argument[2].Item1);
+                int y = int.Parse(ins.argument[2].Item2);
 
                 var colorChar = colorName[0];
                 return ("int", context.IsCanvasColor(colorChar, x, y).ToString());
@@ -158,6 +158,16 @@ namespace Logic
                 int v = int.Parse(ins.argument[4].Item2);
                 return ("int", context.GetColorCount(color, x, y, z, v).ToString());
             }
+
+            if (id == "IsCanvasColor")
+            {
+                string colorName = ins.argument[0].Item2;
+                char colorchar = colorName[0];
+                int x = int.Parse(ins.argument[1].Item2);
+                int y = int.Parse(ins.argument[2].Item2);
+                return ("int", context.IsCanvasColor(colorchar, y, x).ToString());
+            }
+
             context.logger.LogError("Exe", $"Missing method Request: [{id}]", ins.origin.b.line);
             return ("", "");
         }
