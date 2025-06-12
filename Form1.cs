@@ -25,7 +25,10 @@ namespace walleproyect
         Dictionary<string, char> invertedChars;
         Dictionary<char, string> directChars;
 
-
+        public class ProgramExitException : Exception
+        {
+            public ProgramExitException(string message) : base(message) { }
+        }
 
         class VisualLogguer : Ilogger
         {
@@ -44,7 +47,10 @@ namespace walleproyect
             public void LogError(string prefix, string messagge, int line)
             {
 
+                HasError = true;
                 this.form.logText.AppendText($"ERROR: [{prefix}] (line: {line}): {messagge}\r\n");
+           
+
             }
 
             public void LogWarning(string prefix, string messagge, int line) 
@@ -80,11 +86,7 @@ namespace walleproyect
 
             invertedChars = new Dictionary<string, char>();
             directChars = new Dictionary<char, string>();
-            //foreach (char c in mappedChars.Keys)
-            //{
-            //    invertedChars.Add(mappedChars[c].Name, c);
-            //    directChars.Add(c, mappedChars[c].Name);
-            //}
+           
             foreach (var c in mappedChars)
             {
                 invertedChars.Add(c.Value.Name, c.Key);
@@ -98,7 +100,7 @@ namespace walleproyect
             pictureBox1.Width = 600;
             pictureBox1.Height = 600;
             colors.Items.AddRange((mappedChars.Values.Select(c => c.Name).ToArray()));
-            Console.WriteLine(context.n);
+         
 
         }
         private void EstablecerValoresPorDefecto()
@@ -137,9 +139,9 @@ namespace walleproyect
 
         private async Task ÌnstruccionActions(Instruction inst)
         {
-            int waitinstr = 1500;
             foreach (var item in inst.pasos)
             {
+            int waitinstr = 500;
                 if (waitinstr > 0)
                 {
                     await Task.Delay((int)waitinstr / 2);
@@ -252,6 +254,11 @@ namespace walleproyect
             foreach (var inst in inteprete.Run())
             {
                 await ÌnstruccionActions(inst);
+                //VisualLogguer visual = new VisualLogguer(this);
+                //if (visual.HasError == true)
+                //{
+                //    break;
+                //}
                 if (inst.type == InstructionType.Draw)
                 {
                     await PaintActions(exec.Run(inst));
@@ -310,10 +317,10 @@ namespace walleproyect
             openFileDialog.Filter = "Archivos PW (*.pw)|*.pw";
             openFileDialog.FilterIndex = 1; // Selecciona el primer filtro por defecto
             openFileDialog.RestoreDirectory = true; // Restaura el directorio al cerrar
-
             // Mostrar el diálogo y verificar si se hizo clic en "Abrir"
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                lector.Text = "";
                 try
                 {
                     // Leer todo el contenido del archivo
@@ -323,7 +330,7 @@ namespace walleproyect
                     title.Text = lineas[0];
 
                     //Cargar el contenido en el TextBox
-                    for (int i = 1; i < lineas.Length; i++) { lector.Text = lineas[i]; }
+                    for (int i = 1; i < lineas.Length; i++) { lector.Text += lineas[i] + "\n\r"; }
 
                     MessageBox.Show("Archivo cargado correctamente", "Éxito",
                                    MessageBoxButtons.OK, MessageBoxIcon.Information);

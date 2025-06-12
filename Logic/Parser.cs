@@ -35,10 +35,22 @@ namespace Logic
             else
 
             {
+                if (IsOperador(b)) return ParserUnary(b, e);
+
+
                 if (b.next != null && b.next.type == TokenType.Equal)
                     return ParserAsignation(b, e);
+                
+                var token = GetSplitToken(b, e, logger);
+                
+                if (token == null)
+                {
+                    if (b.type == TokenType.Left_paren) return ParserNode(b.next, e.back);
+                    
+                    return ParserCall(b, e);
+                }
 
-                return ParserCall(b, e);
+                return ParserBinaryExp(b, e);
 
             }
         }
@@ -122,6 +134,67 @@ namespace Logic
 
             return new ASTAsignation(id, exprr);
         }
+
+        public ASTBinaryExp ParserBinaryExp(Tokens b, Tokens e)
+        {
+            var token = GetSplitToken(b, e, logger);
+
+            var left = ParserNode(b, token.back);
+            var right = ParserNode(token.next, e);
+
+            return new ASTBinaryExp(left, right, token);
+        }
+        public ASTUnary ParserUnary(Tokens op, Tokens e)
+        {
+            var right = ParserNode(op.next, e);
+
+            return new ASTUnary(op, right);
+        }
+
+
+        public Dictionary<TokenType, int> Dependencia = new Dictionary<TokenType, int>()
+        {
+            {  TokenType.Minus, 1 },
+            {  TokenType.Plus, 1},
+            {  TokenType.Star, 2},
+            {  TokenType.TwoStar, 2 },
+            {  TokenType.Split, 2},
+            {  TokenType.Module, 2 },
+
+        };
+        public bool IsOperador(Tokens token)
+        {
+            return Dependencia.ContainsKey(token.type);
+         }
+        public Tokens GetSplitToken(Tokens start, Tokens end, Ilogger ilogger)
+        {
+            int c = 0;
+            int p = (int)1e6;
+
+            Tokens token = null;
+            var node = start;
+
+            while (node != end.next)
+            {
+                if (node.type == TokenType.Left_paren) c++;
+                if (node.type == TokenType.Rigth_paren) c--;
+                else if (IsOperador(node) && c == 0)
+                {
+
+                    int value = 0;
+                    Dependencia.TryGetValue(node.type, out value);
+                    int pn = value;
+                    if (pn < p && value>0)
+                    {
+                        p = pn;
+                        token = node;
+                    }
+                }
+                node = node.next;
+            }
+            return token;
+        }
+
     }
 
 }

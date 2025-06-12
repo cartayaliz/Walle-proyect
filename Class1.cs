@@ -95,6 +95,7 @@ namespace Logic
 
         }
     }
+   
     public class ExeMemory
     {
         public Dictionary<string, (string,string) > D { get; set; }

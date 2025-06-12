@@ -127,4 +127,52 @@ namespace Logic
         }
 
     }
+
+    public class ASTBinaryExp : ASTNode
+    {
+        public Tokens op { get; set; }
+        public ASTNode left { get; set; }
+        public ASTNode right { get; set; }
+
+
+        public ASTBinaryExp(ASTNode left, ASTNode right, Tokens op) : base(left.b, right.e, new List<ASTNode>(), "AST Binary")
+        {
+            this.left = left;
+            this.right = right;
+            this.op = op;
+            this.Childrens.Add(left);
+            this.Childrens.Add(right);
+        }
+        
+        public override T Visit<T>(IVisitor<T> visitor)
+        {
+            return visitor.Visit(this);
+
+        }
+
+    }
+    public class ASTUnary : ASTNode
+    {
+        public Tokens op { get; set; }
+       
+        public ASTNode right { get; set; }
+
+
+        public ASTUnary(Tokens op, ASTNode right) : base(op, right.e, new List<ASTNode>(), "AST Unary")
+        {
+          
+            this.right = right;
+            this.op = op;
+            
+            this.Childrens.Add(right);
+        }
+
+        public override T Visit<T>(IVisitor<T> visitor)
+        {
+            return visitor.Visit(this);
+
+        }
+
+    }
+
 }

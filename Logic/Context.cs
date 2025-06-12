@@ -337,9 +337,6 @@ namespace Logic
         }
 
 
-        // Método 
-
-     
 
         // Métodos de ayuda
 

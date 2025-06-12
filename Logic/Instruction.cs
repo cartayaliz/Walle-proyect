@@ -49,7 +49,6 @@ namespace Logic
         {
             return ("number", "0");
         }
-
         public (string, string) Visit(ASTRoot node)
         {
             return ("number", "0");
@@ -98,6 +97,49 @@ namespace Logic
         {
             return node.expression.Visit(this);
         }
+
+        public (string, string) Visit(ASTBinaryExp node)
+        {
+            var left = node.left.Visit(this);
+            var right = node.right.Visit(this);
+
+            if(node.op.type == TokenType.Plus)
+            {
+                return ("number", (int.Parse(left.Item2) + int.Parse(right.Item2)).ToString());
+            }
+            else if (node.op.type == TokenType.Star)
+            {
+                return ("number", (int.Parse(left.Item2) * int.Parse(right.Item2)).ToString());
+            }
+            else if (node.op.type == TokenType.Minus)
+            {
+                return ("number", (int.Parse(left.Item2) - int.Parse(right.Item2)).ToString());
+            }
+            else if (node.op.type == TokenType.TwoStar)
+            {
+                return ("number", (Math.Pow(int.Parse(left.Item2), int.Parse(right.Item2)).ToString()));
+            }
+            else if (node.op.type == TokenType.Split)
+            {
+                return ("number", (int.Parse(left.Item2) / int.Parse(right.Item2)).ToString());
+            }
+            else if (node.op.type == TokenType.Module)
+            {
+                return ("number", (int.Parse(left.Item2) % int.Parse(right.Item2)).ToString());
+            }
+
+            return ("number", "0");
+        }
+
+        public (string, string) Visit(ASTUnary node)
+        {
+            var right = node.right.Visit(this);
+            if (node.op.type == TokenType.Minus)
+            {
+                return ("number", "-" + right.Item2  );
+            }
+            return ("number", "0");
+        }
     }
 
     public class InstructionVisitor : IVisitor<Instruction>
@@ -120,6 +162,7 @@ namespace Logic
         {
             return new Instruction(InstructionType.Empty, node);
         }
+
 
         public Instruction Visit(ASTCall node)
         {
@@ -208,6 +251,34 @@ namespace Logic
 
             return inst;
 
+        }
+
+        public Instruction Visit(ASTBinaryExp node)
+        {
+            var inst = new Instruction(InstructionType.Empty, node);
+
+            var valueVisitor = new GetValueVisitor(logger, inst, this.exememory);
+
+            var left = node.left.Visit(valueVisitor);
+            var right = node.right.Visit(valueVisitor);
+
+
+            inst.pasos.Add($"{left.ToString()} {node.op.lexeme} {right.ToString()}");
+
+            return inst;
+        }
+
+        public Instruction Visit(ASTUnary node)
+        {
+            var inst = new Instruction(InstructionType.Empty, node);
+
+            var valueVisitor = new GetValueVisitor(logger, inst, this.exememory);
+
+            var right = node.right.Visit(valueVisitor);
+
+            inst.pasos.Add($"{node.op.lexeme} {right.ToString()}");
+
+            return inst;
         }
     }
 }

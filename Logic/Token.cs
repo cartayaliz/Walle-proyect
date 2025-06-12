@@ -14,12 +14,14 @@ namespace Logic
         Rigth_paren,
         Comma,
         Dot,
-        Minus,
-        Plus,
         Semicolon,
+
+        Plus,
+        Minus,
         Star,
         Module,
         Split,
+        TwoStar,
 
 
 
@@ -30,7 +32,6 @@ namespace Logic
         Greater_equal,
         Less,
         Less_equal,
-        TwoStar,
         BackSlach_n,
 
         // Literals.
@@ -49,6 +50,7 @@ namespace Logic
 
         //  keywords
 
+       
         True,
         False,
        

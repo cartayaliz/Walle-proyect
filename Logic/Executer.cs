@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -29,9 +30,14 @@ namespace Logic
             }
             if(id == "DrawLine")
             {
+               
                 int x = int.Parse(ins.argument[0].Item2);
+                
                 int y = int.Parse(ins.argument[1].Item2);
+              
                 int z = int.Parse(ins.argument[2].Item2);
+
+
                 return context.DrawLine(x, y, z);
             }
             if (id == "DrawCircle")
@@ -85,18 +91,31 @@ namespace Logic
 
                 return context.DrawRombo(x, y, z);
             }
-            if (id == "SetColor")
+            if(id == "DrawTriangle")
+            {
+                int x = int.Parse(ins.argument[0].Item2);
+                int y = int.Parse(ins.argument[1].Item2);
+                int z = int.Parse(ins.argument[2].Item2);
+                int h = int.Parse(ins.argument[3].Item2);
+                int i = int.Parse(ins.argument[4].Item2);
+                int j = int.Parse(ins.argument[5].Item2);
+
+                return context.DrawTriangle(x, y, z, h, i,j);
+            }
+            if (id == "Color")
             {
                
                 if (ins.argument[0].Item2.Length != 1)
                 {
                     string colorName = ins.argument[0].Item2;
 
-                    //if (!invertedChars.TryGetValue(colorName, out char colorChar))
-                    //{
-                    //    context.logger.LogError("Exe", $"Invalid color: {colorName}", ins.origin.b.line);
-                    //    return new List<(int, int, int, int, char)>();
-                    //}
+                    if (string.IsNullOrWhiteSpace(colorName))
+                    {
+                        context.logger.LogError("Exe", $"Color no puede estar vacío.", ins.origin.b.line);
+                        
+                        return new List<(int, int, int, int, char)>();
+                      
+                    }
 
                     var colorChar = colorName[0];
 
@@ -105,7 +124,7 @@ namespace Logic
                     H.Add((context.x, context.y, context.x, context.y, colorChar));
                     return H;
 
-        //    
+            
                 }
                 
             }
@@ -158,15 +177,14 @@ namespace Logic
                 int v = int.Parse(ins.argument[4].Item2);
                 return ("int", context.GetColorCount(color, x, y, z, v).ToString());
             }
-
-            if (id == "IsCanvasColor")
+            if( id == "Size")
             {
-                string colorName = ins.argument[0].Item2;
-                char colorchar = colorName[0];
-                int x = int.Parse(ins.argument[1].Item2);
-                int y = int.Parse(ins.argument[2].Item2);
-                return ("int", context.IsCanvasColor(colorchar, y, x).ToString());
+                int x = int.Parse (ins.argument[0].Item2);
+          
+                context.SetSize(x);
+              
             }
+          
 
             context.logger.LogError("Exe", $"Missing method Request: [{id}]", ins.origin.b.line);
             return ("", "");

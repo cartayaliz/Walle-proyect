@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace Logic
@@ -41,6 +43,21 @@ namespace Logic
             this.tokens = new List<Tokens>();
 
         }
+
+        public Dictionary<string, TokenType> Operador = new Dictionary<String, TokenType>()
+        {
+            {  "Minus", TokenType.Minus },
+            {  "Plus", TokenType.Plus },
+            {  "Star", TokenType.Star },
+            {  "TwoStar", TokenType.TwoStar },
+            {  "Split", TokenType.Split },
+            {  "Module", TokenType.Module },
+       
+        };
+
+
+       
+
         public Dictionary<string, TokenType> keywords = new Dictionary<String, TokenType>()
         {
             { "true", TokenType.True },
@@ -53,7 +70,7 @@ namespace Logic
             { "DrawRombo", TokenType.Draw },
             { "DrawAsterisco", TokenType.Draw },
             { "Spawn", TokenType.Draw },
-            { "SetColor", TokenType.Draw },
+            { "Color", TokenType.Draw },
             { "GetActualX", TokenType.Request },
             { "GetActualy", TokenType.Request },
             { "GetCanvasSize", TokenType.Request },
@@ -61,6 +78,7 @@ namespace Logic
             { "IsBrushSize", TokenType.Request },
             { "IsBrushColor", TokenType.Request },
             { "GetCountColor", TokenType.Request },
+            { "Size", TokenType.Request },
 
         };
 

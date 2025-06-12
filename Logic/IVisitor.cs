@@ -21,7 +21,9 @@ namespace Logic
 
         T Visit(ASTAsignation node);
 
+        T Visit(ASTBinaryExp node);
 
+        T Visit(ASTUnary node);
 
     }
 }
