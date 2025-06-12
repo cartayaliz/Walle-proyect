@@ -79,6 +79,7 @@ namespace Logic
             { "IsBrushColor", TokenType.Request },
             { "GetCountColor", TokenType.Request },
             { "Size", TokenType.Request },
+            { "Fill", TokenType.Draw },
 
         };
 

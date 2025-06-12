@@ -121,13 +121,20 @@ namespace Logic
 
                     List<(int, int, int, int, char)> H = new List<(int, int, int, int, char)>();
                     context.SetColor(colorChar);
-                    H.Add((context.x, context.y, context.x, context.y, colorChar));
+                  
                     return H;
 
             
                 }
                 
             }
+            if (id == "Fill")
+            {
+
+                return context.Fill();
+
+            }
+
 
             context.logger.LogError("Exe", $"Missing method draw: {id}", ins.origin.b.line);
 
@@ -182,6 +189,7 @@ namespace Logic
                 int x = int.Parse (ins.argument[0].Item2);
           
                 context.SetSize(x);
+
               
             }
           

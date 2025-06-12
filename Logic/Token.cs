@@ -40,7 +40,7 @@ namespace Logic
         Number,
 
         // Methods Actions
-        //Fill,
+        
           Draw,
 
         // Methods Information

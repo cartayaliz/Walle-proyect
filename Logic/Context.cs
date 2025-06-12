@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Runtime.Remoting.Contexts;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -267,7 +268,43 @@ namespace Logic
 
         }
 
+        public List<(int, int)> Expand(int x, int y, char c)
+        {
+            List<(int, int)>  result = new List<(int, int)>();
+            bool[,] used = new bool[n, n];
 
+            void ExpandMask(int i, int j, char color)
+            {
+
+                result.Add((i, j));
+                used[i, j] = true;
+
+                int[] A = { 0, 1, 0, -1 };
+                int[] B = { 1, 0, -1, 0 };
+                for (int k = 0; k < A.Length; k++)
+                {
+                    int ni = i + A[k];
+                    int nj = j + B[k];
+
+                    if (Inside(ni, nj) && M[ni, nj] == color &&  !used[ni, nj])
+                    {
+                        ExpandMask(ni, nj, color);
+                       
+                    }
+                }
+
+            }
+            ExpandMask(x, y, c);
+            return result;
+         
+        }
+        public List<(int, int, int, int, char)> Fill()
+        {
+            return new List<(int, int, int, int, char)>(
+                Expand(x, y, M[x, y])
+                .Select((i) => (i.Item1, i.Item2, x, y, this.color))
+            );
+        }
         // Métodos de informacion
 
         public int IsBrushSize(int size)
