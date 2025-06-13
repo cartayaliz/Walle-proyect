@@ -265,7 +265,8 @@
             "Yellow",
             "Orange",
             "Purple",
-            "Transparent"});
+            "Transparent",
+            "AzulCielo"});
             this.colors.Location = new System.Drawing.Point(433, 26);
             this.colors.Name = "colors";
             this.colors.Size = new System.Drawing.Size(70, 24);

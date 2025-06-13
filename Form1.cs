@@ -82,6 +82,7 @@ namespace walleproyect
                 { 'O', Color.Orange },
                 { 'P', Color.Purple },
                 { ' ', Color.Transparent },
+                { 'A', Color.Aqua},
             };
 
             invertedChars = new Dictionary<string, char>();
@@ -230,9 +231,9 @@ namespace walleproyect
                 return;
             }
 
-            if (time.Value <= 0)
+            if (time.Value < 0)
             {
-                error_time.SetError(time, "Ingrese un número entero mayor que cero");
+                error_time.SetError(time, "Ingrese un número entero mayor igual que cero");
             }
             
             context = new Context(n, new VisualLogguer(this));

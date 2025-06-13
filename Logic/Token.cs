@@ -15,15 +15,12 @@ namespace Logic
         Comma,
         Dot,
         Semicolon,
-
         Plus,
         Minus,
         Star,
         Module,
         Split,
         TwoStar,
-
-
 
         // One or two character tokens.
         Equal,
@@ -39,26 +36,21 @@ namespace Logic
         String,
         Number,
 
-        // Methods Actions
-        
+
+        // Methods Actions       
           Draw,
+          GoTo,
 
         // Methods Information
-        Request,
-
-      
+        Request,      
 
         //  keywords
-
-       
         True,
         False,
        
-
-        // Internal
+       // Internal
         EOF,
 
-      
     }
 
 

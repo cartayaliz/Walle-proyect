@@ -25,6 +25,8 @@ namespace Logic
 
         T Visit(ASTUnary node);
 
+        T Visit(ASTGoTo node);
+
     }
 }
 

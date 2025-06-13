@@ -47,7 +47,6 @@ namespace Logic
                 for (int j = 0; j < n; j++)
                     this.M[i, j] = '_';
         }
-
         public List<(int, int, int, int, char)> Spawn(int i , int j)
         {
             SetColor(' ');
@@ -57,7 +56,6 @@ namespace Logic
             return path;
 
         }
-
         public void SetColor(char nbruch)
         {
             this.color = nbruch;
@@ -104,7 +102,6 @@ namespace Logic
             }
            
         }
-
         public void DoAction((int, int, int, int, char ) action)
         {
             SetAndMove(action.Item1, action.Item2, action.Item3, action.Item4, action.Item5);
@@ -305,6 +302,8 @@ namespace Logic
                 .Select((i) => (i.Item1, i.Item2, x, y, this.color))
             );
         }
+        
+        
         // Métodos de informacion
 
         public int IsBrushSize(int size)

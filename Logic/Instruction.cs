@@ -87,7 +87,6 @@ namespace Logic
             return result;
 
         }
-
         public (string, string) Visit(ASTId node)
         {
             return exememory.getValue(node.b.lexeme);
@@ -98,6 +97,7 @@ namespace Logic
             return node.expression.Visit(this);
         }
 
+        //public (string, string) Visit(AST)
         public (string, string) Visit(ASTBinaryExp node)
         {
             var left = node.left.Visit(this);
@@ -106,6 +106,7 @@ namespace Logic
             if(node.op.type == TokenType.Plus)
             {
                 return ("number", (int.Parse(left.Item2) + int.Parse(right.Item2)).ToString());
+
             }
             else if (node.op.type == TokenType.Star)
             {
@@ -140,6 +141,11 @@ namespace Logic
             }
             return ("number", "0");
         }
+
+        public (string, string) Visit(ASTGoTo node)
+        {
+           return ("number", "0");
+        }
     }
 
     public class InstructionVisitor : IVisitor<Instruction>
@@ -162,7 +168,6 @@ namespace Logic
         {
             return new Instruction(InstructionType.Empty, node);
         }
-
 
         public Instruction Visit(ASTCall node)
         {
@@ -217,10 +222,6 @@ namespace Logic
 
 
         }
-
-
-
-
 
         public Instruction Visit(ASTCte node)
         {
@@ -278,6 +279,12 @@ namespace Logic
 
             inst.pasos.Add($"{node.op.lexeme} {right.ToString()}");
 
+            return inst;
+        }
+
+        public Instruction Visit(ASTGoTo node)
+        {
+            var inst = new Instruction(InstructionType.Empty, node);
             return inst;
         }
     }

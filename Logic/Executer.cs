@@ -118,10 +118,15 @@ namespace Logic
                     }
 
                     var colorChar = colorName[0];
-
                     List<(int, int, int, int, char)> H = new List<(int, int, int, int, char)>();
-                    context.SetColor(colorChar);
-                  
+                    if (colorChar == 'W')
+                    {
+                        context.SetColor('_');
+                    }
+                    else
+                    {
+                        context.SetColor(colorChar);
+                    }
                     return H;
 
             

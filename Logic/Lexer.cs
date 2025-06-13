@@ -53,10 +53,7 @@ namespace Logic
             {  "Split", TokenType.Split },
             {  "Module", TokenType.Module },
        
-        };
-
-
-       
+        };     
 
         public Dictionary<string, TokenType> keywords = new Dictionary<String, TokenType>()
         {
@@ -82,13 +79,11 @@ namespace Logic
             { "Fill", TokenType.Draw },
 
         };
-
         public bool isAtEnd()
         {
             return (current >= source.Length);
         }
-
-        
+   
         public List<Tokens> scanTokens()
         {
             while (!isAtEnd())
@@ -113,7 +108,7 @@ namespace Logic
             current++;
             return true;
         }
-       public void String()
+        public void String()
         {
             while (peek() != '"' && !isAtEnd())
             {
@@ -137,7 +132,6 @@ namespace Logic
         {
             return (c >= '0' && c <= '9');
         }
-
         public char peek()
         {
             if (isAtEnd()) return ' ';
@@ -149,7 +143,7 @@ namespace Logic
             if (current + 1 >= source.Length) return ' ';
             return source[current + 1];
         }
-       public void number()
+        public void number()
         { 
             while (isDigit(peek())) advance();
             // Look for a fractional part.
@@ -161,7 +155,6 @@ namespace Logic
             }
             tokens.Add(new Tokens(TokenType.Number, source.Substring(start, current - start), null, line));
         }
-
         public void Identificador()                                                   
         {
             while (isAlpha(peek()) || isDigit(peek())) { advance(); }

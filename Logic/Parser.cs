@@ -38,7 +38,7 @@ namespace Logic
                 if (IsOperador(b)) return ParserUnary(b, e);
 
 
-                if (b.next != null && b.next.type == TokenType.Equal)
+                if (b.next != null && b.next.type == TokenType.Less && b.next.next.type == TokenType.Minus)
                     return ParserAsignation(b, e);
                 
                 var token = GetSplitToken(b, e, logger);
@@ -130,7 +130,7 @@ namespace Logic
             //if(b.type != TokenType.Identifier) da el berro
 
             var id = ParserId(b);
-            var exprr = ParserNode(b.next.next, e);
+            var exprr = ParserNode(b.next.next.next, e);
 
             return new ASTAsignation(id, exprr);
         }
@@ -151,6 +151,20 @@ namespace Logic
             return new ASTUnary(op, right);
         }
 
+        public ASTGoTo ParserGoTo(ASTRoot Root, Tokens line)
+        {
+            for (int i = 0; i < Root.Childrens.Count; i++)
+            {
+                if (Root.Childrens[i].b.type == TokenType.Identifier)
+                {
+                    var etiqueta = Root.Childrens[i].b;
+                    return new ASTGoTo(etiqueta, line);
+                }
+               
+            }
+            return null;
+        }
+
 
         public Dictionary<TokenType, int> Dependencia = new Dictionary<TokenType, int>()
         {
@@ -165,7 +179,7 @@ namespace Logic
         public bool IsOperador(Tokens token)
         {
             return Dependencia.ContainsKey(token.type);
-         }
+        }
         public Tokens GetSplitToken(Tokens start, Tokens end, Ilogger ilogger)
         {
             int c = 0;
@@ -194,6 +208,7 @@ namespace Logic
             }
             return token;
         }
+
 
     }
 

@@ -65,7 +65,6 @@ namespace Logic
         }
     }
 
-
     public class ASTCte : ASTNode
     {
         public ASTCte(Tokens b) : base(b, b, null, "AST Cte") { }
@@ -151,6 +150,30 @@ namespace Logic
         }
 
     }
+    public class ASTGoTo : ASTNode
+    {
+        public ASTRoot Root { get; set; }
+        public Tokens etiqueta { get; set; }
+        public Tokens line { get; set; }
+
+        public ASTGoTo(Tokens etiqueta, Tokens line) : base(etiqueta, line, new List<ASTNode>(), "AST GoTo")
+        {
+            
+            this.line = line;
+            this.etiqueta = etiqueta;
+           
+          
+        }
+
+        public override T Visit<T>(IVisitor<T> visitor)
+        {
+            return visitor.Visit(this);
+
+        }
+
+
+    }
+
     public class ASTUnary : ASTNode
     {
         public Tokens op { get; set; }
