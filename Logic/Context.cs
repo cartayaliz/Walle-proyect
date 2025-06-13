@@ -170,18 +170,27 @@ namespace Logic
 
             this.color = oldcolor;
 
-            path.AddRange(DrawLineFromPosition(xi - radio, xj - radio, 0, 0, 0 , false, xi, xj));
-            path.AddRange(DrawLineFromPosition(xi - radio - 1, xj - radio + 1, 0, 1, radio *2 -2, false, xi, xj));
+            path.AddRange(DrawLineFromPosition(xi - radio, xj - radio, 0, 0, 0 , true, xi, xj));
+            path.AddRange(DrawLineFromPosition(xi - radio - 1, xj - radio + 1, 0, 1, radio *2 -2, true, xi, xj));
 
-            path.AddRange(DrawLineFromPosition(xi - radio, xj + radio, 0, 0, 0, false, xi, xj));
-            path.AddRange(DrawLineFromPosition(xi - radio + 1, xj + radio + 1, 1, 0, radio *2 -2, false, xi, xj));
+            path.AddRange(DrawLineFromPosition(xi - radio, xj + radio, 0, 0, 0, true, xi, xj));
+            path.AddRange(DrawLineFromPosition(xi - radio + 1, xj + radio + 1, 1, 0, radio *2 -2, true, xi, xj));
 
-            path.AddRange(DrawLineFromPosition(xi + radio, xj + radio, 0, 0, 0, false, xi, xj));
-            path.AddRange(DrawLineFromPosition(xi + radio + 1, xj + radio - 1, 0, -1, radio *2 -2, false, xi, xj));
+            path.AddRange(DrawLineFromPosition(xi + radio, xj + radio, 0, 0, 0, true, xi, xj));
+            path.AddRange(DrawLineFromPosition(xi + radio + 1, xj + radio - 1, 0, -1, radio *2 -2, true, xi, xj));
 
-            path.AddRange(DrawLineFromPosition(xi + radio, xj - radio, 0, 0, 0, false, xi, xj));
-            path.AddRange(DrawLineFromPosition(xi + radio - 1, xj - radio - 1, -1, 0, radio *2 -2, false, xi, xj));
+            path.AddRange(DrawLineFromPosition(xi + radio, xj - radio, 0, 0, 0, true, xi, xj));
+            path.AddRange(DrawLineFromPosition(xi + radio - 1, xj - radio - 1, -1, 0, radio *2 -2, true, xi, xj));
 
+            var hi = path[path.Count - 1].Item3;
+            var hj = path[path.Count - 1].Item4;
+            path.AddRange(DrawLineFromPosition(hi, hj, -1, 1, 1, true, xi, xj));
+
+            this.color = ' ';
+            var ki = path[path.Count - 1].Item3;
+            var kj = path[path.Count - 1].Item4;
+            path.AddRange(DrawLine(dirx, diry, radio));
+            this.color = oldcolor;
 
             return path;
         }
