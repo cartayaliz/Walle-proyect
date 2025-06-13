@@ -259,8 +259,6 @@ namespace Logic
             List<(int, int, int, int, char)> path = new List<(int, int, int, int, char)>();
 
 
-            path.AddRange(DrawTriangle(dirx, diry-r, r, -1, 1, r));
-
 
             path.AddRange(DrawTriangle(dirx + r, diry, 0, 1, -1, r));
 
@@ -269,6 +267,10 @@ namespace Logic
 
 
             path.AddRange(DrawTriangle(dirx - r, diry , 0, 1, 1, r));
+
+            path.AddRange(DrawTriangle(0, 0, r, -1, 1, r));
+
+
 
             return path;
 
