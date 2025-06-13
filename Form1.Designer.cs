@@ -33,8 +33,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.title = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.error_board = new System.Windows.Forms.ErrorProvider(this.components);
@@ -52,6 +50,8 @@
             this.colors = new System.Windows.Forms.ComboBox();
             this.button5 = new System.Windows.Forms.Button();
             this.logText = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.ExecuterTime = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.error_board)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.error_size)).BeginInit();
@@ -59,6 +59,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.time)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.size)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.board)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ExecuterTime)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -90,39 +91,18 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.label1.Font = new System.Drawing.Font("Microsoft Uighur", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(518, 25);
+            this.label1.Location = new System.Drawing.Point(318, 29);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(44, 29);
             this.label1.TabIndex = 2;
             this.label1.Text = "Size:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.label2.Font = new System.Drawing.Font("Microsoft Uighur", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label2.Location = new System.Drawing.Point(12, 25);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(50, 29);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Title:";
-            // 
-            // title
-            // 
-            this.title.AccessibleName = "title";
-            this.title.Location = new System.Drawing.Point(68, 28);
-            this.title.Name = "title";
-            this.title.Size = new System.Drawing.Size(146, 22);
-            this.title.TabIndex = 4;
-            this.title.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.label3.Font = new System.Drawing.Font("Microsoft Uighur", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(359, 25);
+            this.label3.Location = new System.Drawing.Point(156, 26);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(57, 29);
             this.label3.TabIndex = 6;
@@ -133,7 +113,7 @@
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.label4.Font = new System.Drawing.Font("Microsoft Uighur", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(234, 25);
+            this.label4.Location = new System.Drawing.Point(12, 23);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(59, 29);
             this.label4.TabIndex = 9;
@@ -203,7 +183,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.label5.Location = new System.Drawing.Point(628, 25);
+            this.label5.Location = new System.Drawing.Point(438, 29);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(55, 32);
             this.label5.TabIndex = 14;
@@ -215,7 +195,7 @@
             // 
             // time
             // 
-            this.time.Location = new System.Drawing.Point(703, 29);
+            this.time.Location = new System.Drawing.Point(510, 33);
             this.time.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -235,14 +215,14 @@
             // 
             // size
             // 
-            this.size.Location = new System.Drawing.Point(581, 27);
+            this.size.Location = new System.Drawing.Point(379, 33);
             this.size.Name = "size";
             this.size.Size = new System.Drawing.Size(41, 22);
             this.size.TabIndex = 18;
             // 
             // board
             // 
-            this.board.Location = new System.Drawing.Point(304, 28);
+            this.board.Location = new System.Drawing.Point(88, 29);
             this.board.Maximum = new decimal(new int[] {
             500,
             0,
@@ -267,7 +247,7 @@
             "Purple",
             "Transparent",
             "AzulCielo"});
-            this.colors.Location = new System.Drawing.Point(433, 26);
+            this.colors.Location = new System.Drawing.Point(228, 31);
             this.colors.Name = "colors";
             this.colors.Size = new System.Drawing.Size(70, 24);
             this.colors.TabIndex = 20;
@@ -294,6 +274,29 @@
             this.logText.Size = new System.Drawing.Size(388, 151);
             this.logText.TabIndex = 22;
             // 
+            // label2
+            // 
+            this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(591, 29);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(75, 32);
+            this.label2.TabIndex = 23;
+            this.label2.Text = "Executer Time";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // ExecuterTime
+            // 
+            this.ExecuterTime.Location = new System.Drawing.Point(683, 36);
+            this.ExecuterTime.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.ExecuterTime.Name = "ExecuterTime";
+            this.ExecuterTime.Size = new System.Drawing.Size(56, 22);
+            this.ExecuterTime.TabIndex = 24;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -302,6 +305,8 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.Silver;
             this.ClientSize = new System.Drawing.Size(1366, 662);
+            this.Controls.Add(this.ExecuterTime);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.logText);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.colors);
@@ -316,8 +321,6 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.title);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button1);
@@ -333,6 +336,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.time)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.size)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.board)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ExecuterTime)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -343,8 +347,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox title;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ErrorProvider error_board;
@@ -362,6 +364,8 @@
         private System.Windows.Forms.ComboBox colors;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.TextBox logText;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown ExecuterTime;
     }
 }
 

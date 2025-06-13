@@ -110,7 +110,7 @@ namespace walleproyect
             size.Value = 1;
             time.Value = 50;
             colors.Text = directChars[invertedChars[Color.Transparent.Name]];
-            title.Text = " ";
+            ExecuterTime.Value = 100;
             actual.Text = " ";
         }
     
@@ -142,7 +142,7 @@ namespace walleproyect
         {
             foreach (var item in inst.pasos)
             {
-                int waitinstr = (int)time.Value * 2;
+                int waitinstr = (int)ExecuterTime.Value;
                 if (waitinstr > 0)
                 {
                     await Task.Delay((int)waitinstr / 2);
@@ -210,6 +210,9 @@ namespace walleproyect
             button5.Enabled = false;
 
             lector.ReadOnly = true;
+            context.x = 0;
+            context.y = 0;
+            pictureBox1.Refresh();
 
         }
         public void ERun()
@@ -226,6 +229,7 @@ namespace walleproyect
         private async void button1_Click(object sender, EventArgs e)
         {
             SRun();
+           
             // Examples
 
             if (string.IsNullOrWhiteSpace(board.Text))
@@ -266,9 +270,9 @@ namespace walleproyect
 
             actual.Text = $"[{inteprete.actualline + 1}]: {inteprete.lines[inteprete.actualline]}";
 
-
-
             context.CreateEmptyMatrix();
+
+            pictureBox1.Refresh();
 
             Executer exec = new Executer(context);
 
@@ -316,7 +320,7 @@ namespace walleproyect
             {
                 try
                 {
-                    string contenido = title.Text +Environment.NewLine + lector.Text;
+                    string contenido =  lector.Text;
 
                     File.WriteAllText(saveFileDialog.FileName, contenido);
 
@@ -353,10 +357,8 @@ namespace walleproyect
                     string contenido = File.ReadAllText(openFileDialog.FileName);
                     string[] lineas = File.ReadAllLines(openFileDialog.FileName);
 
-                    title.Text = lineas[0];
-
                     //Cargar el contenido en el TextBox
-                    for (int i = 1; i < lineas.Length; i++) { lector.Text += lineas[i] + "\n\r"; }
+                    for (int i = 0; i < lineas.Length; i++) { lector.Text += lineas[i] + "\n\r"; }
 
                     MessageBox.Show("Archivo cargado correctamente", "Éxito",
                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
