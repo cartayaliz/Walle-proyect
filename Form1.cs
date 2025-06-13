@@ -98,6 +98,8 @@ namespace walleproyect
             walleImage = Image.FromFile(@"C:\Users\liz\Desktop\Nueva carpeta (2)\walleproyect\Image.jpg");
             InitializeComponent();
             EstablecerValoresPorDefecto();
+            lineTexts.Clear();
+            AddLineNumbers();
             pictureBox1.Width = 600;
             pictureBox1.Height = 600;
             colors.Items.AddRange((mappedChars.Values.Select(c => c.Name).ToArray()));
@@ -382,9 +384,46 @@ namespace walleproyect
 
         }
 
+        public int getWidth()
+        {
+            int w = 25;
+            // get total lines of richTextBox1
+            int line = lector.Lines.Length;
+
+            
+            w = 20 + (int)lector.Font.Size;
+            
+            return w;
+        }
+        public void AddLineNumbers()
+        {
+            // create & set Point pt to (0,0)
+            Point pt = new Point(0, 0);
+            // get First Index & First Line from richTextBox1
+            int First_Index = lector.GetCharIndexFromPosition(pt);
+            int First_Line = lector.GetLineFromCharIndex(First_Index);
+            // set X & Y coordinates of Point pt to ClientRectangle Width & Height respectively
+            pt.X = ClientRectangle.Width;
+            pt.Y = ClientRectangle.Height;
+            // get Last Index & Last Line from richTextBox1
+            int Last_Index = lector.GetCharIndexFromPosition(pt);
+            int Last_Line = lector.GetLineFromCharIndex(Last_Index);
+            // set Center alignment to LineNumberTextBox
+            lineTexts.SelectionAlignment = HorizontalAlignment.Center;
+            // set LineNumberTextBox text to null & width to getWidth() function value
+            lineTexts.Text = "";
+            lineTexts.Width = getWidth();
+            // now add each line number to LineNumberTextBox upto last line
+            for (int i = First_Line; i <= Last_Line + 2; i++)
+            {
+                lineTexts.Text += i + 1 + "\r\n";
+            }
+        }
+
         public void lector_TextChanged(object sender, EventArgs e)
         {
-
+            lineTexts.Clear();
+            AddLineNumbers();
         }
 
         public void textBox1_TextChanged(object sender, EventArgs e)
@@ -392,7 +431,12 @@ namespace walleproyect
 
         }
 
-       
+        private void lector_VScroll(object sender, EventArgs e)
+        {
+            lineTexts.Clear();
+            AddLineNumbers();
+            lineTexts.Invalidate();
+        }
     }
 }
 

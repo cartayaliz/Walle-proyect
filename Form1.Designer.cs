@@ -52,6 +52,7 @@
             this.logText = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.ExecuterTime = new System.Windows.Forms.NumericUpDown();
+            this.lineTexts = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.error_board)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.error_size)).BeginInit();
@@ -174,9 +175,10 @@
             this.lector.AcceptsTab = true;
             this.lector.Location = new System.Drawing.Point(999, 123);
             this.lector.Name = "lector";
-            this.lector.Size = new System.Drawing.Size(389, 331);
+            this.lector.Size = new System.Drawing.Size(389, 343);
             this.lector.TabIndex = 13;
             this.lector.Text = "";
+            this.lector.VScroll += new System.EventHandler(this.lector_VScroll);
             this.lector.TextChanged += new System.EventHandler(this.lector_TextChanged);
             // 
             // label5
@@ -208,9 +210,9 @@
             // 
             // actual
             // 
-            this.actual.Location = new System.Drawing.Point(999, 460);
+            this.actual.Location = new System.Drawing.Point(966, 472);
             this.actual.Name = "actual";
-            this.actual.Size = new System.Drawing.Size(389, 22);
+            this.actual.Size = new System.Drawing.Size(422, 22);
             this.actual.TabIndex = 17;
             // 
             // size
@@ -267,11 +269,11 @@
             // 
             // logText
             // 
-            this.logText.Location = new System.Drawing.Point(1000, 499);
+            this.logText.Location = new System.Drawing.Point(966, 517);
             this.logText.Multiline = true;
             this.logText.Name = "logText";
             this.logText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.logText.Size = new System.Drawing.Size(388, 151);
+            this.logText.Size = new System.Drawing.Size(422, 151);
             this.logText.TabIndex = 22;
             // 
             // label2
@@ -297,6 +299,17 @@
             this.ExecuterTime.Size = new System.Drawing.Size(56, 22);
             this.ExecuterTime.TabIndex = 24;
             // 
+            // lineTexts
+            // 
+            this.lineTexts.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lineTexts.Location = new System.Drawing.Point(966, 123);
+            this.lineTexts.Name = "lineTexts";
+            this.lineTexts.ReadOnly = true;
+            this.lineTexts.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.lineTexts.Size = new System.Drawing.Size(27, 343);
+            this.lineTexts.TabIndex = 25;
+            this.lineTexts.Text = "";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -305,6 +318,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.Silver;
             this.ClientSize = new System.Drawing.Size(1366, 662);
+            this.Controls.Add(this.lineTexts);
             this.Controls.Add(this.ExecuterTime);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.logText);
@@ -366,6 +380,7 @@
         private System.Windows.Forms.TextBox logText;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown ExecuterTime;
+        private System.Windows.Forms.RichTextBox lineTexts;
     }
 }
 
