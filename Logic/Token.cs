@@ -30,6 +30,9 @@ namespace Logic
         Less,
         Less_equal,
         BackSlach_n,
+        And,
+        Or,
+        Less_minus,
 
         // Literals.
         Identifier,
@@ -60,6 +63,7 @@ namespace Logic
         public string lexeme { get; set; }
         public TokenType type { get; set; }
         public Object literal { get; set; }
+        public int orden { get; set; }
 
         public Tokens back { get; set; }
         public Tokens next { get; set; }

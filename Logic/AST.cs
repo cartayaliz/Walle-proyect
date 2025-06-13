@@ -11,7 +11,7 @@ namespace Logic
         public Tokens b { get; set; }
         public Tokens e { get; set; }
         public List<ASTNode> Childrens { get; set; }
-        string name { get; set; }
+        public string name { get; set; }
 
         public ASTNode(Tokens b, Tokens e, List<ASTNode> Childrens, string name)
 
@@ -93,6 +93,7 @@ namespace Logic
 
     public class ASTId : ASTNode
     {
+        public bool isLabel = false;
         public ASTId(Tokens b) : base(b, b, null, "AST Id") { }
         public override T Visit<T>(IVisitor<T> visitor)
 
@@ -152,17 +153,17 @@ namespace Logic
     }
     public class ASTGoTo : ASTNode
     {
-        public ASTRoot Root { get; set; }
-        public Tokens etiqueta { get; set; }
-        public Tokens line { get; set; }
 
-        public ASTGoTo(Tokens etiqueta, Tokens line) : base(etiqueta, line, new List<ASTNode>(), "AST GoTo")
+        public ASTId id { get; set; }
+        public ASTNode expression { get; set; }
+
+        public ASTGoTo(ASTId id, ASTNode expression) : base(id.b.back.back, expression.e, new List<ASTNode>(), "AST GoTo")
         {
-            
-            this.line = line;
-            this.etiqueta = etiqueta;
-           
-          
+            this.id = id;
+            this.expression = expression;
+            this.Childrens.Add(id);
+            this.Childrens.Add(expression);
+
         }
 
         public override T Visit<T>(IVisitor<T> visitor)

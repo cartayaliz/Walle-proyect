@@ -12,6 +12,7 @@ namespace Logic
     {
         public Ilogger logger;
         public ASTRoot root;
+        public Context context;
 
         public Parser(Ilogger logger, Tokens b, Tokens e)
         {
@@ -37,8 +38,12 @@ namespace Logic
             {
                 if (IsOperador(b)) return ParserUnary(b, e);
 
+                if (b.type == TokenType.GoTo)
+                {
+                    return ParserGoTo(b, e);
+                }
 
-                if (b.next != null && b.next.type == TokenType.Less && b.next.next.type == TokenType.Minus)
+                if (b.next != null && b.next.type == TokenType.Less_minus)
                     return ParserAsignation(b, e);
                 
                 var token = GetSplitToken(b, e, logger);
@@ -130,7 +135,7 @@ namespace Logic
             //if(b.type != TokenType.Identifier) da el berro
 
             var id = ParserId(b);
-            var exprr = ParserNode(b.next.next.next, e);
+            var exprr = ParserNode(b.next.next, e);
 
             return new ASTAsignation(id, exprr);
         }
@@ -151,18 +156,17 @@ namespace Logic
             return new ASTUnary(op, right);
         }
 
-        public ASTGoTo ParserGoTo(ASTRoot Root, Tokens line)
+        public ASTGoTo ParserGoTo(Tokens b, Tokens e)
         {
-            for (int i = 0; i < Root.Childrens.Count; i++)
-            {
-                if (Root.Childrens[i].b.type == TokenType.Identifier)
-                {
-                    var etiqueta = Root.Childrens[i].b;
-                    return new ASTGoTo(etiqueta, line);
-                }
-               
-            }
-            return null;
+            var current = b; // variable current para el tokens inicial
+            current = current.next; // token [
+            current = current.next; // ID
+            var label = ParserId(current); // token identificador
+            current = current.next; // token ]
+            current = current.next; // token (
+            current = current.next; // Expression
+            var condicion = ParserNode(current, e.back);
+            return new ASTGoTo(label, condicion);
         }
 
 
@@ -174,7 +178,12 @@ namespace Logic
             {  TokenType.TwoStar, 2 },
             {  TokenType.Split, 2},
             {  TokenType.Module, 2 },
-
+            { TokenType.Or, 2 },
+            { TokenType.And, 1 },
+            {  TokenType.Greater, 1 },
+            {  TokenType.Less, 1},
+            {  TokenType.Greater_equal, 1 },
+            {  TokenType.Less_equal, 1},
         };
         public bool IsOperador(Tokens token)
         {

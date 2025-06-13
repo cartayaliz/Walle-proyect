@@ -109,7 +109,7 @@ namespace walleproyect
             board.Value = 20;
             size.Value = 1;
             time.Value = 50;
-            colors.Text = directChars[invertedChars[Color.Black.Name]];
+            colors.Text = directChars[invertedChars[Color.Transparent.Name]];
             title.Text = " ";
             actual.Text = " ";
         }
@@ -138,11 +138,11 @@ namespace walleproyect
             if (time.Value == 0) _Refresh();
         }
 
-        private async Task ÌnstruccionActions(Instruction inst)
+        private async Task InstruccionActions(Instruction inst)
         {
             foreach (var item in inst.pasos)
             {
-            int waitinstr = 500;
+                int waitinstr = (int)time.Value * 2;
                 if (waitinstr > 0)
                 {
                     await Task.Delay((int)waitinstr / 2);
@@ -242,7 +242,7 @@ namespace walleproyect
 
            
             //var color = colors.Text;
-            var color = colors.SelectedItem?.ToString() ?? "Black";
+            var color = colors.SelectedItem?.ToString() ?? "Transparent";
 
             actual.Text = $"[{inteprete.actualline + 1}]: {inteprete.lines[inteprete.actualline]}";
 
@@ -254,7 +254,7 @@ namespace walleproyect
 
             foreach (var inst in inteprete.Run())
             {
-                await ÌnstruccionActions(inst);
+                await InstruccionActions(inst);
                 //VisualLogguer visual = new VisualLogguer(this);
                 //if (visual.HasError == true)
                 //{
@@ -264,13 +264,17 @@ namespace walleproyect
                 {
                     await PaintActions(exec.Run(inst));
                 }
-               
+                
                 if (inst.type == InstructionType.Request)
                 {
                     
                    actual.Text = exec.GetRequestContext(inst).Item2;
                 }
 
+                if(inst.type == InstructionType.GoTo)
+                {
+                    inteprete.pc = int.Parse(inst.argument[0].Item2);
+                }
             }
 
         }

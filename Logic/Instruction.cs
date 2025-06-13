@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,7 +14,8 @@ namespace Logic
         Request,
         Empty,
         Asignation,
-        Loop,
+        GoTo,
+
     }
     public class Instruction
     {
@@ -128,6 +130,47 @@ namespace Logic
             {
                 return ("number", (int.Parse(left.Item2) % int.Parse(right.Item2)).ToString());
             }
+            else if(node.op.type == TokenType.Greater)
+            {
+                if (int.Parse(left.Item2) > int.Parse(right.Item2)) return ("number", "1");
+                else
+                {
+                    return ("number", "0");
+                }
+            }
+            else if (node.op.type == TokenType.Greater_equal)
+            {
+                if (int.Parse(left.Item2) >= int.Parse(right.Item2)) return ("number", "1");
+                else
+                {
+                    return ("number", "0");
+                }
+            }
+            else if (node.op.type == TokenType.Less)
+            {
+                if (int.Parse(left.Item2) < int.Parse(right.Item2)) return ("number", "1");
+                else
+                {
+                    return ("number", "0");
+                }
+            }
+            else if (node.op.type == TokenType.Less_equal)
+            {
+                if (int.Parse(left.Item2) <= int.Parse(right.Item2)) return ("number", "1");
+                else
+                {
+                    return ("number", "0");
+                }
+            }
+            else if (node.op.type == TokenType.And)
+            {
+                return ("number", (int.Parse(left.Item2) & int.Parse(right.Item2)).ToString());
+            }
+            else if (node.op.type == TokenType.Or)
+            {
+                return ("number", (int.Parse(left.Item2) | int.Parse(right.Item2)).ToString());
+            }
+
 
             return ("number", "0");
         }
@@ -137,7 +180,7 @@ namespace Logic
             var right = node.right.Visit(this);
             if (node.op.type == TokenType.Minus)
             {
-                return ("number", "-" + right.Item2  );
+                return ("number", (-1 * int.Parse(right.Item2)).ToString()  );
             }
             return ("number", "0");
         }
@@ -153,10 +196,14 @@ namespace Logic
 
         Ilogger logger;
         ExeMemory exememory;
-        public InstructionVisitor(Ilogger logger, ExeMemory exememory)
+        Dictionary<string, string> mapped;
+
+
+        public InstructionVisitor(Ilogger logger, ExeMemory exememory, Dictionary<string, string> mapped)
         {
             this.logger = logger;
             this.exememory = exememory;
+            this.mapped = mapped;
 
         }
         public Instruction Visit(ASTNode node)
@@ -232,8 +279,6 @@ namespace Logic
         {
             var inst =  new Instruction(InstructionType.Empty, node);
 
-            inst.pasos.Add($"{node.b.lexeme} = {exememory.getValue(node.b.lexeme)}");
-
             return inst;
 
         }
@@ -285,6 +330,34 @@ namespace Logic
         public Instruction Visit(ASTGoTo node)
         {
             var inst = new Instruction(InstructionType.Empty, node);
+
+            var valueVisitor = new GetValueVisitor(logger, inst, this.exememory);
+
+            var cond = node.expression.Visit(valueVisitor);
+
+            var condV = int.Parse(cond.Item2);
+
+            inst.pasos.Add($"{node.expression.ToString()} = {cond} ({condV > 0})");
+
+
+            if (condV > 0)
+            {
+                inst.type = InstructionType.GoTo;
+
+                var redirect = ("number", "0");
+
+                if (mapped.ContainsKey(node.id.b.lexeme))
+                    redirect.Item2 = mapped[node.id.b.lexeme];
+                else
+                {
+                    // get a error here for not defining label
+                }
+
+                inst.argument.Add(redirect);
+
+                inst.pasos.Add($"GOTO {node.id.b.lexeme} -> {redirect}");
+
+            }
             return inst;
         }
     }

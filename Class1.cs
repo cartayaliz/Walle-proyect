@@ -21,6 +21,7 @@ namespace Logic
         public int actualline { get; set; }
 
         public int pc {  get; set; }
+     
         
         public Scanner scannner;
 
@@ -29,6 +30,8 @@ namespace Logic
         public ExeMemory exememory;
 
         public Ilogger logger;
+
+        public Dictionary<string, string> MappedLabel = new Dictionary<string, string>();
         public Interprete(string text, Ilogger logger)
         {
             this.text = text;
@@ -52,6 +55,8 @@ namespace Logic
                 {
                     tokens[i].next = tokens[i + 1];
                 }
+
+                tokens[i].orden = i;
          
             }
 
@@ -60,7 +65,8 @@ namespace Logic
             var node = tokens[0];
             while (node != null)
             {
-                message += node.ToString() + "\r\n";
+
+                message += node.orden.ToString() + node.ToString() + "\r\n";
                 node = node.next;
             }
             message += "END\r\n";
@@ -76,13 +82,29 @@ namespace Logic
 
             logger.Log("Lexer", message, 0);
 
+            if (parser.root.Childrens != null)
+            {
+                int n = parser.root.Childrens.Count;
+                for(int i = 0; i < n; i++)
+                {
+                    var item = parser.root.Childrens[i];
+                    var nodex = item as ASTId;
+                    if (nodex != null)
+                    {
+                        nodex.isLabel = true;
+                        MappedLabel[nodex.b.lexeme] = i.ToString();
+                    }
+
+                }
+            }
+
         }
 
         public IEnumerable<Instruction> Run()
         {
             pc = 0;
             var n = (parser.root.Childrens != null) ? parser.root.Childrens.Count: 0;
-            var InstVisitor = new InstructionVisitor(this.logger, exememory);
+            var InstVisitor = new InstructionVisitor(this.logger, exememory, MappedLabel);
 
             while(pc < n)
             {
@@ -110,7 +132,10 @@ namespace Logic
         }
 
         public (string, string) setValue( string key, (string, string) value) {
-            D.Add(key, value);
+            if (D.ContainsKey(key))
+                D[key] = value;
+            else
+                D.Add(key, value);
             return D[key];
         }
     

@@ -77,6 +77,8 @@ namespace Logic
             { "GetCountColor", TokenType.Request },
             { "Size", TokenType.Request },
             { "Fill", TokenType.Draw },
+            { "GoTo", TokenType.GoTo },
+
 
         };
         public bool isAtEnd()
@@ -171,6 +173,10 @@ namespace Logic
             char c = advance();
             switch (c)
             {
+
+                
+                case '[': tokens.Add(new Tokens(TokenType.Left_paren, "[", null, line)); break;
+                case ']': tokens.Add(new Tokens(TokenType.Rigth_paren, "]", null, line)); break;
                 case '(': tokens.Add(new Tokens(TokenType.Left_paren, "(", null, line)); break;
                 case ')': tokens.Add(new Tokens(TokenType.Rigth_paren, ")", null, line)) ; break;
                 case ',': tokens.Add(new Tokens(TokenType.Comma, ",", null, line)); break;
@@ -184,6 +190,17 @@ namespace Logic
                         tokens.Add(new Tokens(m ? TokenType.TwoStar : TokenType.Star, m?"**":"*", null, line)); break;
 
                     }
+                case '&':
+                    {
+                        tokens.Add(new Tokens(TokenType.And, "&", null, line)); break;
+                    }
+                case '|':
+                    {
+                        tokens.Add(new Tokens(TokenType.Or, "|", null, line)); break;
+
+                    }
+
+
                 case '=':
                     {
                        
@@ -192,11 +209,12 @@ namespace Logic
                 case '>':
                     {
                         bool m = match('=');
-                        tokens.Add(new Tokens(m ? TokenType.Greater_equal : TokenType.Greater, m ?  "<=" : "<", null, line)); break; }
+                        tokens.Add(new Tokens(m ? TokenType.Greater_equal : TokenType.Greater, m ?  ">=" : ">", null, line)); break; }
                 case '<':
                     {
                         bool m = match('=');
-                        tokens.Add(new Tokens(m? TokenType.Less_equal : TokenType.Less, m? ">=" : ">", null, line)); break;
+                        bool h = match('-');
+                        tokens.Add(new Tokens(m? TokenType.Less_equal : h? TokenType.Less_minus : TokenType.Less, m? "<=" : "<", null, line)); break;
                     }
                 case '%': tokens.Add(new Tokens(TokenType.Module, "%", null, line)); break;
                 case '/': tokens.Add(new Tokens(TokenType.Split, "/", null, line)); break;
