@@ -203,9 +203,29 @@ namespace walleproyect
 
 
         }
-       
+        public void SRun()
+        {
+            button1.Enabled = false;
+
+            button5.Enabled = false;
+
+            lector.ReadOnly = true;
+
+        }
+        public void ERun()
+        {
+            button1.Enabled = true;
+
+            button5.Enabled = true;
+
+            lector.ReadOnly = false;
+
+        }
+
+
         private async void button1_Click(object sender, EventArgs e)
         {
+            SRun();
             // Examples
 
             if (string.IsNullOrWhiteSpace(board.Text))
@@ -276,6 +296,7 @@ namespace walleproyect
                     inteprete.pc = int.Parse(inst.argument[0].Item2);
                 }
             }
+            ERun();
 
         }
       
