@@ -49,6 +49,8 @@ namespace Logic
         }
         public (string, string) Visit(ASTNode node)
         {
+           
+
             return ("number", "0");
         }
         public (string, string) Visit(ASTRoot node)
@@ -64,7 +66,7 @@ namespace Logic
 
         public (string, string) Visit(ASTCte node)
         {
-
+           
             var result = ("number", "0");
 
             if (node.e.type == TokenType.Number)
@@ -102,6 +104,9 @@ namespace Logic
         //public (string, string) Visit(AST)
         public (string, string) Visit(ASTBinaryExp node)
         {
+            // stopper
+            if (logger.HasError) return ("number", "0");
+
             var left = node.left.Visit(this);
             var right = node.right.Visit(this);
 
@@ -124,6 +129,10 @@ namespace Logic
             }
             else if (node.op.type == TokenType.Split)
             {
+                if(int.Parse(right.Item2) == 0 || right.Item2 == null)
+                {
+                    logger.LogError("Executer", "Cannot be divided by zero", node.op.line);
+                }
                 return ("number", (int.Parse(left.Item2) / int.Parse(right.Item2)).ToString());
             }
             else if (node.op.type == TokenType.Module)

@@ -60,29 +60,44 @@ namespace Logic
          
             }
 
-            var message = "BEGIN TOKENS:\r\n";
-          
-            var node = tokens[0];
-            while (node != null)
-            {
+            var message = "";
 
-                message += node.orden.ToString() + node.ToString() + "\r\n";
-                node = node.next;
+            // stopper
+            if (!logger.HasError)
+            {
+                message = "BEGIN TOKENS:\r\n";
+
+                var node = tokens[0];
+                while (node != null)
+                {
+
+                    message += node.orden.ToString() + node.ToString() + "\r\n";
+                    node = node.next;
+                }
+                message += "END\r\n";
+                logger.Log("Lexer", message, 0);
+
             }
-            message += "END\r\n";
-            logger.Log("Lexer", message, 0);
+            else message = "ERROR on LEXER\r\n";
 
             this.parser = new Parser(logger, tokens[0], tokens[tokens.Count - 1]);
 
-            message = "\r\nBEGIN PARSER:\r\n";
+            // stopper
+            if (!logger.HasError)
+            {
+                message = "\r\nBEGIN PARSER:\r\n";
 
-            message += this.parser.root.ToString();
+                message += this.parser.root.ToString();
 
-            message += "\r\nEND\r\n";
+                message += "\r\nEND\r\n";
 
-            logger.Log("Lexer", message, 0);
+                logger.Log("Lexer", message, 0);
 
-            if (parser.root.Childrens != null)
+            }
+
+
+
+            if (parser.root.Childrens != null && !logger.HasError)
             {
                 int n = parser.root.Childrens.Count;
                 for(int i = 0; i < n; i++)
@@ -103,11 +118,17 @@ namespace Logic
         public IEnumerable<Instruction> Run()
         {
             pc = 0;
+
+            // stopper
+            if (logger.HasError) yield break;
+
             var n = (parser.root.Childrens != null) ? parser.root.Childrens.Count: 0;
             var InstVisitor = new InstructionVisitor(this.logger, exememory, MappedLabel);
 
             while(pc < n)
             {
+                // stopper
+                if (logger.HasError) yield break;
 
                 var inst = parser.root.Childrens[pc].Visit(InstVisitor);
                 yield return inst;

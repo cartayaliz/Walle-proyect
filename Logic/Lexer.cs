@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -31,6 +32,7 @@ namespace Logic
         public int start {  get; set; }
         public int current {  get; set; }
         public int line {  get; set; }
+      
        
         Ilogger logger;
         public Scanner(string source, Ilogger logger)
@@ -175,8 +177,8 @@ namespace Logic
             {
 
                 
-                case '[': tokens.Add(new Tokens(TokenType.Left_paren, "[", null, line)); break;
-                case ']': tokens.Add(new Tokens(TokenType.Rigth_paren, "]", null, line)); break;
+                case '[': tokens.Add(new Tokens(TokenType.Left_clasp, "[", null, line)); break;
+                case ']': tokens.Add(new Tokens(TokenType.Right_clasp, "]", null, line)); break;
                 case '(': tokens.Add(new Tokens(TokenType.Left_paren, "(", null, line)); break;
                 case ')': tokens.Add(new Tokens(TokenType.Rigth_paren, ")", null, line)) ; break;
                 case ',': tokens.Add(new Tokens(TokenType.Comma, ",", null, line)); break;
@@ -192,20 +194,38 @@ namespace Logic
                     }
                 case '&':
                     {
-                        tokens.Add(new Tokens(TokenType.And, "&", null, line)); break;
+                        if (match('&'))
+                        { tokens.Add(new Tokens(TokenType.And, "&", null, line)); break; }
+                        else
+                        {
+                            logger.LogError("Lexer", "It was expected &&", line); 
+                            return;
+                        }
                     }
                 case '|':
                     {
-                        tokens.Add(new Tokens(TokenType.Or, "|", null, line)); break;
+
+                        if (match('|'))
+                            { tokens.Add(new Tokens(TokenType.Or, "|", null, line)); break; }
+                        else
+                        {
+                           logger.LogError("Lexer", "It was expected ||", line); 
+                            return;
+                        }
 
                     }
 
 
                 case '=':
                     {
-                       
-                        bool m = match('=');
-                        tokens.Add(new Tokens(m ? TokenType.Equal_equal : TokenType.Equal, m?  "==" : "=", null, line)); break; }
+                        if (match('='))
+                        { tokens.Add(new Tokens(TokenType.Equal_equal, "==", null, line)); break; }
+                        else
+                        {
+                            logger.LogError("Lexer", "It was expected == ", line);
+                            return;
+                        }
+                    }
                 case '>':
                     {
                         bool m = match('=');
@@ -218,7 +238,7 @@ namespace Logic
                     }
                 case '%': tokens.Add(new Tokens(TokenType.Module, "%", null, line)); break;
                 case '/': tokens.Add(new Tokens(TokenType.Split, "/", null, line)); break;
-                case '\n': tokens.Add(new Tokens(TokenType.BackSlach_n, "\n", null, line)); break;
+                case '\n': tokens.Add(new Tokens(TokenType.BackSlach_n, "\n", null, line)); line++; break;
                 case ' ' : break; 
                 case '\r': break;
                 case '"': String(); break;
@@ -251,7 +271,8 @@ namespace Logic
                     }
                     else
                     {
-                        logger.LogError("Lexer", "Unexpected character.", line);
+                        logger.LogError("Lexer", $"Unexpected character: [\'{c}\'] .", line);
+                        return;
                     }
                     break;
 

@@ -12,6 +12,8 @@ namespace Logic
         // Single-character tokens.
         Left_paren,
         Rigth_paren,
+        Left_clasp,
+        Right_clasp,
         Comma,
         Dot,
         Semicolon,

@@ -232,7 +232,7 @@ namespace walleproyect
         {
             SRun();
            
-            // Examples
+            
 
             if (string.IsNullOrWhiteSpace(board.Text))
             {
@@ -281,11 +281,7 @@ namespace walleproyect
             foreach (var inst in inteprete.Run())
             {
                 await InstruccionActions(inst);
-                //VisualLogguer visual = new VisualLogguer(this);
-                //if (visual.HasError == true)
-                //{
-                //    break;
-                //}
+                
                 if (inst.type == InstructionType.Draw)
                 {
                     await PaintActions(exec.Run(inst));
