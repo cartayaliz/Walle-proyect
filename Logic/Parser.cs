@@ -33,6 +33,11 @@ namespace Logic
             // stopper
             if (logger.HasError) return empty;
 
+            if (b.orden > e.orden || b == null)
+            {
+                logger.LogError("Parser", "Missin Value", e.line);
+            }
+
             if (b == e)
             {
                 if (b.type == TokenType.Identifier)

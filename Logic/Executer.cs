@@ -26,6 +26,7 @@ namespace Logic
             {
                 int x = int.Parse(ins.argument[0].Item2);
                 int y = int.Parse(ins.argument[1].Item2);
+                
                 return context.Spawn(x, y);
             }
             if(id == "DrawLine")

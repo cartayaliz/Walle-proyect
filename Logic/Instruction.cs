@@ -93,6 +93,11 @@ namespace Logic
         }
         public (string, string) Visit(ASTId node)
         {
+            if(!exememory.hasKey(node.b.lexeme))
+            {
+                logger.LogError("Executer", $"Undefined variable [\'{node.b.lexeme}\']", node.b.line);
+                return ("number", "0");
+            }
             return exememory.getValue(node.b.lexeme);
         }
 
@@ -109,6 +114,11 @@ namespace Logic
 
             var left = node.left.Visit(this);
             var right = node.right.Visit(this);
+            if(left.Item1 != right.Item1)
+            {
+                logger.LogError("Executer", "type of variable is different", node.op.line);
+                return ("number", "0");
+            }
 
             if(node.op.type == TokenType.Plus)
             {
@@ -187,6 +197,12 @@ namespace Logic
         public (string, string) Visit(ASTUnary node)
         {
             var right = node.right.Visit(this);
+            if (right.Item1 != "number")
+            {
+                logger.LogError("Executer", $"Debe ser numero { right.Item2 }", node.b.line);
+                return ("number", "0");
+            }
+
             if (node.op.type == TokenType.Minus)
             {
                 return ("number", (-1 * int.Parse(right.Item2)).ToString()  );
@@ -359,7 +375,7 @@ namespace Logic
                     redirect.Item2 = mapped[node.id.b.lexeme];
                 else
                 {
-                    // get a error here for not defining label
+                    logger.LogError("Executer", "Dont exist label", node.b.line);
                 }
 
                 inst.argument.Add(redirect);
