@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 using Logic;
 using System.IO;
-using System.Threading;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Text.RegularExpressions;
 
 
 namespace walleproyect
@@ -25,7 +20,9 @@ namespace walleproyect
         Dictionary<string, char> invertedChars;
         Dictionary<char, string> directChars;
 
-        public class ProgramExitException : Exception
+        Dictionary<string, Color> highlight;
+
+    public class ProgramExitException : Exception
         {
             public ProgramExitException(string message) : base(message) { }
         }
@@ -95,15 +92,35 @@ namespace walleproyect
             }
             context = new Context(20, new VisualLogguer(this));
 
+            highlight = new System.Collections.Generic.Dictionary<string, Color>()
+            {
+                {"GoTo", Color.Red },
+                {"<-", Color.Turquoise },
+                { "\"", Color.Salmon }
+            };
+
+            foreach (var item in GLOBALS.ARGS_MAPPED.Keys)
+            {
+                highlight.Add(item, Color.BlueViolet);
+            }
+
             walleImage = Image.FromFile(@"C:\Users\liz\Desktop\Nueva carpeta (2)\walleproyect\Image.jpg");
             InitializeComponent();
             EstablecerValoresPorDefecto();
-            lineTexts.Clear();
-            AddLineNumbers();
             pictureBox1.Width = 600;
             pictureBox1.Height = 600;
             colors.Items.AddRange((mappedChars.Values.Select(c => c.Name).ToArray()));
-         
+
+            lector.Multiline = true;
+            lector.WordWrap = false;
+            lector.AcceptsTab = true;
+            lector.ScrollBars = RichTextBoxScrollBars.ForcedBoth;
+            //lector.Dock = DockStyle.Fill;
+            lector.SelectionFont = new Font("Courier New", 9, FontStyle.Regular);
+            lector.SelectionColor = Color.Black;
+            lineTexts.Clear();
+            AddLineNumbers();
+
 
         }
         private void EstablecerValoresPorDefecto()
@@ -216,6 +233,17 @@ namespace walleproyect
             context.y = 0;
             pictureBox1.Refresh();
 
+            var lines = lector.Lines;
+
+            lector.Text = "";
+            foreach (var line in lines)
+            {
+                ParseLine(line);
+               
+            }
+            
+
+
         }
         public void ERun()
         {
@@ -231,8 +259,7 @@ namespace walleproyect
         private async void button1_Click(object sender, EventArgs e)
         {
             SRun();
-           
-            
+
 
             if (string.IsNullOrWhiteSpace(board.Text))
             {
@@ -302,7 +329,25 @@ namespace walleproyect
             ERun();
 
         }
-      
+
+        void ParseLine(string line)
+        {
+            Regex r = new Regex("([ \\t{}():;\"])");
+            String[] tokens = r.Split(line);
+
+            foreach (string token in tokens)
+            {                lector.SelectionColor = Color.Black;
+                lector.SelectionFont = new Font("Courier New", 9, FontStyle.Regular);
+                if (highlight.ContainsKey(token))
+                {
+                    lector.SelectionColor = highlight[token];
+                    lector.SelectionFont = new Font("Courier New", 9, FontStyle.Bold);
+                }
+                lector.SelectedText = token;
+            }
+            lector.SelectedText = "\n";
+        }
+
         private void button2_Click(object sender, EventArgs e)
         {
             Application.Restart();

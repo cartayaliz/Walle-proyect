@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace Logic
 {
 
-    class GLOBALS
+    public class GLOBALS
     {
         public static (string, string) EMPTY_VALUE = ("number", "0");
 
