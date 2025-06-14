@@ -30,12 +30,14 @@ namespace Logic
         public ExeMemory exememory;
 
         public Ilogger logger;
+        public Executer executer;
 
         public Dictionary<string, string> MappedLabel = new Dictionary<string, string>();
-        public Interprete(string text, Ilogger logger)
+        public Interprete(string text, Ilogger logger, Executer executer)
         {
             this.text = text;
             this.logger = logger;
+            this.executer = executer;
 
             exememory = new ExeMemory();
             scannner = new Scanner(text, logger);
@@ -123,7 +125,8 @@ namespace Logic
             if (logger.HasError) yield break;
 
             var n = (parser.root.Childrens != null) ? parser.root.Childrens.Count: 0;
-            var InstVisitor = new InstructionVisitor(this.logger, exememory, MappedLabel);
+            
+            var InstVisitor = new InstructionVisitor(this.logger, exememory, MappedLabel,executer);
 
             while(pc < n)
             {

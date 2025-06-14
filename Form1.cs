@@ -264,19 +264,20 @@ namespace walleproyect
             
             context = new Context(n, new VisualLogguer(this));
             context.logger.Clean();
-            Interprete inteprete = new Interprete(lector.Text, context.logger);
 
            
             //var color = colors.Text;
             var color = colors.SelectedItem?.ToString() ?? "Transparent";
 
-            actual.Text = $"[{inteprete.actualline + 1}]: {inteprete.lines[inteprete.actualline]}";
 
             context.CreateEmptyMatrix();
 
             pictureBox1.Refresh();
 
             Executer exec = new Executer(context);
+
+            Interprete inteprete = new Interprete(lector.Text, context.logger, exec);
+            actual.Text = $"[{inteprete.actualline + 1}]: {inteprete.lines[inteprete.actualline]}";
 
             foreach (var inst in inteprete.Run())
             {
@@ -290,7 +291,7 @@ namespace walleproyect
                 if (inst.type == InstructionType.Request)
                 {
                     
-                   actual.Text = exec.GetRequestContext(inst).Item2;
+                   actual.Text = exec.GetRequestContext(inst.origin, inst.argument).Item2;
                 }
 
                 if(inst.type == InstructionType.GoTo)

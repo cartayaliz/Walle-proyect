@@ -71,7 +71,7 @@ namespace Logic
             { "Spawn", TokenType.Draw },
             { "Color", TokenType.Draw },
             { "GetActualX", TokenType.Request },
-            { "GetActualy", TokenType.Request },
+            { "GetActualY", TokenType.Request },
             { "GetCanvasSize", TokenType.Request },
             { "IsCanvasColor", TokenType.Request },
             { "IsBrushSize", TokenType.Request },

@@ -58,11 +58,6 @@ namespace Logic
 
                 if (b.next != null && b.next.type == TokenType.Less_minus)
                     return ParserAsignation(b, e) ?? empty;
-
-                if (b.type == TokenType.Draw || b.type == TokenType.Request)
-                {
-                    return ParserCall(b, e) ?? empty;
-                }
                 
                 var token = GetSplitToken(b, e, logger);
 
@@ -74,6 +69,11 @@ namespace Logic
                 {
                     if (b.type == TokenType.Left_paren && e.type == TokenType.Rigth_paren) 
                         return ParserNode(b.next, e.back) ?? empty;
+                    if (b.type == TokenType.Draw || b.type == TokenType.Request)
+                    {
+                        return ParserCall(b, e) ?? empty;
+                    }
+
                 }
 
                 return ParserBinaryExp(b, e) ?? empty;
@@ -110,7 +110,7 @@ namespace Logic
                         var first = childrens[0] as ASTCall;
                         if(first == null || first.b.type != TokenType.Draw || first.b.lexeme != "Spawn")
                         {
-                            logger.LogError("Parser", $"La primera instrucción debe ser una llamada a Spawn", b.line);
+                            logger.LogWarning("Parser", $"La primera instrucción debe ser una llamada a Spawn", b.line);
                         }
                     }
                     current = current.next;
@@ -181,6 +181,11 @@ namespace Logic
                 {
                     current = current.next;
                 }
+            }
+
+            if(!GLOBALS.MatchArgsCount(b.lexeme, childrens.Count, logger))
+            {
+                logger.LogError("Parser", "No coinciden la cantidad de argumentos", b.line);
             }
 
             return new ASTCall(b, e, childrens);

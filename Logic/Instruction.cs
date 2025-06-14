@@ -8,6 +8,69 @@ using System.Windows.Forms;
 
 namespace Logic
 {
+
+    class GLOBALS
+    {
+        public static (string, string) EMPTY_VALUE = ("number", "0");
+
+        public static string LOG_LEXER = "Lexer";
+        public static string LOG_PARSER = "Parser";
+        public static string LOG_EXECUTER = "Executer";
+
+        public static string NUMBER_TYPE = "number";
+        public static string STRING_TYPE = "string";
+
+        public static Dictionary<string, string[]> ARGS_MAPPED = new Dictionary<string, string[]>()
+        {
+            { "Spawn", new string[2]{ NUMBER_TYPE, NUMBER_TYPE } },
+            { "DrawLine", new string[3]{ NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE } },
+            { "DrawRectangle", new string[5]{ NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE,  NUMBER_TYPE, NUMBER_TYPE } },
+            { "DrawCuadrado", new string[4]{ NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE,  NUMBER_TYPE } },
+            { "DrawCircle",new string[3]{ NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE } },
+            { "DrawTriangle", new string[6]{ NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE } },
+            { "DrawAsterisco", new string[3]{ NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE } },
+            { "DrawRombo", new string[3]{ NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE } },
+            { "Fill", new string[0]{ }  },
+            
+            { "Color", new string[1]{ STRING_TYPE } },
+            { "Size", new string[1]{ NUMBER_TYPE }  },
+
+            { "GetActualX", new string[0]{ } },
+            { "GetActualY", new string[0]{ } },
+            { "GetCanvasSize",  new string[0]{ } },
+            { "GetCountColor", new string[5]{ STRING_TYPE, NUMBER_TYPE, NUMBER_TYPE,  NUMBER_TYPE, NUMBER_TYPE } },
+
+            { "IsBrushSize", new string[1]{ NUMBER_TYPE } },
+            { "IsBrushColor", new string[1]{ STRING_TYPE } },
+            { "IsCanvasColor", new string[3]{ STRING_TYPE, NUMBER_TYPE, NUMBER_TYPE }},
+        };
+
+        public static bool MatchArgsCount(string key, int count, Ilogger logger)
+        {
+            if (ARGS_MAPPED.ContainsKey(key)) return ARGS_MAPPED[key].Length == count;
+
+            logger.LogWarning("ARGS", $"MISSING KEY METHOD {key}", 0);
+
+            return false;
+        }
+
+        public static bool MatchArgsValue(string key, List<(string, string)> values, Ilogger logger, Tokens b)
+        {
+            if (!MatchArgsCount(key, values.Count, logger)) return false;
+
+            var args = ARGS_MAPPED[key];
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i] != values[i].Item1)
+                {
+                    logger.LogError(LOG_EXECUTER, $"Invalid args in position {i} expected {args[i]} found {values[i].Item1}", b.line);
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
     public enum InstructionType
     {
         Draw,
@@ -41,49 +104,67 @@ namespace Logic
         Ilogger logger;
         ExeMemory exememory;
         Instruction instruction;
-        public GetValueVisitor(Ilogger logger, Instruction instruction, ExeMemory exememory)
+        Executer executer;
+        public GetValueVisitor(Ilogger logger, Instruction instruction, ExeMemory exememory, Executer executer)
         {
             this.logger = logger;
             this.exememory = exememory;
             this.instruction = instruction;
+            this.executer = executer;
         }
         public (string, string) Visit(ASTNode node)
         {
-           
-
-            return ("number", "0");
+            return GLOBALS.EMPTY_VALUE;
         }
         public (string, string) Visit(ASTRoot node)
         {
-            return ("number", "0");
+            return GLOBALS.EMPTY_VALUE;
         }
 
         public (string, string) Visit(ASTCall node)
         {
-            return ("number", "0");
+            if(node.b.type == TokenType.Request)
+            {
+                var args = new List<(string, string)>();
+                if (node.Childrens != null)
+                {
+                    foreach (var child in node.Childrens)
+                    {
+                        var value = child.Visit(this);
+                        args.Add(value);
+                    }
+                }
 
+                if (!GLOBALS.MatchArgsValue(node.b.lexeme, args, logger, node.b))
+                {
+                    return GLOBALS.EMPTY_VALUE;
+                }
+
+                return executer.GetRequestContext(node, args);
+            }
+            return GLOBALS.EMPTY_VALUE;
         }
 
         public (string, string) Visit(ASTCte node)
         {
            
-            var result = ("number", "0");
+            var result = GLOBALS.EMPTY_VALUE;
 
             if (node.e.type == TokenType.Number)
             {
-                result=  ("number", node.e.lexeme);
+                result=  (GLOBALS.NUMBER_TYPE, node.e.lexeme);
             }
             if (node.e.type == TokenType.True)
             {
-                result = ("number", "1");
+                result = (GLOBALS.NUMBER_TYPE, "1");
             }
             if (node.e.type == TokenType.False)
             {
-                result = ("number", "0");
+                result = (GLOBALS.NUMBER_TYPE, "0");
             }
             if (node.e.type == TokenType.String)
             {
-                result = ("string", node.e.lexeme);
+                result = (GLOBALS.STRING_TYPE, node.e.lexeme);
             }
 
             this.instruction.pasos.Add($"get from cte the value: {result.ToString()}");
@@ -96,7 +177,7 @@ namespace Logic
             if(!exememory.hasKey(node.b.lexeme))
             {
                 logger.LogError("Executer", $"Undefined variable [\'{node.b.lexeme}\']", node.b.line);
-                return ("number", "0");
+                return GLOBALS.EMPTY_VALUE;
             }
             return exememory.getValue(node.b.lexeme);
         }
@@ -110,14 +191,14 @@ namespace Logic
         public (string, string) Visit(ASTBinaryExp node)
         {
             // stopper
-            if (logger.HasError) return ("number", "0");
+            if (logger.HasError) return GLOBALS.EMPTY_VALUE;
 
             var left = node.left.Visit(this);
             var right = node.right.Visit(this);
             if(left.Item1 != right.Item1)
             {
                 logger.LogError("Executer", "type of variable is different", node.op.line);
-                return ("number", "0");
+                return GLOBALS.EMPTY_VALUE;
             }
 
             if(node.op.type == TokenType.Plus)
@@ -154,7 +235,7 @@ namespace Logic
                 if (int.Parse(left.Item2) > int.Parse(right.Item2)) return ("number", "1");
                 else
                 {
-                    return ("number", "0");
+                    return GLOBALS.EMPTY_VALUE;
                 }
             }
             else if (node.op.type == TokenType.Greater_equal)
@@ -162,7 +243,7 @@ namespace Logic
                 if (int.Parse(left.Item2) >= int.Parse(right.Item2)) return ("number", "1");
                 else
                 {
-                    return ("number", "0");
+                    return GLOBALS.EMPTY_VALUE;
                 }
             }
             else if (node.op.type == TokenType.Less)
@@ -170,7 +251,7 @@ namespace Logic
                 if (int.Parse(left.Item2) < int.Parse(right.Item2)) return ("number", "1");
                 else
                 {
-                    return ("number", "0");
+                    return GLOBALS.EMPTY_VALUE;
                 }
             }
             else if (node.op.type == TokenType.Less_equal)
@@ -178,7 +259,7 @@ namespace Logic
                 if (int.Parse(left.Item2) <= int.Parse(right.Item2)) return ("number", "1");
                 else
                 {
-                    return ("number", "0");
+                    return GLOBALS.EMPTY_VALUE;
                 }
             }
             else if (node.op.type == TokenType.And)
@@ -191,7 +272,7 @@ namespace Logic
             }
 
 
-            return ("number", "0");
+            return GLOBALS.EMPTY_VALUE;
         }
 
         public (string, string) Visit(ASTUnary node)
@@ -200,19 +281,19 @@ namespace Logic
             if (right.Item1 != "number")
             {
                 logger.LogError("Executer", $"Debe ser numero { right.Item2 }", node.b.line);
-                return ("number", "0");
+                return GLOBALS.EMPTY_VALUE;
             }
 
             if (node.op.type == TokenType.Minus)
             {
                 return ("number", (-1 * int.Parse(right.Item2)).ToString()  );
             }
-            return ("number", "0");
+            return GLOBALS.EMPTY_VALUE;
         }
 
         public (string, string) Visit(ASTGoTo node)
         {
-           return ("number", "0");
+           return GLOBALS.EMPTY_VALUE;
         }
     }
 
@@ -222,14 +303,14 @@ namespace Logic
         Ilogger logger;
         ExeMemory exememory;
         Dictionary<string, string> mapped;
+        Executer executer;
 
-
-        public InstructionVisitor(Ilogger logger, ExeMemory exememory, Dictionary<string, string> mapped)
+        public InstructionVisitor(Ilogger logger, ExeMemory exememory, Dictionary<string, string> mapped, Executer executer)
         {
             this.logger = logger;
             this.exememory = exememory;
             this.mapped = mapped;
-
+            this.executer = executer;
         }
         public Instruction Visit(ASTNode node)
         {
@@ -254,7 +335,7 @@ namespace Logic
 
                 var args = "";
 
-                var valueVisitor = new GetValueVisitor(logger, inst, this.exememory);
+                var valueVisitor = new GetValueVisitor(logger, inst, this.exememory, executer);
 
                 if (node.Childrens != null)
                 {
@@ -265,6 +346,12 @@ namespace Logic
                         inst.argument.Add(value);
                     }
                 }
+
+                if (!GLOBALS.MatchArgsValue(node.b.lexeme, inst.argument, logger, node.b))
+                {
+                    return new Instruction(InstructionType.Empty, node);
+                }
+
 
                 inst.pasos.Add($"Call {node.b.lexeme}({args})");
 
@@ -277,7 +364,7 @@ namespace Logic
 
                 var args = "";
 
-                var valueVisitor = new GetValueVisitor(logger, inst, this.exememory);
+                var valueVisitor = new GetValueVisitor(logger, inst, this.exememory, executer);
 
                 if (node.Childrens != null)
                 {
@@ -312,7 +399,7 @@ namespace Logic
         {
             var inst =  new Instruction(InstructionType.Empty, node);
 
-            var valueVisitor = new GetValueVisitor(logger, inst, this.exememory);
+            var valueVisitor = new GetValueVisitor(logger, inst, this.exememory, executer);
 
             var value = node.expression.Visit(valueVisitor);
 
@@ -328,7 +415,7 @@ namespace Logic
         {
             var inst = new Instruction(InstructionType.Empty, node);
 
-            var valueVisitor = new GetValueVisitor(logger, inst, this.exememory);
+            var valueVisitor = new GetValueVisitor(logger, inst, this.exememory, executer);
 
             var left = node.left.Visit(valueVisitor);
             var right = node.right.Visit(valueVisitor);
@@ -343,7 +430,7 @@ namespace Logic
         {
             var inst = new Instruction(InstructionType.Empty, node);
 
-            var valueVisitor = new GetValueVisitor(logger, inst, this.exememory);
+            var valueVisitor = new GetValueVisitor(logger, inst, this.exememory, executer);
 
             var right = node.right.Visit(valueVisitor);
 
@@ -356,7 +443,7 @@ namespace Logic
         {
             var inst = new Instruction(InstructionType.Empty, node);
 
-            var valueVisitor = new GetValueVisitor(logger, inst, this.exememory);
+            var valueVisitor = new GetValueVisitor(logger, inst, this.exememory, executer);
 
             var cond = node.expression.Visit(valueVisitor);
 
@@ -369,7 +456,7 @@ namespace Logic
             {
                 inst.type = InstructionType.GoTo;
 
-                var redirect = ("number", "0");
+                var redirect = GLOBALS.EMPTY_VALUE;
 
                 if (mapped.ContainsKey(node.id.b.lexeme))
                     redirect.Item2 = mapped[node.id.b.lexeme];

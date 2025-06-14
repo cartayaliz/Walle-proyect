@@ -146,9 +146,9 @@ namespace Logic
 
             return new List<(int, int, int, int, char)>();
         }
-        public (string, string) GetRequestContext(Instruction ins)
+        public (string, string) GetRequestContext(ASTNode origin, List<(string, string)> args)
         {
-            var id = ins.origin.b.lexeme;
+            var id = origin.b.lexeme;
             if (id == "GetActualX")
             {
                 return ("int",context.GetActualX().ToString());
@@ -159,40 +159,40 @@ namespace Logic
             }
             if (id == "GetCanvasSize")
             {
-                return ("int", context.GetCanvasSize().ToString());
+                return ("number", context.GetCanvasSize().ToString());
             }
             if (id == "IsCanvasColor")
             {
-                string colorName = ins.argument[0].Item2;
-                int x = int.Parse(ins.argument[1].Item2);
-                int y = int.Parse(ins.argument[2].Item2);
+                string colorName = args[0].Item2;
+                int x = int.Parse(args[1].Item2);
+                int y = int.Parse(args[2].Item2);
 
                 var colorChar = colorName[0];
                 return ("int", context.IsCanvasColor(colorChar, x, y).ToString());
             }
             if (id == "IsBrushSize")
             {
-                int x = int.Parse(ins.argument[0].Item2);
+                int x = int.Parse(args[0].Item2);
                 return ("int", context.IsBrushSize(x).ToString());
             }
             if (id == "IsBrushColor")
             {
-                string colorName = ins.argument[0].Item2;
+                string colorName = args[0].Item2;
                 return ("int", context.IsBrushColor(colorName).ToString());
             }
             if (id == "GetColorCount")
             {
-                string name = ins.argument[0].Item2;
+                string name = args[0].Item2;
                 char color = name[0];
-                int x = int.Parse(ins.argument[1].Item2);
-                int y = int.Parse(ins.argument[2].Item2);
-                int z = int.Parse(ins.argument[3].Item2);
-                int v = int.Parse(ins.argument[4].Item2);
+                int x = int.Parse(args[1].Item2);
+                int y = int.Parse(args[2].Item2);
+                int z = int.Parse(args[3].Item2);
+                int v = int.Parse(args[4].Item2);
                 return ("int", context.GetColorCount(color, x, y, z, v).ToString());
             }
             if( id == "Size")
             {
-                int x = int.Parse (ins.argument[0].Item2);
+                int x = int.Parse (args[0].Item2);
           
                 context.SetSize(x);
 
@@ -200,7 +200,7 @@ namespace Logic
             }
           
 
-            context.logger.LogError("Exe", $"Missing method Request: [{id}]", ins.origin.b.line);
+            context.logger.LogError("Exe", $"Missing method Request: [{id}]", origin.b.line);
             return ("", "");
         }
 
