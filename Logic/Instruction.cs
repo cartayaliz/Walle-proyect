@@ -31,9 +31,11 @@ namespace Logic
             { "DrawAsterisco", new string[3]{ NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE } },
             { "DrawRombo", new string[3]{ NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE } },
             { "Fill", new string[0]{ }  },
-            
+            { "FillB", new string[0]{ }  },
+
             { "Color", new string[1]{ STRING_TYPE } },
             { "Size", new string[1]{ NUMBER_TYPE }  },
+          
 
             { "GetActualX", new string[0]{ } },
             { "GetActualY", new string[0]{ } },

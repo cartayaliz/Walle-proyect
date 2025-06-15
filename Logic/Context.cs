@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Runtime.Remoting.Contexts;
@@ -39,20 +40,35 @@ namespace Logic
             line = this.line;
 
         }
+        public Dictionary<string, Color> Colors = new Dictionary<string, Color>()
+        {
+            { "Transparent", Color.Transparent },
+            { "Red", Color.Red },
+            { "Blue", Color.Blue },
+            { "Negro", Color.Black },
+            { "White", Color.White}, 
+            { "Green", Color.Green },
+            { "Yellow", Color.Yellow },
+            { "Orange", Color.Orange },
+            { "Purple", Color.Purple },
+            { "Aqua", Color.Aqua},
+            { "Fushia", Color.Pink },
+        };
 
         // Config methods
         public void CreateEmptyMatrix()
         {
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < n; j++)
-                    this.M[i, j] = '_';
+                    this.M[i, j] = 'W';
         }
         public List<(int, int, int, int, char)> Spawn(int i , int j)
         {
             SetColor(' ');
-            var path = DrawLineFromPosition(x, y, 1, 0, i, true, x, y);
+            
+            var path = DrawLineFromPosition(x, y, 1, 0, i - x, true, x, y);
             var action = path[path.Count - 1];
-            path.AddRange(DrawLineFromPosition(action.Item3, action.Item4, 0, 1, j, true, action.Item3, action.Item4));
+            path.AddRange(DrawLineFromPosition(action.Item3, action.Item4, 0, 1, j - y, true, action.Item3, action.Item4));
             return path;
 
         }
@@ -276,6 +292,36 @@ namespace Logic
 
         }
 
+        public List<(int, int)> ExpandB(int i, int j, char c)
+        {
+            List<(int, int)> result = new List<(int, int)>();
+            bool[,] used = new bool[n, n];
+            Queue<(int, int)> Q = new Queue<(int, int)>();
+            Q.Enqueue((i, j));
+            int[] A = { 0, 1, 0, -1 };
+            int[] B = { 1, 0, -1, 0 };
+           
+
+            while (Q.Count >0)
+            {
+              (i, j) = Q.Dequeue();
+                result.Add((i, j));
+                for (int k = 0; k < A.Length; k++)
+                {
+                    int ni = i + A[k];
+                    int nj = j + B[k];
+
+                    if (Inside(ni, nj) && M[ni, nj] == c && !used[ni, nj])
+                    {
+                        Q.Enqueue((ni, nj));
+                        used[ni, nj] = true;
+                    }
+                }
+
+            }
+            return result;
+
+        }
         public List<(int, int)> Expand(int x, int y, char c)
         {
             List<(int, int)>  result = new List<(int, int)>();
@@ -313,8 +359,16 @@ namespace Logic
                 .Select((i) => (i.Item1, i.Item2, x, y, this.color))
             );
         }
-        
-        
+        public List<(int, int, int, int, char)> FillB()
+        {
+            return new List<(int, int, int, int, char)>(
+                ExpandB(x, y, M[x, y])
+                .Select((i) => (i.Item1, i.Item2, x, y, this.color))
+            );
+        }
+
+
+
         // Métodos de informacion
 
         public int IsBrushSize(int size)
@@ -382,7 +436,6 @@ namespace Logic
             }
             return c;
         }
-
 
 
         // Métodos de ayuda

@@ -106,32 +106,31 @@ namespace Logic
             if (id == "Color")
             {
                
-                if (ins.argument[0].Item2.Length != 1)
-                {
                     string colorName = ins.argument[0].Item2;
 
                     if (string.IsNullOrWhiteSpace(colorName))
                     {
-                        context.logger.LogError("Exe", $"Color no puede estar vacío.", ins.origin.b.line);
+                        context.logger.LogError("Exe", $"Color cant be empty.", ins.origin.b.line);
                         
                         return new List<(int, int, int, int, char)>();
                       
                     }
+                if (!context.Colors.ContainsKey(colorName))
+                {
+                    context.logger.LogError("Exe", $"Invalid Color", ins.origin.b.line);
 
+                    return new List<(int, int, int, int, char)>();
+
+                }
+                
                     var colorChar = colorName[0];
+
                     List<(int, int, int, int, char)> H = new List<(int, int, int, int, char)>();
-                    if (colorChar == 'W')
-                    {
-                        context.SetColor('_');
-                    }
-                    else
-                    {
-                        context.SetColor(colorChar);
-                    }
+
+                    context.SetColor(colorChar);
+
                     return H;
 
-            
-                }
                 
             }
             if (id == "Fill")
@@ -140,8 +139,23 @@ namespace Logic
                 return context.Fill();
 
             }
+            if (id == "FillB")
+            {
+
+                return context.FillB();
+
+            }
+            if (id == "Size")
+            {
+                int h = int.Parse(ins.argument[0].Item2);
+
+                context.SetSize(h);
+                return new List<(int, int, int, int, char)>();
 
 
+
+            }
+          
             context.logger.LogError("Exe", $"Missing method draw: {id}", ins.origin.b.line);
 
             return new List<(int, int, int, int, char)>();
@@ -151,15 +165,15 @@ namespace Logic
             var id = origin.b.lexeme;
             if (id == "GetActualX")
             {
-                return ("int",context.GetActualX().ToString());
+                return (GLOBALS.NUMBER_TYPE, context.GetActualX().ToString());
             }
             if (id == "GetActualY")
             {
-                return ("int", context.GetActualY().ToString());
+                return (GLOBALS.NUMBER_TYPE, context.GetActualY().ToString());
             }
             if (id == "GetCanvasSize")
             {
-                return ("number", context.GetCanvasSize().ToString());
+                return (GLOBALS.NUMBER_TYPE, context.GetCanvasSize().ToString());
             }
             if (id == "IsCanvasColor")
             {
@@ -168,17 +182,17 @@ namespace Logic
                 int y = int.Parse(args[2].Item2);
 
                 var colorChar = colorName[0];
-                return ("int", context.IsCanvasColor(colorChar, x, y).ToString());
+                return (GLOBALS.NUMBER_TYPE, context.IsCanvasColor(colorChar, x, y).ToString());
             }
             if (id == "IsBrushSize")
             {
                 int x = int.Parse(args[0].Item2);
-                return ("int", context.IsBrushSize(x).ToString());
+                return (GLOBALS.NUMBER_TYPE, context.IsBrushSize(x).ToString());
             }
             if (id == "IsBrushColor")
             {
                 string colorName = args[0].Item2;
-                return ("int", context.IsBrushColor(colorName).ToString());
+                return (GLOBALS.NUMBER_TYPE, context.IsBrushColor(colorName).ToString());
             }
             if (id == "GetColorCount")
             {
@@ -188,18 +202,9 @@ namespace Logic
                 int y = int.Parse(args[2].Item2);
                 int z = int.Parse(args[3].Item2);
                 int v = int.Parse(args[4].Item2);
-                return ("int", context.GetColorCount(color, x, y, z, v).ToString());
-            }
-            if( id == "Size")
-            {
-                int x = int.Parse (args[0].Item2);
-          
-                context.SetSize(x);
-
-              
+                return (GLOBALS.NUMBER_TYPE, context.GetColorCount(color, x, y, z, v).ToString());
             }
           
-
             context.logger.LogError("Exe", $"Missing method Request: [{id}]", origin.b.line);
             return ("", "");
         }

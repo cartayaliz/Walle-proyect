@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using Logic;
 using System.IO;
 using System.Text.RegularExpressions;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 
 namespace walleproyect
@@ -16,9 +17,9 @@ namespace walleproyect
     public partial class Form1 : Form
     {
         Random rand = new Random();
-        Dictionary<char, Color> mappedChars;
-        Dictionary<string, char> invertedChars;
-        Dictionary<char, string> directChars;
+       public Dictionary<char, Color> mappedChars;
+       public Dictionary<string, char> invertedChars;
+       public Dictionary<char, string> directChars;
 
         Dictionary<string, Color> highlight;
 
@@ -34,10 +35,14 @@ namespace walleproyect
             public VisualLogguer(Form1 form) {
                 this.form = form;
             }
+            
 
             public void Log(string prefix, string messagge, int line)
             {
-                this.form.logText.AppendText($"INFO: [{prefix}] (line: {line}): {messagge}\r\n");
+                if(form.checkBox1.Checked)
+                {
+                    this.form.logText.AppendText($"INFO: [{prefix}] (line: {line}): {messagge}\r\n");
+                }
 
             }
 
@@ -45,6 +50,7 @@ namespace walleproyect
             {
 
                 HasError = true;
+                
                 this.form.logText.AppendText($"ERROR: [{prefix}] (line: {line}): {messagge}\r\n");
            
 
@@ -52,6 +58,7 @@ namespace walleproyect
 
             public void LogWarning(string prefix, string messagge, int line) 
             {
+               
                 this.form.logText.AppendText($"WARNING: [{prefix}] (line: {line}): {messagge}\r\n");
 
             }
@@ -69,8 +76,7 @@ namespace walleproyect
 
             mappedChars = new Dictionary<char, Color>()
             {
-                { '_', Color.White},
-                { 'W', Color.Gray },
+                { 'W', Color.White},
                 { 'R', Color.Red },
                 { 'B', Color.Blue },
                 { 'G', Color.Green },
@@ -80,6 +86,7 @@ namespace walleproyect
                 { 'P', Color.Purple },
                 { ' ', Color.Transparent },
                 { 'A', Color.Aqua},
+                { 'F', Color.Pink },
             };
 
             invertedChars = new Dictionary<string, char>();
@@ -122,15 +129,18 @@ namespace walleproyect
             AddLineNumbers();
 
 
+
         }
         private void EstablecerValoresPorDefecto()
         {
-            board.Value = 20;
+            board.Value = 25;
+
             size.Value = 1;
             time.Value = 50;
             colors.Text = directChars[invertedChars[Color.Transparent.Name]];
             ExecuterTime.Value = 100;
             actual.Text = " ";
+            checkBox1.Checked = false;
         }
     
         private void _Refresh()
@@ -150,6 +160,7 @@ namespace walleproyect
             foreach (var item in path)
             {
                 context.DoAction(item);
+              
                 if (time.Value != 0) _Refresh();
 
                 await Task.Delay((int)time.Value);
@@ -159,6 +170,12 @@ namespace walleproyect
 
         private async Task InstruccionActions(Instruction inst)
         {
+
+
+            if (!checkBox1.Checked)
+            {
+                return;
+            }
             foreach (var item in inst.pasos)
             {
                 int waitinstr = (int)ExecuterTime.Value;
@@ -228,6 +245,8 @@ namespace walleproyect
 
             button5.Enabled = false;
 
+         
+
             lector.ReadOnly = true;
             context.x = 0;
             context.y = 0;
@@ -236,12 +255,13 @@ namespace walleproyect
             var lines = lector.Lines;
 
             lector.Text = "";
+
             foreach (var line in lines)
             {
                 ParseLine(line);
-               
+
             }
-            
+
 
 
         }
@@ -292,24 +312,24 @@ namespace walleproyect
             context = new Context(n, new VisualLogguer(this));
             context.logger.Clean();
 
-           
-            //var color = colors.Text;
             var color = colors.SelectedItem?.ToString() ?? "Transparent";
 
-
             context.CreateEmptyMatrix();
-
+            
             pictureBox1.Refresh();
 
             Executer exec = new Executer(context);
-
             Interprete inteprete = new Interprete(lector.Text, context.logger, exec);
             actual.Text = $"[{inteprete.actualline + 1}]: {inteprete.lines[inteprete.actualline]}";
+
+
 
             foreach (var inst in inteprete.Run())
             {
                 await InstruccionActions(inst);
-                
+
+                actual.Text = $"[{inteprete.actualline + 1}]: {inteprete.lines[inteprete.actualline]}";
+
                 if (inst.type == InstructionType.Draw)
                 {
                     await PaintActions(exec.Run(inst));
@@ -333,10 +353,11 @@ namespace walleproyect
         void ParseLine(string line)
         {
             Regex r = new Regex("([ \\t{}():;\"])");
-            String[] tokens = r.Split(line);
+            string[] tokens = r.Split(line);
 
             foreach (string token in tokens)
-            {                lector.SelectionColor = Color.Black;
+            {
+                lector.SelectionColor = Color.Black;
                 lector.SelectionFont = new Font("Courier New", 9, FontStyle.Regular);
                 if (highlight.ContainsKey(token))
                 {
@@ -478,6 +499,11 @@ namespace walleproyect
             lineTexts.Clear();
             AddLineNumbers();
             lineTexts.Invalidate();
+        }
+
+        private void logText_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

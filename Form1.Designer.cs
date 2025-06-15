@@ -53,6 +53,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.ExecuterTime = new System.Windows.Forms.NumericUpDown();
             this.lineTexts = new System.Windows.Forms.RichTextBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.error_board)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.error_size)).BeginInit();
@@ -68,7 +69,7 @@
             this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
             this.button1.Cursor = System.Windows.Forms.Cursors.AppStarting;
             this.button1.Font = new System.Drawing.Font("Microsoft Uighur", 16.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(797, 25);
+            this.button1.Location = new System.Drawing.Point(1040, 26);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 38);
             this.button1.TabIndex = 0;
@@ -92,7 +93,7 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.label1.Font = new System.Drawing.Font("Microsoft Uighur", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(318, 29);
+            this.label1.Location = new System.Drawing.Point(318, 23);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(44, 29);
             this.label1.TabIndex = 2;
@@ -103,7 +104,7 @@
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.label3.Font = new System.Drawing.Font("Microsoft Uighur", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(156, 26);
+            this.label3.Location = new System.Drawing.Point(156, 23);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(57, 29);
             this.label3.TabIndex = 6;
@@ -135,7 +136,7 @@
             this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
             this.button2.Cursor = System.Windows.Forms.Cursors.AppStarting;
             this.button2.Font = new System.Drawing.Font("Microsoft Uighur", 16.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(999, 26);
+            this.button2.Location = new System.Drawing.Point(1350, 26);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(87, 38);
             this.button2.TabIndex = 10;
@@ -149,11 +150,11 @@
             this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
             this.button3.Cursor = System.Windows.Forms.Cursors.AppStarting;
             this.button3.Font = new System.Drawing.Font("Microsoft Uighur", 16.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(878, 25);
+            this.button3.Location = new System.Drawing.Point(1125, 26);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(104, 38);
             this.button3.TabIndex = 11;
-            this.button3.Text = "Guardar";
+            this.button3.Text = "Save";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -162,7 +163,7 @@
             this.button4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button4.BackgroundImage")));
             this.button4.Cursor = System.Windows.Forms.Cursors.AppStarting;
             this.button4.Font = new System.Drawing.Font("Microsoft Uighur", 16.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(1228, 26);
+            this.button4.Location = new System.Drawing.Point(1450, 26);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(78, 37);
             this.button4.TabIndex = 12;
@@ -175,7 +176,7 @@
             this.lector.AcceptsTab = true;
             this.lector.Location = new System.Drawing.Point(999, 123);
             this.lector.Name = "lector";
-            this.lector.Size = new System.Drawing.Size(389, 343);
+            this.lector.Size = new System.Drawing.Size(534, 343);
             this.lector.TabIndex = 13;
             this.lector.Text = "";
             this.lector.VScroll += new System.EventHandler(this.lector_VScroll);
@@ -185,7 +186,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.label5.Location = new System.Drawing.Point(438, 29);
+            this.label5.Location = new System.Drawing.Point(438, 23);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(55, 32);
             this.label5.TabIndex = 14;
@@ -197,7 +198,7 @@
             // 
             // time
             // 
-            this.time.Location = new System.Drawing.Point(510, 33);
+            this.time.Location = new System.Drawing.Point(510, 27);
             this.time.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -212,19 +213,19 @@
             // 
             this.actual.Location = new System.Drawing.Point(966, 472);
             this.actual.Name = "actual";
-            this.actual.Size = new System.Drawing.Size(422, 22);
+            this.actual.Size = new System.Drawing.Size(576, 22);
             this.actual.TabIndex = 17;
             // 
             // size
             // 
-            this.size.Location = new System.Drawing.Point(379, 33);
+            this.size.Location = new System.Drawing.Point(377, 27);
             this.size.Name = "size";
             this.size.Size = new System.Drawing.Size(41, 22);
             this.size.TabIndex = 18;
             // 
             // board
             // 
-            this.board.Location = new System.Drawing.Point(88, 29);
+            this.board.Location = new System.Drawing.Point(89, 26);
             this.board.Maximum = new decimal(new int[] {
             500,
             0,
@@ -249,7 +250,7 @@
             "Purple",
             "Transparent",
             "AzulCielo"});
-            this.colors.Location = new System.Drawing.Point(228, 31);
+            this.colors.Location = new System.Drawing.Point(229, 26);
             this.colors.Name = "colors";
             this.colors.Size = new System.Drawing.Size(70, 24);
             this.colors.TabIndex = 20;
@@ -259,28 +260,29 @@
             this.button5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button5.BackgroundImage")));
             this.button5.Cursor = System.Windows.Forms.Cursors.AppStarting;
             this.button5.Font = new System.Drawing.Font("Microsoft Uighur", 16.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(1109, 25);
+            this.button5.Location = new System.Drawing.Point(1240, 26);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(100, 38);
             this.button5.TabIndex = 21;
-            this.button5.Text = "Cargar";
+            this.button5.Text = "Upload";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // logText
             // 
-            this.logText.Location = new System.Drawing.Point(966, 517);
+            this.logText.Location = new System.Drawing.Point(966, 510);
             this.logText.Multiline = true;
             this.logText.Name = "logText";
             this.logText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.logText.Size = new System.Drawing.Size(422, 151);
+            this.logText.Size = new System.Drawing.Size(576, 151);
             this.logText.TabIndex = 22;
+            this.logText.TextChanged += new System.EventHandler(this.logText_TextChanged);
             // 
             // label2
             // 
             this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(591, 29);
+            this.label2.Location = new System.Drawing.Point(591, 23);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(75, 32);
             this.label2.TabIndex = 23;
@@ -289,7 +291,7 @@
             // 
             // ExecuterTime
             // 
-            this.ExecuterTime.Location = new System.Drawing.Point(683, 36);
+            this.ExecuterTime.Location = new System.Drawing.Point(683, 30);
             this.ExecuterTime.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -310,6 +312,19 @@
             this.lineTexts.TabIndex = 25;
             this.lineTexts.Text = "";
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.checkBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("checkBox1.BackgroundImage")));
+            this.checkBox1.Font = new System.Drawing.Font("Microsoft Uighur", 13.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox1.Location = new System.Drawing.Point(970, 680);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(80, 33);
+            this.checkBox1.TabIndex = 26;
+            this.checkBox1.Text = "Debug";
+            this.checkBox1.UseVisualStyleBackColor = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -318,6 +333,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.Silver;
             this.ClientSize = new System.Drawing.Size(1366, 662);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.lineTexts);
             this.Controls.Add(this.ExecuterTime);
             this.Controls.Add(this.label2);
@@ -381,6 +397,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown ExecuterTime;
         private System.Windows.Forms.RichTextBox lineTexts;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

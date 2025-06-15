@@ -128,6 +128,13 @@
   <metadata name="error_board.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="checkBox1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAMAAABC4vDmAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAMUExURfPAofnr3/C8nPHBpNjCQ74AAABCSURBVHhe7dxBEQAwDMOwZuPPeZ+CyN0kBEbgSaE5
+        habSLbRpAAAAAAAAAAAAAAAAAAAAAAAAAAD8bb+eVQp3rMkDq9MFNavJBsgAAAAASUVORK5CYII=
+</value>
+  </data>
   <data name="button5.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAMAAABC4vDmAAAABGdBTUEAALGPC/xhBQAAAAxQTFRF88Ch

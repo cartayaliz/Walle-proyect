@@ -133,7 +133,9 @@ namespace Logic
                 // stopper
                 if (logger.HasError) yield break;
 
+                actualline = parser.root.Childrens[pc].b.line - 1;
                 var inst = parser.root.Childrens[pc].Visit(InstVisitor);
+
                 yield return inst;
                 pc++;
             }
