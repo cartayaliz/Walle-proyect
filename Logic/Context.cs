@@ -64,11 +64,17 @@ namespace Logic
         }
         public List<(int, int, int, int, char)> Spawn(int i , int j)
         {
+            var oldcolor = this.color;
             SetColor(' ');
-            
-            var path = DrawLineFromPosition(x, y, 1, 0, i - x, true, x, y);
+
+            var b = j - y;
+            var sigb = (b > 0) ? 1 : (b == 0) ? 0 : -1;
+            var path = DrawLineFromPosition(x, y, 0, sigb, Math.Abs(b), true, x, y);
             var action = path[path.Count - 1];
-            path.AddRange(DrawLineFromPosition(action.Item3, action.Item4, 0, 1, j - y, true, action.Item3, action.Item4));
+            var c = i - x;
+            var sigc = (c > 0) ? 1 : (c == 0) ? 0 : -1;
+            path.AddRange(DrawLineFromPosition(action.Item3, action.Item4, sigc, 0, Math.Abs(c), true, action.Item3, action.Item4));
+            SetColor(oldcolor);
             return path;
 
         }
