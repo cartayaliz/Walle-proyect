@@ -84,7 +84,7 @@ namespace walleproyect
                 { 'Y', Color.Yellow },
                 { 'O', Color.Orange },
                 { 'P', Color.Purple },
-                { ' ', Color.Transparent },
+                { '_', Color.Transparent },
                 { 'A', Color.Aqua},
                 { 'F', Color.Pink },
             };
@@ -97,7 +97,7 @@ namespace walleproyect
                 invertedChars.Add(c.Value.Name, c.Key);
                 directChars.Add(c.Key, c.Value.Name);
             }
-            context = new Context(20, new VisualLogguer(this));
+            context = new Context(25, new VisualLogguer(this));
 
             highlight = new System.Collections.Generic.Dictionary<string, Color>()
             {
@@ -122,7 +122,7 @@ namespace walleproyect
             lector.WordWrap = false;
             lector.AcceptsTab = true;
             lector.ScrollBars = RichTextBoxScrollBars.ForcedBoth;
-            //lector.Dock = DockStyle.Fill;
+  
             lector.SelectionFont = new Font("Courier New", 9, FontStyle.Regular);
             lector.SelectionColor = Color.Black;
             lineTexts.Clear();
@@ -150,7 +150,7 @@ namespace walleproyect
             size.Value = context.size;
             colors.Text = directChars[context.color];
 
-            
+
             //Actualizando en Board
             pictureBox1.Refresh();
         }
@@ -170,7 +170,6 @@ namespace walleproyect
 
         private async Task InstruccionActions(Instruction inst)
         {
-
 
             if (!checkBox1.Checked)
             {
@@ -242,11 +241,7 @@ namespace walleproyect
         public void SRun()
         {
             button1.Enabled = false;
-
             button5.Enabled = false;
-
-         
-
             lector.ReadOnly = true;
             context.x = 0;
             context.y = 0;
@@ -502,6 +497,11 @@ namespace walleproyect
         }
 
         private void logText_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
         {
 
         }

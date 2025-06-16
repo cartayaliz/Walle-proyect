@@ -148,6 +148,12 @@ namespace Logic
             if (id == "Size")
             {
                 int h = int.Parse(ins.argument[0].Item2);
+                if (h <= 0)
+                {
+                    context.logger.LogError("Exe", $"Invalid size", ins.origin.b.line);
+
+                    return new List<(int, int, int, int, char)>();
+                }
 
                 context.SetSize(h);
                 return new List<(int, int, int, int, char)>();
