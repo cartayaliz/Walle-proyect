@@ -240,17 +240,6 @@
             // 
             this.colors.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.colors.FormattingEnabled = true;
-            this.colors.Items.AddRange(new object[] {
-            "White",
-            "Red",
-            "Blue",
-            "Green",
-            "Black",
-            "Yellow",
-            "Orange",
-            "Purple",
-            "Transparent",
-            "AzulCielo"});
             this.colors.Location = new System.Drawing.Point(229, 26);
             this.colors.Name = "colors";
             this.colors.Size = new System.Drawing.Size(70, 24);
