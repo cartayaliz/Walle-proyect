@@ -10,6 +10,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 using System.Reflection;
+using static System.Windows.Forms.LinkLabel;
 
 
 namespace walleproyect
@@ -135,9 +136,6 @@ namespace walleproyect
             lector.SelectionColor = Color.Black;
             lineTexts.Clear();
             AddLineNumbers();
-
-
-
         }
         private void EstablecerValoresPorDefecto()
         {
@@ -150,7 +148,7 @@ namespace walleproyect
             actual.Text = " ";
             checkBox1.Checked = false;
             checkBox2.Checked = true;
-            checkBox3.Checked = false;
+            checkBox3.Checked = true;
 
         }
     
@@ -275,6 +273,9 @@ namespace walleproyect
                     ParseLine(line);
                 }
             }
+
+            lineTexts.Clear();
+            AddLineNumbers();
         }
         public void ERun()
         {
@@ -432,9 +433,13 @@ namespace walleproyect
                     // Leer todo el contenido del archivo
                     string contenido = File.ReadAllText(openFileDialog.FileName);
                     string[] lineas = File.ReadAllLines(openFileDialog.FileName);
+                    lector.Text = "";
 
                     //Cargar el contenido en el TextBox
-                    for (int i = 0; i < lineas.Length; i++) { lector.Text += lineas[i] + "\r"; }
+                    for (int i = 0; i < lineas.Length; i++) { ParseLine(lineas[i]); }
+
+                    lineTexts.Clear();
+                    AddLineNumbers();
 
                     MessageBox.Show("Archivo cargado correctamente", "Éxito",
                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -496,8 +501,7 @@ namespace walleproyect
 
         public void lector_TextChanged(object sender, EventArgs e)
         {
-            lineTexts.Clear();
-            AddLineNumbers();
+            
         }
 
         public void textBox1_TextChanged(object sender, EventArgs e)

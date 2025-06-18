@@ -49,7 +49,7 @@ namespace Logic
 
         public static bool MatchArgsCount(string key, int count, Ilogger logger)
         {
-            if (ARGS_MAPPED.ContainsKey(key)) return ARGS_MAPPED[key].Length == count;
+            if (ARGS_MAPPED.ContainsKey(key)) return (ARGS_MAPPED[key].Length == count);
 
             logger.LogWarning("ARGS", $"MISSING KEY METHOD {key}", 0);
 
@@ -154,7 +154,7 @@ namespace Logic
 
             if (node.e.type == TokenType.Number)
             {
-                result=  (GLOBALS.NUMBER_TYPE, node.e.lexeme);
+                result =  (GLOBALS.NUMBER_TYPE, node.e.lexeme);
             }
             if (node.e.type == TokenType.True)
             {
@@ -189,7 +189,7 @@ namespace Logic
             return node.expression.Visit(this);
         }
 
-        //public (string, string) Visit(AST)
+       
         public (string, string) Visit(ASTBinaryExp node)
         {
             // stopper

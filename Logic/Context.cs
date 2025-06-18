@@ -362,15 +362,22 @@ namespace Logic
         {
             return new List<(int, int, int, int, char)>(
                 Expand(x, y, M[x, y])
-                .Select((i) => (i.Item1, i.Item2, x, y, this.color))
+               .Select((i) => (i.Item1, i.Item2, x, y, this.color))
             );
         }
         public List<(int, int, int, int, char)> FillB()
         {
-            return new List<(int, int, int, int, char)>(
-                ExpandB(x, y, M[x, y])
-                .Select((i) => (i.Item1, i.Item2, x, y, this.color))
-            );
+
+            var result = new List<(int, int, int, int, char)>();
+
+            var exp = ExpandB(x, y, M[x, y]);
+
+            foreach (var item in exp)
+            {
+                result.Add((item.Item1, item.Item2, x, y, this.color));
+            }
+
+            return result;
         }
 
 

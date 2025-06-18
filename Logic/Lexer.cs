@@ -215,8 +215,6 @@ namespace Logic
                         }
 
                     }
-
-
                 case '=':
                     {
                         if (match('='))
@@ -243,7 +241,6 @@ namespace Logic
                 case ' ' : break; 
                 case '\r': break;
                 case '"': String(); break;
-
                 default:
 
 

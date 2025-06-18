@@ -77,7 +77,7 @@ namespace Logic
                     node = node.next;
                 }
                 message += "END\r\n";
-                logger.Log("Lexer", message, 0);
+                logger.Log(GLOBALS.LOG_LEXER, message, 0);
 
             }
             else message = "ERROR on LEXER\r\n";
@@ -93,7 +93,7 @@ namespace Logic
 
                 message += "\r\nEND\r\n";
 
-                logger.Log("Lexer", message, 0);
+                logger.Log(GLOBALS.LOG_PARSER, message, 0);
 
             }
 
