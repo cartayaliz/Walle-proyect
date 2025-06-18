@@ -109,6 +109,10 @@ namespace Logic
                     if (nodex != null)
                     {
                         nodex.isLabel = true;
+                        if (MappedLabel.ContainsKey(nodex.b.lexeme))
+                        {
+                            logger.LogError(GLOBALS.LOG_PARSER, "Label duplicate", nodex.b.line);
+                        }
                         MappedLabel[nodex.b.lexeme] = i.ToString();
                     }
 
