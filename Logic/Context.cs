@@ -360,10 +360,16 @@ namespace Logic
         }
         public List<(int, int, int, int, char)> Fill()
         {
-            return new List<(int, int, int, int, char)>(
-                Expand(x, y, M[x, y])
-               .Select((i) => (i.Item1, i.Item2, x, y, this.color))
-            );
+            var result = new List<(int, int, int, int, char)>();
+
+            var exp = Expand(x, y, M[x, y]);
+
+            foreach (var item in exp)
+            {
+                result.Add((item.Item1, item.Item2, x, y, this.color));
+            }
+
+            return result;
         }
         public List<(int, int, int, int, char)> FillB()
         {
