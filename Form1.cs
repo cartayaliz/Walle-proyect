@@ -178,15 +178,16 @@ namespace walleproyect
             {
                 return;
             }
+            int waitinstr = (int)ExecuterTime.Value;
+            if (waitinstr == 0) return; 
             foreach (var item in inst.pasos)
             {
-                int waitinstr = (int)ExecuterTime.Value;
-                if (waitinstr > 0)
+                if (waitinstr != 0)
                 {
                     await Task.Delay((int)waitinstr / 2);
+                    actual.Text = item;
                 }
-                actual.Text = item;
-                if (waitinstr > 0)
+                if (waitinstr != 0)
                 {
                     await Task.Delay((int)waitinstr / 2);
                 }
@@ -259,12 +260,12 @@ namespace walleproyect
             if (checkBox3.Checked)
             {
                 
-            lector.Text = "";
+                lector.Text = "";
 
-            foreach (var line in lines)
-            {
-                ParseLine(line);
-            }
+                foreach (var line in lines)
+                {
+                    ParseLine(line);
+                }
             }
         }
         public void ERun()
@@ -511,6 +512,11 @@ namespace walleproyect
         private void pictureBox1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            pictureBox1.Refresh();
         }
     }
 }

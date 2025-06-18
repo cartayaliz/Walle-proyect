@@ -328,6 +328,7 @@
             this.checkBox2.TabIndex = 27;
             this.checkBox2.Text = "Grid";
             this.checkBox2.UseVisualStyleBackColor = false;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
             // checkBox3
             // 
