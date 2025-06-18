@@ -141,6 +141,9 @@ namespace walleproyect
             ExecuterTime.Value = 100;
             actual.Text = " ";
             checkBox1.Checked = false;
+            checkBox2.Checked = true;
+            checkBox3.Checked = false;
+
         }
     
         private void _Refresh()
@@ -229,11 +232,15 @@ namespace walleproyect
 
             }
 
+            if(checkBox2.Checked)
+            {
 
             for (int i = 0; i <= context.n; i++)
             {
                 g.DrawLine(p, i * widthCell, 0, i * widthCell, height); //Dibujando lineas verticales
                 g.DrawLine(p, 0, i * heightCell, width, i * heightCell);// Dibujando lineas horizontales
+            }
+
             }
 
 
@@ -249,12 +256,16 @@ namespace walleproyect
 
             var lines = lector.Lines;
 
-            //lector.Text = "";
+            if (checkBox3.Checked)
+            {
+                
+            lector.Text = "";
 
-            //foreach (var line in lines)
-            //{
-            //    ParseLine(line);
-            //}
+            foreach (var line in lines)
+            {
+                ParseLine(line);
+            }
+            }
         }
         public void ERun()
         {
