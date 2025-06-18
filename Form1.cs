@@ -9,6 +9,7 @@ using Logic;
 using System.IO;
 using System.Text.RegularExpressions;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
+using System.Reflection;
 
 
 namespace walleproyect
@@ -97,7 +98,7 @@ namespace walleproyect
                 invertedChars.Add(c.Value.Name, c.Key);
                 directChars.Add(c.Key, c.Value.Name);
             }
-            context = new Context(25, new VisualLogguer(this));
+            context = new Context(30, new VisualLogguer(this));
 
             highlight = new System.Collections.Generic.Dictionary<string, Color>()
             {
@@ -111,8 +112,15 @@ namespace walleproyect
                 highlight.Add(item, Color.BlueViolet);
             }
 
-            walleImage = Image.FromFile(@"C:\Users\liz\Desktop\Nueva carpeta (2)\walleproyect\Image.jpg");
+            walleImage = Properties.Resources.wally;
             InitializeComponent();
+            // Cargar icono desde recursos embebidos
+            using (var stream = Assembly.GetExecutingAssembly()
+                                       .GetManifestResourceStream("walleproyect.Resources.Noctuline_Wall_E_Wall_E_512.ico"))
+            {
+                if (stream != null)
+                    this.Icon = new Icon(stream);
+            }
             EstablecerValoresPorDefecto();
             pictureBox1.Width = 600;
             pictureBox1.Height = 600;
@@ -133,12 +141,12 @@ namespace walleproyect
         }
         private void EstablecerValoresPorDefecto()
         {
-            board.Value = 25;
+            board.Value = 30;
 
             size.Value = 1;
-            time.Value = 50;
+            time.Value = 10;
             colors.Text = directChars[invertedChars[Color.Transparent.Name]];
-            ExecuterTime.Value = 100;
+            ExecuterTime.Value = 50;
             actual.Text = " ";
             checkBox1.Checked = false;
             checkBox2.Checked = true;
