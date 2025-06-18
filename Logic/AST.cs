@@ -51,7 +51,6 @@ namespace Logic
         }
 
     }
-
     public class ASTCall : ASTNode
     {
         public ASTCall(Tokens b, Tokens e, List<ASTNode> Childrens) : base(b, e, Childrens, "AST Call") { }
@@ -64,7 +63,6 @@ namespace Logic
 
         }
     }
-
     public class ASTCte : ASTNode
     {
         public ASTCte(Tokens b) : base(b, b, null, "AST Cte") { }
@@ -77,7 +75,6 @@ namespace Logic
         }
 
     }
-
     public class ASTRoot : ASTNode
     {
         public ASTRoot(Tokens b, Tokens e, List<ASTNode> Childrens) : base(b, e, Childrens, "AST Root") { }
@@ -89,8 +86,6 @@ namespace Logic
 
         }
     }
-
-
     public class ASTId : ASTNode
     {
         public bool isLabel = false;
@@ -104,8 +99,6 @@ namespace Logic
         }
 
     }
-
-
     public class ASTAsignation : ASTNode
     {
         public ASTId id {  get; set; }
@@ -127,7 +120,6 @@ namespace Logic
         }
 
     }
-
     public class ASTBinaryExp : ASTNode
     {
         public Tokens op { get; set; }
@@ -174,7 +166,6 @@ namespace Logic
 
 
     }
-
     public class ASTUnary : ASTNode
     {
         public Tokens op { get; set; }

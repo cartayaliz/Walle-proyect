@@ -249,16 +249,12 @@ namespace walleproyect
 
             var lines = lector.Lines;
 
-            lector.Text = "";
+            //lector.Text = "";
 
-            foreach (var line in lines)
-            {
-                ParseLine(line);
-
-            }
-
-
-
+            //foreach (var line in lines)
+            //{
+            //    ParseLine(line);
+            //}
         }
         public void ERun()
         {
@@ -418,7 +414,7 @@ namespace walleproyect
                     string[] lineas = File.ReadAllLines(openFileDialog.FileName);
 
                     //Cargar el contenido en el TextBox
-                    for (int i = 0; i < lineas.Length; i++) { lector.Text += lineas[i] + "\n\r"; }
+                    for (int i = 0; i < lineas.Length; i++) { lector.Text += lineas[i] + "\r"; }
 
                     MessageBox.Show("Archivo cargado correctamente", "Éxito",
                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
